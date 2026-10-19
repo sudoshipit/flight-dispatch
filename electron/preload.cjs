@@ -5,7 +5,7 @@ contextBridge.exposeInMainWorld('dispatch', {
   saveSettings: invoke('dispatch:settings'), importLatest: invoke('dispatch:import'),
   generate: invoke('dispatch:generate'), cancel: invoke('dispatch:cancel'),
   refresh: invoke('dispatch:refresh'), file: invoke('dispatch:file'),
-  open: invoke('dispatch:open'), login: invoke('dispatch:login'), browserSetup: invoke('dispatch:browser-setup'),
+  open: invoke('dispatch:open'), login: invoke('dispatch:login'),
   companionStatus: invoke('dispatch:companion-status'), companionSetup: invoke('dispatch:companion-setup'),
   onProgress: (callback) => { const handler = (_event, value) => callback(value); ipcRenderer.on('dispatch:progress', handler); return () => ipcRenderer.removeListener('dispatch:progress', handler); },
 });

@@ -60,14 +60,7 @@ Install the companion in **one browser profile only**. Keep Developer mode enabl
 
 The generated folder contains a local pairing secret and should not be shared. The repository's extension source contains no per-install pairing secret.
 
-### 4. Set up password managers, if wanted
-
-- **SimBrief:** Select **Install Proton Pass** or **Install 1Password** in Settings. Install and unlock the extension in the dedicated SimBrief profile, then use **Sign in to SimBrief**. **Manage extensions** opens that profile's extension manager. Close all of its windows after setup/sign-in.
-- **VATSIM:** Use the password manager already installed in the everyday browser containing the companion. No separate VATSIM password-manager installation is needed in Flight Dispatch.
-
-Extensions in one profile do not automatically appear in another. Flight Dispatch does not collect passwords or read password-manager vaults. Complete MFA or service verification yourself if requested.
-
-### 5. Save filing preferences and aircraft defaults
+### 4. Save filing preferences and aircraft defaults
 
 1. In **Settings**, leave **Automatically file on VATSIM** enabled for Generate → File → Briefing. Turning it off generates a plan without filing; the briefing still offers **File automatically on VATSIM** when you decide to file.
 2. Review **Cost index rules**: SWA/all aircraft **40**, DAL/A319/A320/A321 **25**, DAL/B738/B739 **35**. Add/edit rules as needed. `*` matches all aircraft for an airline; aircraft-specific rules take precedence. Unmatched aircraft use SimBrief defaults.
@@ -77,7 +70,7 @@ Extensions in one profile do not automatically appear in another. Flight Dispatc
 
 New flight starts with cleared flight fields. Saved variant defaults apply after you select the aircraft type. Personal airframes are associated with your saved SimBrief ID; sync them again for another account.
 
-### 6. Set up gate information, if wanted
+### 5. Set up gate information, if wanted
 
 Gate lookup is optional. No gate key is needed for planning, filing, weather, CTAFs or the route map.
 
@@ -89,7 +82,7 @@ Gate lookup is optional. No gate key is needed for planning, filing, weather, CT
 
 Keys are encrypted using Windows through Electron safeStorage. Provider coverage, quotas and limitations are described under [Integration boundaries](#integration-boundaries). A valid key does not guarantee gate data for every flight.
 
-### 7. Generate your first flight
+### 6. Generate your first flight
 
 1. Open **New flight**. Enter the airline prefix in **Callsign** (for example, `SWA`) and the number in **Flight number** (`123`). The combined callsign is `SWA123`.
 2. Select aircraft/variant and enter departure/destination ICAOs, departure date, and off-block time in **UTC**.
@@ -158,7 +151,7 @@ The companion connects to a local WebSocket server bound to `127.0.0.1:49773`, a
 
 The app only displays **Filed on VATSIM** after detecting a new success message after submission. It saves the submission intent before clicking. A submitted-but-unconfirmed plan is never automatically resubmitted; **Review on VATSIM** opens the same browser profile for inspection. A failed attempt before submission offers **Retry automatic filing**. Cancelling automation cannot retract an already submitted flight plan. Newly generated plans are correlated with the requested flight identity, aircraft, departure time, CI, explicit passenger count, generation timestamp, request ID, and static ID when returned; route and variant are checked on the options form.
 
-Browsers retain sessions in their own storage. VATSIM credentials stay in the chosen everyday browser; SimBrief uses its dedicated profile. Proton Pass, 1Password, MFA and provider verification work on normal login pages. The app does not read passwords, password-manager vaults, or browser profile files. Existing local settings/history are retained when installing a replacement build. A fresh installation contains no Pilot ID, API keys, browser sessions, pairing secret or flight history; the pairing secret is generated locally on first launch.
+Browsers retain sessions in their own storage. VATSIM credentials stay in the chosen everyday browser; SimBrief uses its dedicated profile. Complete sign-in, MFA and provider verification in the browser when prompted. The app does not read passwords or browser profile files. Existing local settings/history are retained when installing a replacement build. A fresh installation contains no Pilot ID, API keys, browser sessions, pairing secret or flight history; the pairing secret is generated locally on first launch.
 
 **Gate availability varies.** Aviationstack's free personal plan lists 100 requests/month and current flight data; historical access requires a paid plan. Gate fields can be missing. This app's history consists of gates previously retrieved locally, not an unlimited free historical database. FlightAware is an optional paid alternative. [Aviationstack pricing](https://aviationstack.com/pricing) · [Gate fields and coverage](https://aviationstack.com/faq)
 
@@ -246,5 +239,3 @@ Local application data is stored beneath Electron's Windows `userData` directory
 Provider terms and access limits may change. The official aircraft catalog snapshot was retrieved on October 19, 2026.
 
 - [SimBrief airframe IDs and planning parameters](https://developers.navigraph.com/docs/simbrief/using-the-api)
-- [Proton Pass browser setup](https://proton.me/support/pass-setup)
-- [1Password browser setup](https://support.1password.com/getting-started-browser/)

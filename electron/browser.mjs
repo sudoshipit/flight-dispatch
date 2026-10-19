@@ -15,11 +15,7 @@ export function interactiveBrowserArgs(directory, url) {
 export function serviceAllowed(value, name) {
   try { const u = new URL(value); return u.protocol === 'https:' && !u.username && !u.password && (name === 'simbrief' ? ['simbrief.com', 'navigraph.com'].some(d => u.hostname === d || u.hostname.endsWith('.' + d)) : ['my.vatsim.net', 'auth.vatsim.net', 'connect.vatsim.net'].includes(u.hostname)); } catch { return false; }
 }
-export const EXTENSION_URLS = {
-  protonpass: 'https://proton.me/pass/download/edge',
-  onepassword: 'https://1password.com/downloads/browser-extension/',
-};
-// Keep extensions, native password-manager integration and browser security enabled.
+// Keep browser extensions and browser security enabled.
 // Playwright's usual test defaults disable several of these features.
 export const IGNORED_BROWSER_ARGS = ['--disable-extensions', '--disable-component-extensions-with-background-pages', '--disable-component-update', '--disable-background-networking', '--disable-client-side-phishing-detection', '--password-store=basic', '--use-mock-keychain', '--disable-ipc-flooding-protection', '--unsafely-disable-devtools-self-xss-warnings'];
 
@@ -112,7 +108,7 @@ export class BrowserSessions {
       if (previous) await previous;
       await this.close();
       const session = await this.createInteractive(url);
-      // Additional service/extension windows are forwarded to the existing browser
+      // Additional sign-in windows are forwarded to the existing browser
       // process; keep tracking that original process until all its windows close.
       if (!this.interactive || this.interactive.closed) this.interactive = session;
     })();
@@ -136,12 +132,6 @@ export class BrowserSessions {
     }
     if (this.interactive === session) this.interactive = null;
     if (session.error) throw session.error;
-  }
-  async setup(extension) {
-    let url = extension ? EXTENSION_URLS[extension] : (this.channel() === 'msedge' ? 'edge://extensions/' : 'chrome://extensions/');
-    if (extension === 'protonpass' && this.channel() === 'chrome') url = 'https://proton.me/pass/download/chrome';
-    if (!url) throw new Error('Unknown password manager.');
-    await this.startInteractive(url);
   }
   async close() {
     const context = this.context;

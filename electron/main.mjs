@@ -240,11 +240,6 @@ handle('companion-setup', async () => {
   if (error) throw new Error(error);
   return vatsim.status();
 });
-handle('browser-setup', async extension => {
-  if (extension !== undefined && !['protonpass','onepassword'].includes(extension)) throw new Error('Unknown password manager.');
-  if (active) throw new Error('Finish the current dispatch before setting up your browser.');
-  await browser.setup(extension);
-});
 if (process.env.VITE_DEV_SERVER_URL && !app.isPackaged) await main.loadURL(process.env.VITE_DEV_SERVER_URL);
 else await main.loadFile(path.join(root, 'dist/index.html'));
 app.on('window-all-closed', () => app.quit());

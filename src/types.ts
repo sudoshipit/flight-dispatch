@@ -41,7 +41,6 @@ declare global {
       file(id: string): Promise<Result>;
       open(url: string): Promise<void>;
       login(service: string): Promise<void>;
-      browserSetup(extension?: string): Promise<void>;
       companionStatus(): Promise<CompanionStatus>;
       companionSetup(): Promise<CompanionStatus>;
       onProgress(callback: (progress: Progress) => void): () => void;
