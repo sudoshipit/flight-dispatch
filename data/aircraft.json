@@ -1,0 +1,5892 @@
+{
+  "aircraft": [
+    {
+      "id": "A225",
+      "name": "Antonov AN-225",
+      "icao": "A225",
+      "maxPassengers": 38,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "A225",
+          "name": "Default",
+          "icao": "A225",
+          "registration": "UR-82060",
+          "maxPassengers": 38,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1677576294832",
+          "name": "iniBuilds (MSFS) - An-225",
+          "icao": "A225",
+          "registration": "UR-82060",
+          "maxPassengers": 38,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BCS1",
+      "name": "A220-100",
+      "icao": "BCS1",
+      "maxPassengers": 135,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "BCS1",
+          "name": "Default",
+          "icao": "BCS1",
+          "registration": "N201SB",
+          "maxPassengers": 135,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BCS3",
+      "name": "A220-300",
+      "icao": "BCS3",
+      "maxPassengers": 160,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "BCS3",
+          "name": "Default",
+          "icao": "BCS3",
+          "registration": "N203SB",
+          "maxPassengers": 160,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1783098201479",
+          "name": "Synaptic / iniBuilds (MSFS) - A220-300",
+          "icao": "BCS3",
+          "registration": "C-SYNC",
+          "maxPassengers": 140,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A306",
+      "name": "A300B4-600",
+      "icao": "A306",
+      "maxPassengers": 274,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A306",
+          "name": "Default",
+          "icao": "A306",
+          "registration": "N306SB",
+          "maxPassengers": 274,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1702657155316",
+          "name": "iniBuilds (MSFS) - A300-600R GE",
+          "icao": "A306",
+          "registration": "G-INIB",
+          "maxPassengers": 256,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1711546435461",
+          "name": "iniBuilds (MSFS) - A300-600R PW",
+          "icao": "A306",
+          "registration": "G-INPW",
+          "maxPassengers": 256,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A3ST",
+      "name": "A300F4-608ST",
+      "icao": "A3ST",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "A3ST",
+          "name": "Default",
+          "icao": "A3ST",
+          "registration": "N308SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A30B",
+      "name": "A300B4-200",
+      "icao": "A30B",
+      "maxPassengers": 269,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A30B",
+          "name": "Default",
+          "icao": "A30B",
+          "registration": "N302SB",
+          "maxPassengers": 269,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A30F",
+      "name": "A300F4-600R",
+      "icao": "A306",
+      "maxPassengers": 25,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A30F",
+          "name": "Default",
+          "icao": "A306",
+          "registration": "N307SB",
+          "maxPassengers": 25,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1703262262270",
+          "name": "iniBuilds (MSFS) - A300-600RF GE",
+          "icao": "A306",
+          "registration": "G-INIB",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1711122593284",
+          "name": "iniBuilds (MSFS) - A300-600RF PW",
+          "icao": "A306",
+          "registration": "G-INPW",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A310",
+      "name": "A310-304",
+      "icao": "A310",
+      "maxPassengers": 240,
+      "maxCostIndex": 999,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A310",
+          "name": "Default",
+          "icao": "A310",
+          "registration": "N314SB",
+          "maxPassengers": 240,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1664536765275",
+          "name": "iniBuilds (MSFS) - A310",
+          "icao": "A310",
+          "registration": "G-INIB",
+          "maxPassengers": 238,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A318",
+      "name": "A318-100",
+      "icao": "A318",
+      "maxPassengers": 136,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A318",
+          "name": "Default",
+          "icao": "A318",
+          "registration": "N318SB",
+          "maxPassengers": 136,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A319",
+      "name": "A319-100",
+      "icao": "A319",
+      "maxPassengers": 145,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A319",
+          "name": "Default",
+          "icao": "A319",
+          "registration": "N319SB",
+          "maxPassengers": 145,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1722530034323",
+          "name": "Fenix Simulations (MSFS) - A319 CFM",
+          "icao": "A319",
+          "registration": "G-SMOL",
+          "maxPassengers": 150,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1738576840218",
+          "name": "Fenix Simulations (MSFS) - A319 CFM (SL)",
+          "icao": "A319",
+          "registration": "G-SMOL",
+          "maxPassengers": 150,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1722530055241",
+          "name": "Fenix Simulations (MSFS) - A319 IAE",
+          "icao": "A319",
+          "registration": "G-SMOL",
+          "maxPassengers": 150,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1738576986208",
+          "name": "Fenix Simulations (MSFS) - A319 IAE (SL)",
+          "icao": "A319",
+          "registration": "G-SMOL",
+          "maxPassengers": 150,
+          "source": "SimBrief"
+        },
+        {
+          "id": "129100_1749416807301",
+          "name": "LatinVFR (MSFS) - A319 ACJ",
+          "icao": "A319",
+          "registration": "N319SB",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1589463205",
+          "name": "ToLiss (X-Plane) - CFM56-5B6 [credit: Rodeo314]",
+          "icao": "A319",
+          "registration": "C-GTLS",
+          "maxPassengers": 145,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1729902948611",
+          "name": "ToLiss (X-Plane) - CFM56-5B7 [credit: Rodeo314]",
+          "icao": "A319",
+          "registration": "C-GTLS",
+          "maxPassengers": 145,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1589463246",
+          "name": "ToLiss (X-Plane) - V2524-A5 [credit: Rodeo314]",
+          "icao": "A319",
+          "registration": "C-GTLS",
+          "maxPassengers": 145,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A320",
+      "name": "A320-200",
+      "icao": "A320",
+      "maxPassengers": 180,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A320",
+          "name": "Default",
+          "icao": "A320",
+          "registration": "N320SB",
+          "maxPassengers": 180,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1709125568637",
+          "name": "Fenix Simulations (MSFS) - A320 CFM",
+          "icao": "A320",
+          "registration": "G-FENX",
+          "maxPassengers": 180,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730058463659",
+          "name": "Fenix Simulations (MSFS) - A320 CFM (SL)",
+          "icao": "A320",
+          "registration": "G-FENX",
+          "maxPassengers": 180,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1707996202186",
+          "name": "Fenix Simulations (MSFS) - A320 IAE",
+          "icao": "A320",
+          "registration": "G-FENX",
+          "maxPassengers": 180,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730058455324",
+          "name": "Fenix Simulations (MSFS) - A320 IAE (SL)",
+          "icao": "A320",
+          "registration": "G-FENX",
+          "maxPassengers": 180,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1758458370325",
+          "name": "ToLiss (X-Plane) - CFM56-5B4 [credit: Rodeo314]",
+          "icao": "A320",
+          "registration": "C-GTLT",
+          "maxPassengers": 188,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1758834801707",
+          "name": "ToLiss (X-Plane) - V2527-A5 [credit: Rodeo314]",
+          "icao": "A320",
+          "registration": "C-GTLT",
+          "maxPassengers": 188,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A20N",
+      "name": "A320-200N",
+      "icao": "A20N",
+      "maxPassengers": 186,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A20N",
+          "name": "Default",
+          "icao": "A20N",
+          "registration": "N251SB",
+          "maxPassengers": 186,
+          "source": "SimBrief"
+        },
+        {
+          "id": "337364_1631550522735",
+          "name": "FlyByWire (MSFS) - All Versions [credit: sidnov]",
+          "icao": "A20N",
+          "registration": "D-AFBW",
+          "maxPassengers": 174,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1701976694015",
+          "name": "iniBuilds (MSFS) - A320neo V2",
+          "icao": "A20N",
+          "registration": "G-INEO",
+          "maxPassengers": 180,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1678807119689",
+          "name": "ToLiss (X-Plane) - LEAP-1A26 [credit: Rodeo314]",
+          "icao": "A20N",
+          "registration": "C-GTLT",
+          "maxPassengers": 188,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1678807316925",
+          "name": "ToLiss (X-Plane) - PW1127G-JM [credit: Rodeo314]",
+          "icao": "A20N",
+          "registration": "C-GTLT",
+          "maxPassengers": 188,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A321",
+      "name": "A321-200",
+      "icao": "A321",
+      "maxPassengers": 220,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A321",
+          "name": "Default",
+          "icao": "A321",
+          "registration": "N321SB",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1722529640343",
+          "name": "Fenix Simulations (MSFS) - A321 CFM",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730059159445",
+          "name": "Fenix Simulations (MSFS) - A321 CFM (1 ACT)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730058817608",
+          "name": "Fenix Simulations (MSFS) - A321 CFM (2 ACT)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730059308794",
+          "name": "Fenix Simulations (MSFS) - A321 CFM (SL)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730059202090",
+          "name": "Fenix Simulations (MSFS) - A321 CFM (SL, 1 ACT)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730059217412",
+          "name": "Fenix Simulations (MSFS) - A321 CFM (SL, 2 ACT)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1722529734976",
+          "name": "Fenix Simulations (MSFS) - A321 IAE",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730058526391",
+          "name": "Fenix Simulations (MSFS) - A321 IAE (1 ACT)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730058602642",
+          "name": "Fenix Simulations (MSFS) - A321 IAE (2 ACT)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730058652195",
+          "name": "Fenix Simulations (MSFS) - A321 IAE (SL)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730058743243",
+          "name": "Fenix Simulations (MSFS) - A321 IAE (SL, 1 ACT)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "80_1730058769925",
+          "name": "Fenix Simulations (MSFS) - A321 IAE (SL, 2 ACT)",
+          "icao": "A321",
+          "registration": "G-FBIG",
+          "maxPassengers": 230,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291932972",
+          "name": "FSLabs (MSFS) - A321-211 CFM (0 ACT)",
+          "icao": "A321",
+          "registration": "SX-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750292528364",
+          "name": "FSLabs (MSFS) - A321-211 CFM (1 ACT)",
+          "icao": "A321",
+          "registration": "SX-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750292465869",
+          "name": "FSLabs (MSFS) - A321-211 CFM (2 ACT)",
+          "icao": "A321",
+          "registration": "SX-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291983114",
+          "name": "FSLabs (MSFS) - A321-211 CFM (SL, 0 ACT)",
+          "icao": "A321",
+          "registration": "SL-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750292271630",
+          "name": "FSLabs (MSFS) - A321-211 CFM (SL, 1 ACT)",
+          "icao": "A321",
+          "registration": "SL-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750292386034",
+          "name": "FSLabs (MSFS) - A321-211 CFM (SL, 2 ACT)",
+          "icao": "A321",
+          "registration": "SL-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291782559",
+          "name": "FSLabs (MSFS) - A321-231 IAE (0 ACT)",
+          "icao": "A321",
+          "registration": "SX-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291601695",
+          "name": "FSLabs (MSFS) - A321-231 IAE (1 ACT)",
+          "icao": "A321",
+          "registration": "SX-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291537302",
+          "name": "FSLabs (MSFS) - A321-231 IAE (2 ACT)",
+          "icao": "A321",
+          "registration": "SX-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291646993",
+          "name": "FSLabs (MSFS) - A321-231 IAE (SL, 0 ACT)",
+          "icao": "A321",
+          "registration": "SL-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291624879",
+          "name": "FSLabs (MSFS) - A321-231 IAE (SL, 1 ACT)",
+          "icao": "A321",
+          "registration": "SL-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291497084",
+          "name": "FSLabs (MSFS) - A321-231 IAE (SL, 2 ACT)",
+          "icao": "A321",
+          "registration": "SL-FSL",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "129100_1740749042728",
+          "name": "LatinVFR (MSFS) - A321P2F",
+          "icao": "A321",
+          "registration": "N321SB",
+          "maxPassengers": 25,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1589463290",
+          "name": "ToLiss (X-Plane) - CFM56-5B3 - 0 ACT [credit: Rodeo314]",
+          "icao": "A321",
+          "registration": "C-GTLU",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1589463332",
+          "name": "ToLiss (X-Plane) - CFM56-5B3 - 2 ACT [credit: Rodeo314]",
+          "icao": "A321",
+          "registration": "C-GTLU",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1589463349",
+          "name": "ToLiss (X-Plane) - V2533-A5 - 0 ACT [credit: Rodeo314]",
+          "icao": "A321",
+          "registration": "C-GTLU",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1589463385",
+          "name": "ToLiss (X-Plane) - V2533-A5 - 2 ACT [credit: Rodeo314]",
+          "icao": "A321",
+          "registration": "C-GTLU",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A21N",
+      "name": "A321-200N",
+      "icao": "A21N",
+      "maxPassengers": 220,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A21N",
+          "name": "Default",
+          "icao": "A21N",
+          "registration": "N261SB",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1749606976699",
+          "name": "FSLabs (MSFS) - A321-252NX LEAP-30 (0 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 235,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291086282",
+          "name": "FSLabs (MSFS) - A321-252NX LEAP-30 (1 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 235,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750291117706",
+          "name": "FSLabs (MSFS) - A321-252NX LEAP-30 (2 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 235,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750290541399",
+          "name": "FSLabs (MSFS) - A321-251NX LEAP-32 (0 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 235,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750290441999",
+          "name": "FSLabs (MSFS) - A321-251NX LEAP-32 (1 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 235,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750290502974",
+          "name": "FSLabs (MSFS) - A321-251NX LEAP-32 (2 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 235,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750290866415",
+          "name": "FSLabs (MSFS) - A321-251NX LEAP-32 (LR, 3 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 157,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750290319479",
+          "name": "FSLabs (MSFS) - A321-253NX LEAP-33 (0 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 235,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750289121067",
+          "name": "FSLabs (MSFS) - A321-253NX LEAP-33 (1 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 235,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750288221017",
+          "name": "FSLabs (MSFS) - A321-253NX LEAP-33 (2 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 235,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1745333183429",
+          "name": "FSLabs (MSFS) - A321-253NX LEAP-33 (LR, 3 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 157,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750293290397",
+          "name": "FSLabs (MSFS) - A321-272NX PW1130G (0 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 239,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750293267242",
+          "name": "FSLabs (MSFS) - A321-272NX PW1130G (1 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 239,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750293233139",
+          "name": "FSLabs (MSFS) - A321-272NX PW1130G (2 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 239,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750293193281",
+          "name": "FSLabs (MSFS) - A321-272NX PW1130G (LR, 3 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 239,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750293323576",
+          "name": "FSLabs (MSFS) - A321-271NX PW1133G (0 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 239,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750293345048",
+          "name": "FSLabs (MSFS) - A321-271NX PW1133G (1 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 239,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750293386886",
+          "name": "FSLabs (MSFS) - A321-271NX PW1133G (2 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 239,
+          "source": "SimBrief"
+        },
+        {
+          "id": "2851_1750293052836",
+          "name": "FSLabs (MSFS) - A321-271NX PW1133G (LR, 3 ACT)",
+          "icao": "A21N",
+          "registration": "SN-FSL",
+          "maxPassengers": 157,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1706702257237",
+          "name": "iniBuilds (MSFS) - A321LR LEAP-1A",
+          "icao": "A21N",
+          "registration": "G-NELR",
+          "maxPassengers": 220,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1607699906393",
+          "name": "ToLiss (X-Plane) - LEAP-1A33 - 0 ACT [credit: Rodeo314]",
+          "icao": "A21N",
+          "registration": "C-GTLU",
+          "maxPassengers": 244,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1607700968900",
+          "name": "ToLiss (X-Plane) - LEAP-1A33 - LR 3 ACT [credit: Rodeo314]",
+          "icao": "A21N",
+          "registration": "C-GTLU",
+          "maxPassengers": 244,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1607700454960",
+          "name": "ToLiss (X-Plane) - LEAP-1A33 - XLR 1 ACT [credit: Rodeo314]",
+          "icao": "A21N",
+          "registration": "C-GTLU",
+          "maxPassengers": 244,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1607699814906",
+          "name": "ToLiss (X-Plane) - PW1130G-JM - 0 ACT [credit: Rodeo314]",
+          "icao": "A21N",
+          "registration": "C-GTLU",
+          "maxPassengers": 244,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1607700970983",
+          "name": "ToLiss (X-Plane) - PW1130G-JM - LR 3 ACT [credit: Rodeo314]",
+          "icao": "A21N",
+          "registration": "C-GTLU",
+          "maxPassengers": 244,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1607700491750",
+          "name": "ToLiss (X-Plane) - PW1130G-JM - XLR 1 ACT [credit: Rodeo314]",
+          "icao": "A21N",
+          "registration": "C-GTLU",
+          "maxPassengers": 244,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A332",
+      "name": "A330-200",
+      "icao": "A332",
+      "maxPassengers": 293,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A332",
+          "name": "Default",
+          "icao": "A332",
+          "registration": "N315SB",
+          "maxPassengers": 293,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1685113571749",
+          "name": "iniBuilds (MSFS) - A330-200 GE",
+          "icao": "A332",
+          "registration": "G-CCBG",
+          "maxPassengers": 257,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1685114003147",
+          "name": "iniBuilds (MSFS) - A330-200 RR",
+          "icao": "A332",
+          "registration": "G-CCBR",
+          "maxPassengers": 257,
+          "source": "SimBrief"
+        },
+        {
+          "id": "129100_1749577263843",
+          "name": "LatinVFR (MSFS) - A330-200F",
+          "icao": "A332",
+          "registration": "N315SB",
+          "maxPassengers": 25,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A333",
+      "name": "A330-300",
+      "icao": "A333",
+      "maxPassengers": 335,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A333",
+          "name": "Default",
+          "icao": "A333",
+          "registration": "N339SB",
+          "maxPassengers": 335,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1731589289356",
+          "name": "iniBuilds (MSFS) - A330-300 GE",
+          "icao": "A333",
+          "registration": "G-CCCG",
+          "maxPassengers": 291,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1685113731446",
+          "name": "iniBuilds (MSFS) - A330-300 RR",
+          "icao": "A333",
+          "registration": "G-CCCR",
+          "maxPassengers": 291,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1685113942179",
+          "name": "iniBuilds (MSFS) - A330-300P2F GE",
+          "icao": "A333",
+          "registration": "G-CCCG",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1731510990025",
+          "name": "iniBuilds (MSFS) - A330-300P2F RR",
+          "icao": "A333",
+          "registration": "G-CCCG",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A338",
+      "name": "A330-800",
+      "icao": "A338",
+      "maxPassengers": 293,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A338",
+          "name": "Default",
+          "icao": "A338",
+          "registration": "N338SB",
+          "maxPassengers": 293,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A339",
+      "name": "A330-900",
+      "icao": "A339",
+      "maxPassengers": 335,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A339",
+          "name": "Default",
+          "icao": "A339",
+          "registration": "N339SB",
+          "maxPassengers": 335,
+          "source": "SimBrief"
+        },
+        {
+          "id": "352855_1683790837790",
+          "name": "Headwind Simulations (MSFS) - A339X",
+          "icao": "A339",
+          "registration": "F-WTTN",
+          "maxPassengers": 436,
+          "source": "SimBrief"
+        },
+        {
+          "id": "352855_1683790837791",
+          "name": "Headwind Simulations (MSFS) - A339X ACJ",
+          "icao": "A339",
+          "registration": "F-WTTE",
+          "maxPassengers": 90,
+          "source": "SimBrief"
+        },
+        {
+          "id": "129100_1697753848191",
+          "name": "LatinVFR (MSFS) - A330-900",
+          "icao": "A339",
+          "registration": "N339SB",
+          "maxPassengers": 335,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1726875371708",
+          "name": "ToLiss (X-Plane) - TRENT 7000-72 [credit: Rodeo314]",
+          "icao": "A339",
+          "registration": "C-GTLZ",
+          "maxPassengers": 375,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A342",
+      "name": "A340-200",
+      "icao": "A342",
+      "maxPassengers": 261,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A342",
+          "name": "Default",
+          "icao": "A342",
+          "registration": "N342SB",
+          "maxPassengers": 261,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A343",
+      "name": "A340-300",
+      "icao": "A343",
+      "maxPassengers": 277,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A343",
+          "name": "Default",
+          "icao": "A343",
+          "registration": "N343SB",
+          "maxPassengers": 277,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1755171348076",
+          "name": "iniBuilds (MSFS) - A340-300 Passenger",
+          "icao": "A343",
+          "registration": "G-DRYR",
+          "maxPassengers": 279,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1756913537697",
+          "name": "iniBuilds (MSFS) - A340-300 Preighter",
+          "icao": "A343",
+          "registration": "G-HDRY",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "20583_1767657799590",
+          "name": "iniBuilds (MSFS) - A340-300 VIP",
+          "icao": "A343",
+          "registration": "G-VVIP",
+          "maxPassengers": 55,
+          "source": "SimBrief"
+        },
+        {
+          "id": "129100_1715004714492",
+          "name": "LatinVFR (MSFS) - A340-300",
+          "icao": "A343",
+          "registration": "N343SB",
+          "maxPassengers": 277,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A345",
+      "name": "A340-500",
+      "icao": "A345",
+      "maxPassengers": 375,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A345",
+          "name": "Default",
+          "icao": "A345",
+          "registration": "N542SB",
+          "maxPassengers": 375,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A346",
+      "name": "A340-600",
+      "icao": "A346",
+      "maxPassengers": 440,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A346",
+          "name": "Default",
+          "icao": "A346",
+          "registration": "N634SB",
+          "maxPassengers": 440,
+          "source": "SimBrief"
+        },
+        {
+          "id": "38898_1772717739162",
+          "name": "Aerosoft (MSFS) - A340-600 Pro (Standard Gross Weight)",
+          "icao": "A346",
+          "registration": "D-AERO",
+          "maxPassengers": 440,
+          "source": "SimBrief"
+        },
+        {
+          "id": "38898_1772717851553",
+          "name": "Aerosoft (MSFS) - A340-600 Pro (High Gross Weight)",
+          "icao": "A346",
+          "registration": "D-AERO",
+          "maxPassengers": 440,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1638576526372",
+          "name": "ToLiss (X-Plane) - Standard Gross Weight [credit: Rodeo314]",
+          "icao": "A346",
+          "registration": "C-GTLD",
+          "maxPassengers": 440,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1638578208335",
+          "name": "ToLiss (X-Plane) - High Gross Weight [credit: Rodeo314]",
+          "icao": "A346",
+          "registration": "C-GTLD",
+          "maxPassengers": 440,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A359",
+      "name": "A350-900",
+      "icao": "A359",
+      "maxPassengers": 315,
+      "maxCostIndex": 400,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A359",
+          "name": "Default",
+          "icao": "A359",
+          "registration": "N359SB",
+          "maxPassengers": 315,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1734345124322",
+          "name": "iniBuilds (MSFS) - A350-900",
+          "icao": "A359",
+          "registration": "G-NXWB",
+          "maxPassengers": 324,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1749476755253",
+          "name": "iniBuilds (MSFS) - A350-900ULR",
+          "icao": "A359",
+          "registration": "G-NULR",
+          "maxPassengers": 161,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A35K",
+      "name": "A350-1000",
+      "icao": "A35K",
+      "maxPassengers": 369,
+      "maxCostIndex": 400,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A35K",
+          "name": "Default",
+          "icao": "A35K",
+          "registration": "N360SB",
+          "maxPassengers": 369,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1734345584724",
+          "name": "iniBuilds (MSFS) - A350-1000",
+          "icao": "A35K",
+          "registration": "G-KXWB",
+          "maxPassengers": 367,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "A388",
+      "name": "A380-800",
+      "icao": "A388",
+      "maxPassengers": 471,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "A388",
+          "name": "Default",
+          "icao": "A388",
+          "registration": "N388SB",
+          "maxPassengers": 471,
+          "source": "SimBrief"
+        },
+        {
+          "id": "572703_1747030762094",
+          "name": "FlyByWire (MSFS) - All Versions [credit: FlyByWire]",
+          "icao": "A388",
+          "registration": "D8-FBW",
+          "maxPassengers": 484,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1779789450357",
+          "name": "iniBuilds (MSFS) - A380 Airliner EA",
+          "icao": "A388",
+          "registration": "G-NRMS",
+          "maxPassengers": 484,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1768567000565",
+          "name": "iniBuilds (MSFS) - A380 Airliner RR",
+          "icao": "A388",
+          "registration": "G-HUGE",
+          "maxPassengers": 484,
+          "source": "SimBrief"
+        },
+        {
+          "id": "129100_1781880561096",
+          "name": "LatinVFR (MSFS) - A380-800",
+          "icao": "A388",
+          "registration": "N388SB",
+          "maxPassengers": 471,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AC11",
+      "name": "Commander 114",
+      "icao": "AC11",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AC11",
+          "name": "Default",
+          "icao": "AC11",
+          "registration": "N114SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AC1T",
+      "name": "Commander 114 TN",
+      "icao": "AC11",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AC1T",
+          "name": "Default",
+          "icao": "AC11",
+          "registration": "N115SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AEST",
+      "name": "Aerostar 600",
+      "icao": "AEST",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AEST",
+          "name": "Default",
+          "icao": "AEST",
+          "registration": "N600SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AT43",
+      "name": "ATR-42-300",
+      "icao": "AT43",
+      "maxPassengers": 48,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AT43",
+          "name": "Default",
+          "icao": "AT43",
+          "registration": "N423SB",
+          "maxPassengers": 48,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AT45",
+      "name": "ATR-42-500",
+      "icao": "AT45",
+      "maxPassengers": 48,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AT45",
+          "name": "Default",
+          "icao": "AT45",
+          "registration": "N425SB",
+          "maxPassengers": 48,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AT46",
+      "name": "ATR-42-600",
+      "icao": "AT46",
+      "maxPassengers": 48,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AT46",
+          "name": "Default",
+          "icao": "AT46",
+          "registration": "N426SB",
+          "maxPassengers": 48,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1682505597349",
+          "name": "Microsoft (MSFS) - ATR 42 - Economy [credit: Awemeter]",
+          "icao": "AT46",
+          "registration": "HH426",
+          "maxPassengers": 48,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1691977400383",
+          "name": "Microsoft (MSFS) - ATR 42 - HighLine [credit: Awemeter]",
+          "icao": "AT46",
+          "registration": "HH426",
+          "maxPassengers": 18,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AT72",
+      "name": "ATR-72-201",
+      "icao": "AT72",
+      "maxPassengers": 66,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AT72",
+          "name": "Default",
+          "icao": "AT72",
+          "registration": "N722SB",
+          "maxPassengers": 66,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AT73",
+      "name": "ATR-72-211",
+      "icao": "AT73",
+      "maxPassengers": 66,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AT73",
+          "name": "Default",
+          "icao": "AT73",
+          "registration": "N723SB",
+          "maxPassengers": 66,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AT75",
+      "name": "ATR-72-500",
+      "icao": "AT75",
+      "maxPassengers": 68,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AT75",
+          "name": "Default",
+          "icao": "AT75",
+          "registration": "N725SB",
+          "maxPassengers": 68,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "AT76",
+      "name": "ATR-72-600",
+      "icao": "AT76",
+      "maxPassengers": 70,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "AT76",
+          "name": "Default",
+          "icao": "AT76",
+          "registration": "N726SB",
+          "maxPassengers": 70,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1682504211078",
+          "name": "Microsoft (MSFS) - ATR 72 - Economy [credit: Awemeter]",
+          "icao": "AT76",
+          "registration": "HH726",
+          "maxPassengers": 68,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1691977209082",
+          "name": "Microsoft (MSFS) - ATR 72 - HighLine [credit: Awemeter]",
+          "icao": "AT76",
+          "registration": "HH726",
+          "maxPassengers": 28,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B190",
+      "name": "B1900D",
+      "icao": "B190",
+      "maxPassengers": 18,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B190",
+          "name": "Default",
+          "icao": "B190",
+          "registration": "N190SB",
+          "maxPassengers": 18,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B350",
+      "name": "King AIR 350",
+      "icao": "B350",
+      "maxPassengers": 12,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B350",
+          "name": "Default",
+          "icao": "B350",
+          "registration": "N070SB",
+          "maxPassengers": 12,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B461",
+      "name": "BAE 146-100",
+      "icao": "B461",
+      "maxPassengers": 82,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B461",
+          "name": "Default",
+          "icao": "B461",
+          "registration": "N461SB",
+          "maxPassengers": 82,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1716156805628",
+          "name": "Just Flight (MSFS) - BAe 146-100",
+          "icao": "B461",
+          "registration": "G-JUST",
+          "maxPassengers": 80,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1716156807788",
+          "name": "Just Flight (MSFS) - BAe 146-100 CC2",
+          "icao": "B461",
+          "registration": "G-JUST",
+          "maxPassengers": 15,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1747730906065",
+          "name": "Just Flight (X-Plane) - BAe 146-100",
+          "icao": "B461",
+          "registration": "G-JUST",
+          "maxPassengers": 80,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1747731119715",
+          "name": "Just Flight (X-Plane) - BAe 146-100 CC2",
+          "icao": "B461",
+          "registration": "G-JUST",
+          "maxPassengers": 15,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B462",
+      "name": "BAE 146-200",
+      "icao": "B462",
+      "maxPassengers": 100,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B462",
+          "name": "Default",
+          "icao": "B462",
+          "registration": "N462SB",
+          "maxPassengers": 100,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1716156809270",
+          "name": "Just Flight (MSFS) - BAe 146-200",
+          "icao": "B462",
+          "registration": "G-JUST",
+          "maxPassengers": 112,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1716156811219",
+          "name": "Just Flight (MSFS) - BAe 146-200 QC/QT",
+          "icao": "B462",
+          "registration": "G-JUST",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1747731390543",
+          "name": "Just Flight (X-Plane) - BAe 146-200",
+          "icao": "B462",
+          "registration": "G-JUST",
+          "maxPassengers": 112,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1747731507648",
+          "name": "Just Flight (X-Plane) - BAe 146-200 QC/QT",
+          "icao": "B462",
+          "registration": "G-JUST",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B463",
+      "name": "BAE 146-300",
+      "icao": "B463",
+      "maxPassengers": 112,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B463",
+          "name": "Default",
+          "icao": "B463",
+          "registration": "N463SB",
+          "maxPassengers": 112,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1716156812814",
+          "name": "Just Flight (MSFS) - BAe 146-300",
+          "icao": "B463",
+          "registration": "G-JUST",
+          "maxPassengers": 128,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1716156814472",
+          "name": "Just Flight (MSFS) - BAe 146-300 QT",
+          "icao": "B463",
+          "registration": "G-JUST",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1747731697567",
+          "name": "Just Flight (X-Plane) - BAe 146-300",
+          "icao": "B463",
+          "registration": "G-JUST",
+          "maxPassengers": 112,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1747731649483",
+          "name": "Just Flight (X-Plane) - BAe 146-300 QT",
+          "icao": "B463",
+          "registration": "G-JUST",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B703",
+      "name": "B707-320C",
+      "icao": "B703",
+      "maxPassengers": 194,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B703",
+          "name": "Default",
+          "icao": "B703",
+          "registration": "N703SB",
+          "maxPassengers": 194,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B712",
+      "name": "B717-200",
+      "icao": "B712",
+      "maxPassengers": 134,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B712",
+          "name": "Default",
+          "icao": "B712",
+          "registration": "N716SB",
+          "maxPassengers": 134,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B721",
+      "name": "B727-100",
+      "icao": "B721",
+      "maxPassengers": 125,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B721",
+          "name": "Default",
+          "icao": "B721",
+          "registration": "N297SB",
+          "maxPassengers": 125,
+          "source": "SimBrief"
+        },
+        {
+          "id": "13743_1767729764150",
+          "name": "FlightSim Studio (MSFS) - B727-100 Passenger",
+          "icao": "B721",
+          "registration": "HB-PAX",
+          "maxPassengers": 125,
+          "source": "SimBrief"
+        },
+        {
+          "id": "13743_1767731200279",
+          "name": "FlightSim Studio (MSFS) - B727-100 Freighter",
+          "icao": "B721",
+          "registration": "HB-FRE",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "13743_1767731944178",
+          "name": "FlightSim Studio (MSFS) - B727-100 Super 27",
+          "icao": "R721",
+          "registration": "HB-SUP",
+          "maxPassengers": 125,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B722",
+      "name": "B727-200",
+      "icao": "B722",
+      "maxPassengers": 155,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B722",
+          "name": "Default",
+          "icao": "B722",
+          "registration": "N299SB",
+          "maxPassengers": 155,
+          "source": "SimBrief"
+        },
+        {
+          "id": "13743_1740753189322",
+          "name": "FlightSim Studio (MSFS) - B727-200 Passenger",
+          "icao": "B722",
+          "registration": "HB-PAX",
+          "maxPassengers": 189,
+          "source": "SimBrief"
+        },
+        {
+          "id": "1356_1722930814775",
+          "name": "FlightSim Studio (MSFS) - B727-200 Freighter",
+          "icao": "B722",
+          "registration": "HB-FSS",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "R722",
+      "name": "B727-200 Super 27",
+      "icao": "R722",
+      "maxPassengers": 155,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "R722",
+          "name": "Default",
+          "icao": "R722",
+          "registration": "N297SB",
+          "maxPassengers": 155,
+          "source": "SimBrief"
+        },
+        {
+          "id": "1356_1758535467713",
+          "name": "FlightSim Studio (MSFS) - B727-200RE Passenger",
+          "icao": "R722",
+          "registration": "HB-FSS",
+          "maxPassengers": 155,
+          "source": "SimBrief"
+        },
+        {
+          "id": "1356_1758535623954",
+          "name": "FlightSim Studio (MSFS) - B727-200RE Freighter",
+          "icao": "R722",
+          "registration": "HB-FSS",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B732",
+      "name": "B737-200",
+      "icao": "B732",
+      "maxPassengers": 130,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B732",
+          "name": "Default",
+          "icao": "B732",
+          "registration": "N275SB",
+          "maxPassengers": 130,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B733",
+      "name": "B737-300",
+      "icao": "B733",
+      "maxPassengers": 128,
+      "maxCostIndex": 150,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B733",
+          "name": "Default",
+          "icao": "B733",
+          "registration": "N372SB",
+          "maxPassengers": 128,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1780242578827",
+          "name": "CSS (MSFS) - 737 Classic 20K",
+          "icao": "B733",
+          "registration": "A6CSS",
+          "maxPassengers": 148,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1780242544999",
+          "name": "CSS (MSFS) - 737 Classic 22K",
+          "icao": "B733",
+          "registration": "A6CSS",
+          "maxPassengers": 148,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B734",
+      "name": "B737-400",
+      "icao": "B734",
+      "maxPassengers": 146,
+      "maxCostIndex": 150,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B734",
+          "name": "Default",
+          "icao": "B734",
+          "registration": "N374SB",
+          "maxPassengers": 146,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1780242519791",
+          "name": "CSS (MSFS) - 737 Classic 22K",
+          "icao": "B734",
+          "registration": "A6CSS",
+          "maxPassengers": 168,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1780242478061",
+          "name": "CSS (MSFS) - 737 Classic 23.5K",
+          "icao": "B734",
+          "registration": "A6CSS",
+          "maxPassengers": 168,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B735",
+      "name": "B737-500",
+      "icao": "B735",
+      "maxPassengers": 108,
+      "maxCostIndex": 150,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B735",
+          "name": "Default",
+          "icao": "B735",
+          "registration": "N374SB",
+          "maxPassengers": 108,
+          "source": "SimBrief"
+        },
+        {
+          "id": "720866_1731619770917",
+          "name": "CSS (MSFS) - 737 Classic",
+          "icao": "B735",
+          "registration": "A6CSS",
+          "maxPassengers": 132,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B736",
+      "name": "B737-600",
+      "icao": "B736",
+      "maxPassengers": 149,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B736",
+          "name": "Default",
+          "icao": "B736",
+          "registration": "N616SB",
+          "maxPassengers": 149,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1776108256665",
+          "name": "PMDG (MSFS) - Dual Class [credit: PMDG Official]",
+          "icao": "B736",
+          "registration": "N736PM",
+          "maxPassengers": 112,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1776107880103",
+          "name": "PMDG (MSFS) - Single Class [credit: PMDG Official]",
+          "icao": "B736",
+          "registration": "N736PM",
+          "maxPassengers": 114,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B737",
+      "name": "B737-700",
+      "icao": "B737",
+      "maxPassengers": 149,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B737",
+          "name": "Default",
+          "icao": "B737",
+          "registration": "N714SB",
+          "maxPassengers": 149,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1776105415884",
+          "name": "PMDG (MSFS) - Dual Class [credit: PMDG Official]",
+          "icao": "B737",
+          "registration": "N737BW",
+          "maxPassengers": 124,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1776104910153",
+          "name": "PMDG (MSFS) - Single Class [credit: PMDG Official]",
+          "icao": "B737",
+          "registration": "N737BW",
+          "maxPassengers": 132,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1776105831135",
+          "name": "PMDG (MSFS) - BEDEK Special Freighter [credit: PMDG Official]",
+          "icao": "B737",
+          "registration": "N737BW",
+          "maxPassengers": 4,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BBJ1",
+      "name": "B737 BBJ",
+      "icao": "B737",
+      "maxPassengers": 63,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "BBJ1",
+          "name": "Default",
+          "icao": "B737",
+          "registration": "N700SB",
+          "maxPassengers": 63,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1776106166341",
+          "name": "PMDG (MSFS) - 0 Aux Tanks [credit: PMDG Official]",
+          "icao": "B737",
+          "registration": "N737BS",
+          "maxPassengers": 30,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1776106520541",
+          "name": "PMDG (MSFS) - 9 Aux Tanks [credit: PMDG Official]",
+          "icao": "B737",
+          "registration": "N737BS",
+          "maxPassengers": 30,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B37M",
+      "name": "B737 MAX 7",
+      "icao": "B37M",
+      "maxPassengers": 172,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B37M",
+          "name": "Default",
+          "icao": "B37M",
+          "registration": "N807SB",
+          "maxPassengers": 172,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B738",
+      "name": "B737-800",
+      "icao": "B738",
+      "maxPassengers": 184,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B738",
+          "name": "Default",
+          "icao": "B738",
+          "registration": "N806SB",
+          "maxPassengers": 184,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1761165451022",
+          "name": "PMDG (MSFS) - Dual Class [credit: PMDG Official]",
+          "icao": "B738",
+          "registration": "N738PM",
+          "maxPassengers": 163,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1761165330356",
+          "name": "PMDG (MSFS) - Single Class [credit: PMDG Official]",
+          "icao": "B738",
+          "registration": "N738PM",
+          "maxPassengers": 174,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1761163464850",
+          "name": "PMDG (MSFS) - High Density [credit: PMDG Official]",
+          "icao": "B738",
+          "registration": "N738PM",
+          "maxPassengers": 189,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1761167330749",
+          "name": "PMDG (MSFS) - Boeing Converted Freighter [credit: PMDG Official]",
+          "icao": "B738",
+          "registration": "N738BS",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1761168575251",
+          "name": "PMDG (MSFS) - BEDEK Special Freighter [credit: PMDG Official]",
+          "icao": "B738",
+          "registration": "N738BF",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "223254_1615396809795",
+          "name": "ProSim (MSFS) - B737-800 [credit: DaddyBoon]",
+          "icao": "B738",
+          "registration": "PH-BGC",
+          "maxPassengers": 160,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BBJ2",
+      "name": "B737 BBJ2",
+      "icao": "B738",
+      "maxPassengers": 63,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "BBJ2",
+          "name": "Default",
+          "icao": "B738",
+          "registration": "N800SB",
+          "maxPassengers": 63,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1761168101361",
+          "name": "PMDG (MSFS) - 0 Aux Tanks [credit: PMDG Official]",
+          "icao": "B738",
+          "registration": "N738BA",
+          "maxPassengers": 48,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1761166870912",
+          "name": "PMDG (MSFS) - 7 Aux Tanks [credit: PMDG Official]",
+          "icao": "B738",
+          "registration": "N738BA",
+          "maxPassengers": 48,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B38M",
+      "name": "B737 MAX 8",
+      "icao": "B38M",
+      "maxPassengers": 189,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B38M",
+          "name": "Default",
+          "icao": "B38M",
+          "registration": "N808SB",
+          "maxPassengers": 189,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3689_1764482331551",
+          "name": "iFly (MSFS) - 737 MAX 8 - 166 Seats (KG)",
+          "icao": "B38M",
+          "registration": "B-2131",
+          "maxPassengers": 166,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3689_1763994649133",
+          "name": "iFly (MSFS) - 737 MAX 8 - 166 Seats (LBS)",
+          "icao": "B38M",
+          "registration": "B-2131",
+          "maxPassengers": 166,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3689_1764487256314",
+          "name": "iFly (MSFS) - 737 MAX 8 - 178 Seats (KG)",
+          "icao": "B38M",
+          "registration": "B-2131",
+          "maxPassengers": 178,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3689_1763995735874",
+          "name": "iFly (MSFS) - 737 MAX 8 - 178 Seats (LBS)",
+          "icao": "B38M",
+          "registration": "B-2131",
+          "maxPassengers": 178,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3689_1764487349143",
+          "name": "iFly (MSFS) - 737 MAX 8 - 189 Seats (KG)",
+          "icao": "B38M",
+          "registration": "B-2131",
+          "maxPassengers": 189,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3689_1725692397016",
+          "name": "iFly (MSFS) - 737 MAX 8 - 189 Seats (LBS)",
+          "icao": "B38M",
+          "registration": "B-2131",
+          "maxPassengers": 189,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3689_1764487744441",
+          "name": "iFly (MSFS) - 737 MAX 8200 - 197 Seats (KG)",
+          "icao": "B38M",
+          "registration": "B-2131",
+          "maxPassengers": 197,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3689_1763994784760",
+          "name": "iFly (MSFS) - 737 MAX 8200 - 197 Seats (LBS)",
+          "icao": "B38M",
+          "registration": "B-2131",
+          "maxPassengers": 197,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B739",
+      "name": "B737-900",
+      "icao": "B739",
+      "maxPassengers": 189,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B739",
+          "name": "Default",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 189,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768333575205",
+          "name": "PMDG (MSFS) - Dual Class [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 178,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768330219336",
+          "name": "PMDG (MSFS) - Single Class [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 188,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768334576522",
+          "name": "PMDG (MSFS) - ER 0 Aux Tank - Dual Class [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 179,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768335405681",
+          "name": "PMDG (MSFS) - ER 0 Aux Tank - Single Class [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 204,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768334311448",
+          "name": "PMDG (MSFS) - ER 0 Aux Tank - High Density [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 215,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768335362865",
+          "name": "PMDG (MSFS) - ER 1 Aux Tank - Dual Class [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 179,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768334388948",
+          "name": "PMDG (MSFS) - ER 1 Aux Tank - Single Class [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 204,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768334804982",
+          "name": "PMDG (MSFS) - ER 1 Aux Tank - High Density [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 215,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768335304953",
+          "name": "PMDG (MSFS) - ER 2 Aux Tank - Dual Class [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 179,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768334657946",
+          "name": "PMDG (MSFS) - ER 2 Aux Tank - Single Class [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 204,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1768334832423",
+          "name": "PMDG (MSFS) - ER 2 Aux Tank - High Density [credit: PMDG Official]",
+          "icao": "B739",
+          "registration": "N922SB",
+          "maxPassengers": 215,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BBJ3",
+      "name": "B737 BBJ3",
+      "icao": "B739",
+      "maxPassengers": 63,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "BBJ3",
+          "name": "Default",
+          "icao": "B739",
+          "registration": "N900SB",
+          "maxPassengers": 63,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B39M",
+      "name": "B737 MAX 9",
+      "icao": "B39M",
+      "maxPassengers": 189,
+      "maxCostIndex": 500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B39M",
+          "name": "Default",
+          "icao": "B39M",
+          "registration": "N809SB",
+          "maxPassengers": 189,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B742",
+      "name": "B747-200B",
+      "icao": "B742",
+      "maxPassengers": 366,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B742",
+          "name": "Default",
+          "icao": "B742",
+          "registration": "N238SB",
+          "maxPassengers": 366,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1759766708700",
+          "name": "Felis (X-Plane) - JT9D-7J",
+          "icao": "B742",
+          "registration": "N238SB",
+          "maxPassengers": 388,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1759766695143",
+          "name": "Felis (X-Plane) - CF6-50E2",
+          "icao": "B742",
+          "registration": "N238SB",
+          "maxPassengers": 388,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B744",
+      "name": "B747-400",
+      "icao": "B744",
+      "maxPassengers": 400,
+      "maxCostIndex": 1500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B744",
+          "name": "Default",
+          "icao": "B744",
+          "registration": "N484SB",
+          "maxPassengers": 400,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B74F",
+      "name": "B747-400F",
+      "icao": "B744",
+      "maxPassengers": 25,
+      "maxCostIndex": 1500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B74F",
+          "name": "Default",
+          "icao": "B744",
+          "registration": "N487SB",
+          "maxPassengers": 25,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B748",
+      "name": "B747-8",
+      "icao": "B748",
+      "maxPassengers": 410,
+      "maxCostIndex": 1500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B748",
+          "name": "Default",
+          "icao": "B748",
+          "registration": "N748SB",
+          "maxPassengers": 410,
+          "source": "SimBrief"
+        },
+        {
+          "id": "141372_1660066082616",
+          "name": "Salty Simulations (MSFS) - 747-8",
+          "icao": "B748",
+          "registration": "LN-SLT",
+          "maxPassengers": 364,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1688373238088",
+          "name": "Working Title (MSFS) - 747-8i [credit: Awemeter]",
+          "icao": "B748",
+          "registration": "ASWT748",
+          "maxPassengers": 364,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B48F",
+      "name": "B747-8F",
+      "icao": "B748",
+      "maxPassengers": 25,
+      "maxCostIndex": 1500,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B48F",
+          "name": "Default",
+          "icao": "B748",
+          "registration": "N749SB",
+          "maxPassengers": 25,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1688378505409",
+          "name": "Working Title (MSFS) - 747-8F [credit: Awemeter]",
+          "icao": "B748",
+          "registration": "ASWT748",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B752",
+      "name": "B757-200",
+      "icao": "B752",
+      "maxPassengers": 239,
+      "maxCostIndex": 300,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B752",
+          "name": "Default",
+          "icao": "B752",
+          "registration": "N537SB",
+          "maxPassengers": 239,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B75F",
+      "name": "B757-200PF",
+      "icao": "B752",
+      "maxPassengers": 25,
+      "maxCostIndex": 300,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B75F",
+          "name": "Default",
+          "icao": "B752",
+          "registration": "N538SB",
+          "maxPassengers": 25,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B753",
+      "name": "B757-300",
+      "icao": "B753",
+      "maxPassengers": 289,
+      "maxCostIndex": 300,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B753",
+          "name": "Default",
+          "icao": "B753",
+          "registration": "N533SB",
+          "maxPassengers": 289,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B762",
+      "name": "B767-200ER",
+      "icao": "B762",
+      "maxPassengers": 216,
+      "maxCostIndex": 999,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B762",
+          "name": "Default",
+          "icao": "B762",
+          "registration": "N627SB",
+          "maxPassengers": 216,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B763",
+      "name": "B767-300ER",
+      "icao": "B763",
+      "maxPassengers": 290,
+      "maxCostIndex": 999,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B763",
+          "name": "Default",
+          "icao": "B763",
+          "registration": "N619SB",
+          "maxPassengers": 290,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B76F",
+      "name": "B767-300F",
+      "icao": "B763",
+      "maxPassengers": 25,
+      "maxCostIndex": 999,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B76F",
+          "name": "Default",
+          "icao": "B763",
+          "registration": "N618SB",
+          "maxPassengers": 25,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B764",
+      "name": "B767-400ER",
+      "icao": "B764",
+      "maxPassengers": 296,
+      "maxCostIndex": 999,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B764",
+          "name": "Default",
+          "icao": "B764",
+          "registration": "N416SB",
+          "maxPassengers": 296,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B772",
+      "name": "B777-200ER",
+      "icao": "B772",
+      "maxPassengers": 320,
+      "maxCostIndex": 999,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B772",
+          "name": "Default",
+          "icao": "B772",
+          "registration": "N755SB",
+          "maxPassengers": 320,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1746124710590",
+          "name": "PMDG (MSFS) - GE90-94B - Default MTOW [credit: PMDG Official]",
+          "icao": "B772",
+          "registration": "N772GE",
+          "maxPassengers": 294,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1744312486882",
+          "name": "PMDG (MSFS) - GE90-94B - 660,000 MTOW [credit: PMDG Official]",
+          "icao": "B772",
+          "registration": "N772GE",
+          "maxPassengers": 294,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1746124786757",
+          "name": "PMDG (MSFS) - PW4092 - Default MTOW [credit: PMDG Official]",
+          "icao": "B772",
+          "registration": "N772PW",
+          "maxPassengers": 294,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1744313087352",
+          "name": "PMDG (MSFS) - PW4092 - 660,000 MTOW [credit: PMDG Official]",
+          "icao": "B772",
+          "registration": "N772PW",
+          "maxPassengers": 294,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1746124811511",
+          "name": "PMDG (MSFS) - Trent 892 - Default MTOW [credit: PMDG Official]",
+          "icao": "B772",
+          "registration": "N772RR",
+          "maxPassengers": 294,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1744312960814",
+          "name": "PMDG (MSFS) - Trent 892 - 660,000 MTOW [credit: PMDG Official]",
+          "icao": "B772",
+          "registration": "N772RR",
+          "maxPassengers": 294,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B77F",
+      "name": "B777-F",
+      "icao": "B77L",
+      "maxPassengers": 25,
+      "maxCostIndex": 999,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B77F",
+          "name": "Default",
+          "icao": "B77L",
+          "registration": "N715SB",
+          "maxPassengers": 25,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1746819859336",
+          "name": "PMDG (MSFS) - 766,800 MTOW [credit: PMDG Official]",
+          "icao": "B77L",
+          "registration": "N777F",
+          "maxPassengers": 4,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B77L",
+      "name": "B777-200LR",
+      "icao": "B77L",
+      "maxPassengers": 320,
+      "maxCostIndex": 999,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B77L",
+          "name": "Default",
+          "icao": "B77L",
+          "registration": "N712SB",
+          "maxPassengers": 320,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1753738749642",
+          "name": "PMDG (MSFS) - Standard [credit: PMDG Official]",
+          "icao": "B77L",
+          "registration": "N772LR",
+          "maxPassengers": 297,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1753738970927",
+          "name": "PMDG (MSFS) - 1 Aux Tank [credit: PMDG Official]",
+          "icao": "B77L",
+          "registration": "N772LR",
+          "maxPassengers": 297,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1753739047124",
+          "name": "PMDG (MSFS) - 3 Aux Tank [credit: PMDG Official]",
+          "icao": "B77L",
+          "registration": "N772LR",
+          "maxPassengers": 297,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B77W",
+      "name": "B777-300ER",
+      "icao": "B77W",
+      "maxPassengers": 386,
+      "maxCostIndex": 999,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B77W",
+          "name": "Default",
+          "icao": "B77W",
+          "registration": "N713SB",
+          "maxPassengers": 386,
+          "source": "SimBrief"
+        },
+        {
+          "id": "746599_1746818579488",
+          "name": "PMDG (MSFS) - 777,000 MTOW [credit: PMDG Official]",
+          "icao": "B77W",
+          "registration": "N773ER",
+          "maxPassengers": 370,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B788",
+      "name": "B787-8",
+      "icao": "B788",
+      "maxPassengers": 300,
+      "maxCostIndex": 400,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B788",
+          "name": "Default",
+          "icao": "B788",
+          "registration": "N888SB",
+          "maxPassengers": 300,
+          "source": "SimBrief"
+        },
+        {
+          "id": "337573_1689936264695",
+          "name": "Kuro (MSFS) - B787-8 [credit: Kurorin]",
+          "icao": "B788",
+          "registration": "G-ZBJH",
+          "maxPassengers": 214,
+          "source": "SimBrief"
+        },
+        {
+          "id": "138759_1730423016353",
+          "name": "BravoAirspace (MSFS) - GEnx-1B70 [credit: francisjohannes]",
+          "icao": "B788",
+          "registration": "N788BA",
+          "maxPassengers": 227,
+          "source": "SimBrief"
+        },
+        {
+          "id": "138759_1730465397659",
+          "name": "BravoAirspace (MSFS) - Trent 1000 [credit: francisjohannes]",
+          "icao": "B788",
+          "registration": "N788BA",
+          "maxPassengers": 227,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B789",
+      "name": "B787-9",
+      "icao": "B789",
+      "maxPassengers": 350,
+      "maxCostIndex": 400,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B789",
+          "name": "Default",
+          "icao": "B789",
+          "registration": "N899SB",
+          "maxPassengers": 350,
+          "source": "SimBrief"
+        },
+        {
+          "id": "138759_1732154419165",
+          "name": "BravoAirspace (MSFS) - GEnx-1B74 [credit: francisjohannes]",
+          "icao": "B789",
+          "registration": "N787BA",
+          "maxPassengers": 237,
+          "source": "SimBrief"
+        },
+        {
+          "id": "138759_1733673424348",
+          "name": "BravoAirspace (MSFS) - Trent 1000 [credit: francisjohannes]",
+          "icao": "B789",
+          "registration": "N787BA",
+          "maxPassengers": 237,
+          "source": "SimBrief"
+        },
+        {
+          "id": "444203_1731579644533",
+          "name": "Horizon Simulations (MSFS) - GEnx-1B ",
+          "icao": "B789",
+          "registration": "HS-SIM",
+          "maxPassengers": 338,
+          "source": "SimBrief"
+        },
+        {
+          "id": "444203_1731579635949",
+          "name": "Horizon Simulations (MSFS) - Trent 1000",
+          "icao": "B789",
+          "registration": "HS-SIM",
+          "maxPassengers": 338,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B78X",
+      "name": "B787-10",
+      "icao": "B78X",
+      "maxPassengers": 390,
+      "maxCostIndex": 400,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "B78X",
+          "name": "Default",
+          "icao": "B78X",
+          "registration": "N891SB",
+          "maxPassengers": 390,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1684628774433",
+          "name": "Working Title (MSFS) - 787-10 [credit: Awemeter]",
+          "icao": "B78X",
+          "registration": "ASWT787",
+          "maxPassengers": 344,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BE9L",
+      "name": "King AIR C90B",
+      "icao": "BE9L",
+      "maxPassengers": 7,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "BE9L",
+          "name": "Default",
+          "icao": "BE9L",
+          "registration": "N090SB",
+          "maxPassengers": 7,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BE20",
+      "name": "King AIR 200",
+      "icao": "BE20",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "BE20",
+          "name": "Default",
+          "icao": "BE20",
+          "registration": "N201SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BE24",
+      "name": "Beechcraft C24R",
+      "icao": "BE24",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "BE24",
+          "name": "Default",
+          "icao": "BE24",
+          "registration": "N240SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BE36",
+      "name": "Bonanza A36",
+      "icao": "BE36",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "BE36",
+          "name": "Default",
+          "icao": "BE36",
+          "registration": "N036SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BT36",
+      "name": "Bonanza B36TC",
+      "icao": "BT36",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "BT36",
+          "name": "Default",
+          "icao": "BT36",
+          "registration": "N037SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B36T",
+      "name": "Bonanza B36TP",
+      "icao": "B36T",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B36T",
+          "name": "Default",
+          "icao": "B36T",
+          "registration": "N038SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BE58",
+      "name": "Baron 58",
+      "icao": "BE58",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "BE58",
+          "name": "Default",
+          "icao": "BE58",
+          "registration": "N058SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B58T",
+      "name": "Baron 58P",
+      "icao": "B58T",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B58T",
+          "name": "Default",
+          "icao": "B58T",
+          "registration": "N059SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BE60",
+      "name": "Duke B60",
+      "icao": "BE60",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "BE60",
+          "name": "Default",
+          "icao": "BE60",
+          "registration": "N060SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "BE6G",
+      "name": "Grand Duke",
+      "icao": "BE60",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "BE6G",
+          "name": "Default",
+          "icao": "BE60",
+          "registration": "N061SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "B60T",
+      "name": "Turbine Duke",
+      "icao": "B60T",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "B60T",
+          "name": "Default",
+          "icao": "B60T",
+          "registration": "N062SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C30J",
+      "name": "C-130J Super Hercules",
+      "icao": "C30J",
+      "maxPassengers": 92,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C30J",
+          "name": "Default",
+          "icao": "C30J",
+          "registration": "N139SB",
+          "maxPassengers": 92,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C160",
+      "name": "Transall C-160",
+      "icao": "C160",
+      "maxPassengers": 93,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C160",
+          "name": "Default",
+          "icao": "C160",
+          "registration": "N160SB",
+          "maxPassengers": 93,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C17",
+      "name": "C-17A Globemaster",
+      "icao": "C17",
+      "maxPassengers": 102,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C17",
+          "name": "Default",
+          "icao": "C17",
+          "registration": "10-0223",
+          "maxPassengers": 102,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C172",
+      "name": "Cessna 172R",
+      "icao": "C172",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C172",
+          "name": "Default",
+          "icao": "C172",
+          "registration": "N172SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C182",
+      "name": "Cessna 182T",
+      "icao": "C182",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C182",
+          "name": "Default",
+          "icao": "C182",
+          "registration": "N182SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "R182",
+      "name": "Cessna 182RG",
+      "icao": "C182",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "R182",
+          "name": "Default",
+          "icao": "C182",
+          "registration": "N183SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C208",
+      "name": "Cessna 208B",
+      "icao": "C208",
+      "maxPassengers": 8,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C208",
+          "name": "Default",
+          "icao": "C208",
+          "registration": "N017SB",
+          "maxPassengers": 8,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C310",
+      "name": "Cessna 310R",
+      "icao": "C310",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C310",
+          "name": "Default",
+          "icao": "C310",
+          "registration": "N310SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C337",
+      "name": "Cessna 337H",
+      "icao": "C337",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C337",
+          "name": "Default",
+          "icao": "C337",
+          "registration": "N337SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C404",
+      "name": "C404 Titan",
+      "icao": "C404",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C404",
+          "name": "Default",
+          "icao": "C404",
+          "registration": "N404SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C414",
+      "name": "Cessna 414AW",
+      "icao": "C414",
+      "maxPassengers": 7,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C414",
+          "name": "Default",
+          "icao": "C414",
+          "registration": "N414SB",
+          "maxPassengers": 7,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C510",
+      "name": "C510 Mustang",
+      "icao": "C510",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C510",
+          "name": "Default",
+          "icao": "C510",
+          "registration": "N518SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C525",
+      "name": "Citation CJ1/M2",
+      "icao": "C525",
+      "maxPassengers": 7,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C525",
+          "name": "Default",
+          "icao": "C525",
+          "registration": "N524SB",
+          "maxPassengers": 7,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1779731353771",
+          "name": "Citation M2",
+          "icao": "C525",
+          "registration": "N526SB",
+          "maxPassengers": 7,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C25A",
+      "name": "Citation CJ2",
+      "icao": "C25A",
+      "maxPassengers": 8,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C25A",
+          "name": "Default",
+          "icao": "C25A",
+          "registration": "N525SB",
+          "maxPassengers": 8,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C25B",
+      "name": "Citation CJ3",
+      "icao": "C25B",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C25B",
+          "name": "Default",
+          "icao": "C25B",
+          "registration": "N253SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        },
+        {
+          "id": "393614_1751098202127",
+          "name": "LivToAir (MSFS) - Tamarack Winglets ",
+          "icao": "C25B",
+          "registration": "N253SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C25C",
+      "name": "Citation CJ4",
+      "icao": "C25C",
+      "maxPassengers": 10,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C25C",
+          "name": "Default",
+          "icao": "C25C",
+          "registration": "N254SB",
+          "maxPassengers": 10,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C550",
+      "name": "Citation II",
+      "icao": "C550",
+      "maxPassengers": 11,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C550",
+          "name": "Default",
+          "icao": "C550",
+          "registration": "N081SB",
+          "maxPassengers": 11,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C56X",
+      "name": "Citation 560 XLS+",
+      "icao": "C56X",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C56X",
+          "name": "Default",
+          "icao": "C56X",
+          "registration": "N560SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C680",
+      "name": "SOVEREIGN+",
+      "icao": "C680",
+      "maxPassengers": 12,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C680",
+          "name": "Default",
+          "icao": "C680",
+          "registration": "N680SB",
+          "maxPassengers": 12,
+          "source": "SimBrief"
+        },
+        {
+          "id": "423152_1773260198737",
+          "name": "Skyward Simulations (MSFS) - C680 Sovereign+",
+          "icao": "C680",
+          "registration": "HB-SOV",
+          "maxPassengers": 10,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C700",
+      "name": "Longitude",
+      "icao": "C700",
+      "maxPassengers": 10,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C700",
+          "name": "Default",
+          "icao": "C700",
+          "registration": "N700SB",
+          "maxPassengers": 10,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C750",
+      "name": "Citation X",
+      "icao": "C750",
+      "maxPassengers": 12,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "C750",
+          "name": "Default",
+          "icao": "C750",
+          "registration": "N750SB",
+          "maxPassengers": 12,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1747991754356",
+          "name": "FlightFX (MSFS) - Winglet [credit: Awemeter]",
+          "icao": "C750",
+          "registration": "FFXC750W",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1751497498054",
+          "name": "FlightFX (MSFS) - Non-Winglet [credit: Awemeter]",
+          "icao": "C750",
+          "registration": "FFXC750",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "C919",
+      "name": "C919-100",
+      "icao": "C919",
+      "maxPassengers": 158,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "C919",
+          "name": "Default",
+          "icao": "C919",
+          "registration": "N919SB",
+          "maxPassengers": 158,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CL30",
+      "name": "Challenger 300",
+      "icao": "CL30",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "CL30",
+          "name": "Default",
+          "icao": "CL30",
+          "registration": "N349SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CL35",
+      "name": "Challenger 350",
+      "icao": "CL35",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "CL35",
+          "name": "Default",
+          "icao": "CL35",
+          "registration": "N350SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CL60",
+      "name": "Challenger 650",
+      "icao": "CL60",
+      "maxPassengers": 12,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "CL60",
+          "name": "Default",
+          "icao": "CL60",
+          "registration": "N650SB",
+          "maxPassengers": 12,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1641690879983",
+          "name": "Hot Start (X-Plane) - Challenger 650 [credit: Rodeo314]",
+          "icao": "CL60",
+          "registration": "N650CL",
+          "maxPassengers": 12,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CONI",
+      "name": "L-049",
+      "icao": "CONI",
+      "maxPassengers": 81,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "CONI",
+          "name": "Default",
+          "icao": "CONI",
+          "registration": "N511SB",
+          "maxPassengers": 81,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CONS",
+      "name": "L-1049G",
+      "icao": "CONI",
+      "maxPassengers": 61,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "CONS",
+          "name": "Default",
+          "icao": "CONI",
+          "registration": "N149SB",
+          "maxPassengers": 61,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CRJ2",
+      "name": "CRJ-200",
+      "icao": "CRJ2",
+      "maxPassengers": 50,
+      "maxCostIndex": 50,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "CRJ2",
+          "name": "Default",
+          "icao": "CRJ2",
+          "registration": "N211SB",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CRJ5",
+      "name": "CRJ-550",
+      "icao": "CRJ7",
+      "maxPassengers": 50,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "CRJ5",
+          "name": "Default",
+          "icao": "CRJ7",
+          "registration": "N920SB",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1663996872247",
+          "name": "Aerosoft (MSFS) - Base Weight [credit: Awemeter]",
+          "icao": "CRJ7",
+          "registration": "ASCRJ550",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CRJ7",
+      "name": "CRJ-700",
+      "icao": "CRJ7",
+      "maxPassengers": 78,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "CRJ7",
+          "name": "Default",
+          "icao": "CRJ7",
+          "registration": "N921SB",
+          "maxPassengers": 78,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1664064088827",
+          "name": "Aerosoft (MSFS) - Base Weight [credit: Awemeter]",
+          "icao": "CRJ7",
+          "registration": "ASCRJ700",
+          "maxPassengers": 70,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CRJ9",
+      "name": "CRJ-900",
+      "icao": "CRJ9",
+      "maxPassengers": 90,
+      "maxCostIndex": 50,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "CRJ9",
+          "name": "Default",
+          "icao": "CRJ9",
+          "registration": "N922SB",
+          "maxPassengers": 90,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1664065949974",
+          "name": "Aerosoft (MSFS) - Base Weight [credit: Awemeter]",
+          "icao": "CRJ9",
+          "registration": "ASCRJ900",
+          "maxPassengers": 90,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "CRJX",
+      "name": "CRJ-1000",
+      "icao": "CRJX",
+      "maxPassengers": 104,
+      "maxCostIndex": 50,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "CRJX",
+          "name": "Default",
+          "icao": "CRJX",
+          "registration": "N910SB",
+          "maxPassengers": 104,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1664067511837",
+          "name": "Aerosoft (MSFS) - Base Weight [credit: Awemeter]",
+          "icao": "CRJX",
+          "registration": "ASCRJ1000",
+          "maxPassengers": 104,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DA40",
+      "name": "Diamond DA40",
+      "icao": "DA40",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DA40",
+          "name": "Default",
+          "icao": "DA40",
+          "registration": "N040SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DA4N",
+      "name": "Diamond DA40 NG",
+      "icao": "DA40",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DA4N",
+          "name": "Default",
+          "icao": "DA40",
+          "registration": "N041SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DA42",
+      "name": "Diamond DA42",
+      "icao": "DA42",
+      "maxPassengers": 4,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DA42",
+          "name": "Default",
+          "icao": "DA42",
+          "registration": "N042SB",
+          "maxPassengers": 4,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DA62",
+      "name": "Diamond DA62",
+      "icao": "DA62",
+      "maxPassengers": 6,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DA62",
+          "name": "Default",
+          "icao": "DA62",
+          "registration": "N062SB",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DC10",
+      "name": "DC-10-30",
+      "icao": "DC10",
+      "maxPassengers": 285,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DC10",
+          "name": "Default",
+          "icao": "DC10",
+          "registration": "N101SB",
+          "maxPassengers": 285,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DC3",
+      "name": "Douglas DC-3",
+      "icao": "DC3",
+      "maxPassengers": 26,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DC3",
+          "name": "Default",
+          "icao": "DC3",
+          "registration": "N511",
+          "maxPassengers": 26,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DC6",
+      "name": "Douglas DC-6",
+      "icao": "DC6",
+      "maxPassengers": 68,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DC6",
+          "name": "Default",
+          "icao": "DC6",
+          "registration": "N6PM",
+          "maxPassengers": 68,
+          "source": "SimBrief"
+        },
+        {
+          "id": "478697_1655670406848",
+          "name": "PMDG (MSFS) - Cargo Variant [credit: pulmy]",
+          "icao": "DC6",
+          "registration": "N100CE",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "478697_1655656818125",
+          "name": "PMDG (MSFS) - Passenger Variant [credit: pulmy]",
+          "icao": "DC6",
+          "registration": "PH-DFI",
+          "maxPassengers": 68,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DC85",
+      "name": "DC-8-55",
+      "icao": "DC85",
+      "maxPassengers": 189,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DC85",
+          "name": "Default",
+          "icao": "DC85",
+          "registration": "N855SB",
+          "maxPassengers": 189,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DC86",
+      "name": "DC-8-63",
+      "icao": "DC86",
+      "maxPassengers": 259,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DC86",
+          "name": "Default",
+          "icao": "DC86",
+          "registration": "N863SB",
+          "maxPassengers": 259,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DC91",
+      "name": "DC-9-15",
+      "icao": "DC91",
+      "maxPassengers": 90,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DC91",
+          "name": "Default",
+          "icao": "DC91",
+          "registration": "N915SB",
+          "maxPassengers": 90,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DC93",
+      "name": "DC-9-32",
+      "icao": "DC93",
+      "maxPassengers": 115,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DC93",
+          "name": "Default",
+          "icao": "DC93",
+          "registration": "N932SB",
+          "maxPassengers": 115,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DH8A",
+      "name": "DHC8-102",
+      "icao": "DH8A",
+      "maxPassengers": 37,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DH8A",
+          "name": "Default",
+          "icao": "DH8A",
+          "registration": "N802SB",
+          "maxPassengers": 37,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DH8B",
+      "name": "DHC8-200",
+      "icao": "DH8B",
+      "maxPassengers": 37,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DH8B",
+          "name": "Default",
+          "icao": "DH8B",
+          "registration": "N824SB",
+          "maxPassengers": 37,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DH8C",
+      "name": "DHC8-311",
+      "icao": "DH8C",
+      "maxPassengers": 50,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DH8C",
+          "name": "Default",
+          "icao": "DH8C",
+          "registration": "N831SB",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DH8D",
+      "name": "DHC8-402",
+      "icao": "DH8D",
+      "maxPassengers": 74,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DH8D",
+          "name": "Default",
+          "icao": "DH8D",
+          "registration": "N847SB",
+          "maxPassengers": 74,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DHC2",
+      "name": "Beaver",
+      "icao": "DHC2",
+      "maxPassengers": 4,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DHC2",
+          "name": "Default",
+          "icao": "DHC2",
+          "registration": "N020SB",
+          "maxPassengers": 4,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DHC6",
+      "name": "Twin Otter",
+      "icao": "DHC6",
+      "maxPassengers": 16,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DHC6",
+          "name": "Default",
+          "icao": "DHC6",
+          "registration": "N063SB",
+          "maxPassengers": 16,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "DHC7",
+      "name": "Dash 7",
+      "icao": "DHC7",
+      "maxPassengers": 50,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "DHC7",
+          "name": "Default",
+          "icao": "DHC7",
+          "registration": "N700SB",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E135",
+      "name": "ERJ-135LR",
+      "icao": "E135",
+      "maxPassengers": 37,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "E135",
+          "name": "Default",
+          "icao": "E135",
+          "registration": "N135SB",
+          "maxPassengers": 37,
+          "source": "SimBrief"
+        },
+        {
+          "id": "328221_1772529017463",
+          "name": "X-Crafts (X-Plane) - ERJ Family ERJ-135LR",
+          "icao": "E135",
+          "registration": "E135",
+          "maxPassengers": 37,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E13L",
+      "name": "Legacy 600",
+      "icao": "E35L",
+      "maxPassengers": 12,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "E13L",
+          "name": "Default",
+          "icao": "E35L",
+          "registration": "N132SB",
+          "maxPassengers": 12,
+          "source": "SimBrief"
+        },
+        {
+          "id": "328221_1772529390575",
+          "name": "X-Crafts (X-Plane) - ERJ Family Legacy 650",
+          "icao": "E35L",
+          "registration": "E135BJ",
+          "maxPassengers": 13,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E140",
+      "name": "ERJ-140LR",
+      "icao": "E135",
+      "maxPassengers": 44,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "E140",
+          "name": "Default",
+          "icao": "E135",
+          "registration": "N140SB",
+          "maxPassengers": 44,
+          "source": "SimBrief"
+        },
+        {
+          "id": "328221_1772529020192",
+          "name": "X-Crafts (X-Plane) - ERJ Family ERJ-140LR",
+          "icao": "E140",
+          "registration": "E140",
+          "maxPassengers": 44,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E145",
+      "name": "ERJ-145LR",
+      "icao": "E145",
+      "maxPassengers": 50,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "E145",
+          "name": "Default",
+          "icao": "E145",
+          "registration": "N141SB",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        },
+        {
+          "id": "328221_1772529022452",
+          "name": "X-Crafts (X-Plane) - ERJ Family ERJ-145LR",
+          "icao": "E145",
+          "registration": "E145",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        },
+        {
+          "id": "328221_1772529026088",
+          "name": "X-Crafts (X-Plane) - ERJ Family ERJ-145XR",
+          "icao": "E45X",
+          "registration": "E145XR",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E170",
+      "name": "ERJ-170",
+      "icao": "E170",
+      "maxPassengers": 80,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "E170",
+          "name": "Default",
+          "icao": "E170",
+          "registration": "N170SB",
+          "maxPassengers": 80,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702546468126",
+          "name": "FlightSim Studio (MSFS) - Dual Class Configuration",
+          "icao": "E170",
+          "registration": "FSSE170",
+          "maxPassengers": 76,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702546482585",
+          "name": "FlightSim Studio (MSFS) - Single Class Configuration",
+          "icao": "E170",
+          "registration": "FSSE170",
+          "maxPassengers": 72,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702546498635",
+          "name": "FlightSim Studio (MSFS) - High Density Configuration",
+          "icao": "E170",
+          "registration": "FSSE170",
+          "maxPassengers": 78,
+          "source": "SimBrief"
+        },
+        {
+          "id": "328221_1728076476838",
+          "name": "X-Crafts (X-Plane) - E-Jets Family E170 LR",
+          "icao": "E170",
+          "registration": "E170",
+          "maxPassengers": 78,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E175",
+      "name": "ERJ-175",
+      "icao": "E75L",
+      "maxPassengers": 88,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "E175",
+          "name": "Default",
+          "icao": "E75L",
+          "registration": "N175SB",
+          "maxPassengers": 88,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702546282319",
+          "name": "FlightSim Studio (MSFS) - Dual Class Configuration",
+          "icao": "E75L",
+          "registration": "FSSE175",
+          "maxPassengers": 76,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702546304894",
+          "name": "FlightSim Studio (MSFS) - Single Class Configuration",
+          "icao": "E75L",
+          "registration": "FSSE175",
+          "maxPassengers": 78,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702546333979",
+          "name": "FlightSim Studio (MSFS) - High Density Configuration",
+          "icao": "E75L",
+          "registration": "FSSE175",
+          "maxPassengers": 88,
+          "source": "SimBrief"
+        },
+        {
+          "id": "328221_1728076486952",
+          "name": "X-Crafts (X-Plane) - E-Jets Family E175 LR",
+          "icao": "E75L",
+          "registration": "E175",
+          "maxPassengers": 86,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E190",
+      "name": "ERJ-190",
+      "icao": "E190",
+      "maxPassengers": 114,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "E190",
+          "name": "Default",
+          "icao": "E190",
+          "registration": "N190SB",
+          "maxPassengers": 114,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702545680921",
+          "name": "FlightSim Studio (MSFS) - Dual Class Configuration",
+          "icao": "E190",
+          "registration": "FSSE190",
+          "maxPassengers": 96,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702545698667",
+          "name": "FlightSim Studio (MSFS) - Single Class Configuration",
+          "icao": "E190",
+          "registration": "FSSE190",
+          "maxPassengers": 100,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702545712983",
+          "name": "FlightSim Studio (MSFS) - High Density Configuration",
+          "icao": "E190",
+          "registration": "FSSE190",
+          "maxPassengers": 114,
+          "source": "SimBrief"
+        },
+        {
+          "id": "1356_1716290751527",
+          "name": "FlightSim Studio (MSFS) - Cargo Configuration",
+          "icao": "E190",
+          "registration": "FSS190F",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "328221_1728076493552",
+          "name": "X-Crafts (X-Plane) - E-Jets Family E190 AR",
+          "icao": "E190",
+          "registration": "E190",
+          "maxPassengers": 114,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E19L",
+      "name": "Lineage 1000",
+      "icao": "E190",
+      "maxPassengers": 19,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "E19L",
+          "name": "Default",
+          "icao": "E190",
+          "registration": "N191SB",
+          "maxPassengers": 19,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E195",
+      "name": "ERJ-195",
+      "icao": "E195",
+      "maxPassengers": 122,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "E195",
+          "name": "Default",
+          "icao": "E195",
+          "registration": "N195SB",
+          "maxPassengers": 122,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702545344909",
+          "name": "FlightSim Studio (MSFS) - Dual Class Configuration",
+          "icao": "E195",
+          "registration": "FSSE195",
+          "maxPassengers": 100,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702545380938",
+          "name": "FlightSim Studio (MSFS) - Single Class Configuration",
+          "icao": "E195",
+          "registration": "FSSE195",
+          "maxPassengers": 116,
+          "source": "SimBrief"
+        },
+        {
+          "id": "535488_1702545399385",
+          "name": "FlightSim Studio (MSFS) - High Density Configuration",
+          "icao": "E195",
+          "registration": "FSSE195",
+          "maxPassengers": 124,
+          "source": "SimBrief"
+        },
+        {
+          "id": "1356_1715972125705",
+          "name": "FlightSim Studio (MSFS) - Cargo Configuration",
+          "icao": "E195",
+          "registration": "FSS195F",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "328221_1728076499765",
+          "name": "X-Crafts (X-Plane) - E-Jets Family E195 AR",
+          "icao": "E195",
+          "registration": "E195",
+          "maxPassengers": 122,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E50P",
+      "name": "Phenom 100",
+      "icao": "E50P",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "E50P",
+          "name": "Default",
+          "icao": "E50P",
+          "registration": "N500SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "E55P",
+      "name": "Phenom 300",
+      "icao": "E55P",
+      "maxPassengers": 8,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "E55P",
+          "name": "Default",
+          "icao": "E55P",
+          "registration": "N505SB",
+          "maxPassengers": 8,
+          "source": "SimBrief"
+        },
+        {
+          "id": "715669_1760743138073",
+          "name": "FSReborn (MSFS) - Phenom 300E",
+          "icao": "E55P",
+          "registration": "N177P",
+          "maxPassengers": 7,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "EA50",
+      "name": "Eclipse 550",
+      "icao": "EA50",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "EA50",
+          "name": "Default",
+          "icao": "EA50",
+          "registration": "N550SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "EVAL",
+      "name": "Eviation Alice",
+      "icao": "ZZZZ",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "EVAL",
+          "name": "Default",
+          "icao": "ZZZZ",
+          "registration": "N650SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "F50",
+      "name": "Fokker F50",
+      "icao": "F50",
+      "maxPassengers": 50,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "F50",
+          "name": "Default",
+          "icao": "F50",
+          "registration": "N503SB",
+          "maxPassengers": 50,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "F70",
+      "name": "Fokker 70",
+      "icao": "F70",
+      "maxPassengers": 72,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "F70",
+          "name": "Default",
+          "icao": "F70",
+          "registration": "N070SB",
+          "maxPassengers": 72,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1753983626163",
+          "name": "Just Flight (MSFS) - 70 Passengers",
+          "icao": "F70",
+          "registration": "G-JUST",
+          "maxPassengers": 70,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "F100",
+      "name": "Fokker 100",
+      "icao": "F100",
+      "maxPassengers": 97,
+      "maxCostIndex": 100,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "F100",
+          "name": "Default",
+          "icao": "F100",
+          "registration": "N100SB",
+          "maxPassengers": 97,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1744226464455",
+          "name": "Just Flight (MSFS) - 100 Pax, Integral Stairs, Small Cargo",
+          "icao": "F100",
+          "registration": "G-JUST",
+          "maxPassengers": 100,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1753984570570",
+          "name": "Just Flight (MSFS) - 100 Pax, Integral Stairs, Large Cargo",
+          "icao": "F100",
+          "registration": "G-JUST",
+          "maxPassengers": 100,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1753984484726",
+          "name": "Just Flight (MSFS) - 100 Pax, Sliding Door, Large Cargo",
+          "icao": "F100",
+          "registration": "G-JUST",
+          "maxPassengers": 100,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1753984304253",
+          "name": "Just Flight (MSFS) - 98 Pax, L2 Door, Integral Stairs, Small Cargo",
+          "icao": "F100",
+          "registration": "G-JUST",
+          "maxPassengers": 98,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "F406",
+      "name": "Cessna F406",
+      "icao": "F406",
+      "maxPassengers": 12,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "F406",
+          "name": "Default",
+          "icao": "F406",
+          "registration": "N406SB",
+          "maxPassengers": 12,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "FA50",
+      "name": "Falcon 50",
+      "icao": "FA50",
+      "maxPassengers": 8,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "FA50",
+          "name": "Default",
+          "icao": "FA50",
+          "registration": "N500SB",
+          "maxPassengers": 8,
+          "source": "SimBrief"
+        },
+        {
+          "id": "451346_1780588028990",
+          "name": "Contrail (MSFS) - Falcon 50B",
+          "icao": "FA50",
+          "registration": "N9TE",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "FA7X",
+      "name": "Falcon 7X",
+      "icao": "FA7X",
+      "maxPassengers": 14,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "FA7X",
+          "name": "Default",
+          "icao": "FA7X",
+          "registration": "N507SB",
+          "maxPassengers": 14,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "FA8X",
+      "name": "Falcon 8X",
+      "icao": "FA8X",
+      "maxPassengers": 14,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "FA8X",
+          "name": "Default",
+          "icao": "FA8X",
+          "registration": "N508SB",
+          "maxPassengers": 14,
+          "source": "SimBrief"
+        },
+        {
+          "id": "286785_1778137336460",
+          "name": "Aerobask (X-Plane) - Standard Gross Weight",
+          "icao": "FA8X",
+          "registration": "F-HVIP",
+          "maxPassengers": 14,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "GLEX",
+      "name": "Global 6000",
+      "icao": "GLEX",
+      "maxPassengers": 13,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "GLEX",
+          "name": "Default",
+          "icao": "GLEX",
+          "registration": "N600SB",
+          "maxPassengers": 13,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "GLF4",
+      "name": "GLF.IV-SP",
+      "icao": "GLF4",
+      "maxPassengers": 19,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "GLF4",
+          "name": "Default",
+          "icao": "GLF4",
+          "registration": "N771SB",
+          "maxPassengers": 19,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "GLF6",
+      "name": "GLF.VI G650",
+      "icao": "GLF6",
+      "maxPassengers": 13,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "GLF6",
+          "name": "Default",
+          "icao": "GLF6",
+          "registration": "N650SB",
+          "maxPassengers": 13,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "H25B",
+      "name": "Hawker 800XP",
+      "icao": "H25B",
+      "maxPassengers": 8,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "H25B",
+          "name": "Default",
+          "icao": "H25B",
+          "registration": "N800SB",
+          "maxPassengers": 8,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1788725644993",
+          "name": "FlightFX (MSFS) - Hawker 800XP [credit: Awemeter]",
+          "icao": "H25B",
+          "registration": "FFXH25B",
+          "maxPassengers": 10,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "HDJT",
+      "name": "Hondajet",
+      "icao": "HDJT",
+      "maxPassengers": 6,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "HDJT",
+          "name": "Default",
+          "icao": "HDJT",
+          "registration": "N420SB",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1725137857308",
+          "name": "FlightFX (MSFS) - HondaJet [credit: Rodeo314]",
+          "icao": "HDJT",
+          "registration": "N420HA",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        },
+        {
+          "id": "323617_1725137880736",
+          "name": "FlightFX (MSFS) - Elite II [credit: Rodeo314]",
+          "icao": "HDJT",
+          "registration": "N420HA",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "IL18",
+      "name": "Ilyushin IL-18D",
+      "icao": "IL18",
+      "maxPassengers": 100,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "IL18",
+          "name": "Default",
+          "icao": "IL18",
+          "registration": "N184SB",
+          "maxPassengers": 100,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "JS41",
+      "name": "BAE JS-41",
+      "icao": "JS41",
+      "maxPassengers": 30,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "JS41",
+          "name": "Default",
+          "icao": "JS41",
+          "registration": "N410SB",
+          "maxPassengers": 30,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "KODI",
+      "name": "Kodiak 100",
+      "icao": "K100",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "KODI",
+          "name": "Default",
+          "icao": "K100",
+          "registration": "N018SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "L101",
+      "name": "L1011-500",
+      "icao": "L101",
+      "maxPassengers": 330,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "L101",
+          "name": "Default",
+          "icao": "L101",
+          "registration": "N105SB",
+          "maxPassengers": 330,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1768565951715",
+          "name": "iniBuilds (MSFS) - L1011-500 Regular",
+          "icao": "L101",
+          "registration": "G-STAR",
+          "maxPassengers": 243,
+          "source": "SimBrief"
+        },
+        {
+          "id": "347385_1771934739128",
+          "name": "iniBuilds (MSFS) - L1011-500 Pod Ferry",
+          "icao": "L101",
+          "registration": "G-FERY",
+          "maxPassengers": 243,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "LJ25",
+      "name": "Learjet 25",
+      "icao": "LJ25",
+      "maxPassengers": 8,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "LJ25",
+          "name": "Default",
+          "icao": "LJ25",
+          "registration": "N025SB",
+          "maxPassengers": 8,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "LJ35",
+      "name": "Learjet 35A",
+      "icao": "LJ35",
+      "maxPassengers": 8,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "LJ35",
+          "name": "Default",
+          "icao": "LJ35",
+          "registration": "N085SB",
+          "maxPassengers": 8,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "LJ45",
+      "name": "Learjet 45",
+      "icao": "LJ45",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "LJ45",
+          "name": "Default",
+          "icao": "LJ45",
+          "registration": "N087SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "MD11",
+      "name": "MD-11",
+      "icao": "MD11",
+      "maxPassengers": 381,
+      "maxCostIndex": 200,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "MD11",
+          "name": "Default",
+          "icao": "MD11",
+          "registration": "N115SB",
+          "maxPassengers": 381,
+          "source": "SimBrief"
+        },
+        {
+          "id": "100365_1725040651522",
+          "name": "Rotate (X-Plane) - MD-11P GE",
+          "icao": "MD11",
+          "registration": "ROT-MD11P",
+          "maxPassengers": 285,
+          "source": "SimBrief"
+        },
+        {
+          "id": "81536_1694462896486",
+          "name": "TFDi Design (MSFS) - MD-11 GE",
+          "icao": "MD11",
+          "registration": "TFDI-MD11",
+          "maxPassengers": 282,
+          "source": "SimBrief"
+        },
+        {
+          "id": "81536_1716573730074",
+          "name": "TFDi Design (MSFS) - MD-11 PW",
+          "icao": "MD11",
+          "registration": "TFDI-MD11",
+          "maxPassengers": 282,
+          "source": "SimBrief"
+        },
+        {
+          "id": "81536_1702557002188",
+          "name": "TFDi Design (MSFS) - MD-11ER GE",
+          "icao": "MD11",
+          "registration": "TFDI-MD11",
+          "maxPassengers": 282,
+          "source": "SimBrief"
+        },
+        {
+          "id": "81536_1716573849234",
+          "name": "TFDi Design (MSFS) - MD-11ER PW",
+          "icao": "MD11",
+          "registration": "TFDI-MD11",
+          "maxPassengers": 282,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "MD1F",
+      "name": "MD-11F",
+      "icao": "MD11",
+      "maxPassengers": 25,
+      "maxCostIndex": 200,
+      "supportsCostIndex": true,
+      "variants": [
+        {
+          "id": "MD1F",
+          "name": "Default",
+          "icao": "MD11",
+          "registration": "N116SB",
+          "maxPassengers": 25,
+          "source": "SimBrief"
+        },
+        {
+          "id": "100365_1774038308347",
+          "name": "Rotate (X-Plane) - MD-11F GE",
+          "icao": "MD11",
+          "registration": "ROT-MD11F",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        },
+        {
+          "id": "81536_1702556701413",
+          "name": "TFDi Design (MSFS) - MD-11F GE",
+          "icao": "MD11",
+          "registration": "TFDI-MD11",
+          "maxPassengers": 4,
+          "source": "SimBrief"
+        },
+        {
+          "id": "81536_1716573676531",
+          "name": "TFDi Design (MSFS) - MD-11F PW",
+          "icao": "MD11",
+          "registration": "TFDI-MD11",
+          "maxPassengers": 4,
+          "source": "SimBrief"
+        },
+        {
+          "id": "81536_1702556971915",
+          "name": "TFDi Design (MSFS) - MD-11ERF GE",
+          "icao": "MD11",
+          "registration": "TFDI-MD11",
+          "maxPassengers": 4,
+          "source": "SimBrief"
+        },
+        {
+          "id": "81536_1716573382477",
+          "name": "TFDi Design (MSFS) - MD-11ERF PW",
+          "icao": "MD11",
+          "registration": "TFDI-MD11",
+          "maxPassengers": 4,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "MD82",
+      "name": "DC-9-82",
+      "icao": "MD82",
+      "maxPassengers": 172,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "MD82",
+          "name": "Default",
+          "icao": "MD82",
+          "registration": "N882SB",
+          "maxPassengers": 172,
+          "source": "SimBrief"
+        },
+        {
+          "id": "144968_1676966319407",
+          "name": "Leonardo Maddog (MSFS) - Y162 Config",
+          "icao": "MD82",
+          "registration": "I-LEOX",
+          "maxPassengers": 162,
+          "source": "SimBrief"
+        },
+        {
+          "id": "144968_1676984015101",
+          "name": "Leonardo Maddog (P3D) - J14Y134 Config",
+          "icao": "MD82",
+          "registration": "I-LEOX",
+          "maxPassengers": 148,
+          "source": "SimBrief"
+        },
+        {
+          "id": "144968_1676983464912",
+          "name": "Leonardo Maddog (P3D) - Y162 Config",
+          "icao": "MD82",
+          "registration": "I-LEOX",
+          "maxPassengers": 162,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "MD83",
+      "name": "DC-9-83",
+      "icao": "MD83",
+      "maxPassengers": 172,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "MD83",
+          "name": "Default",
+          "icao": "MD83",
+          "registration": "N883SB",
+          "maxPassengers": 172,
+          "source": "SimBrief"
+        },
+        {
+          "id": "144968_1679042284621",
+          "name": "Leonardo Maddog (MSFS) - Y162 Config",
+          "icao": "MD83",
+          "registration": "N9405T",
+          "maxPassengers": 162,
+          "source": "SimBrief"
+        },
+        {
+          "id": "144968_1676986285606",
+          "name": "Leonardo Maddog (P3D) - J14Y134 Config",
+          "icao": "MD83",
+          "registration": "N9405T",
+          "maxPassengers": 148,
+          "source": "SimBrief"
+        },
+        {
+          "id": "144968_1676986474463",
+          "name": "Leonardo Maddog (P3D) - Y162 Config",
+          "icao": "MD83",
+          "registration": "N9405T",
+          "maxPassengers": 162,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "MD88",
+      "name": "MD-88",
+      "icao": "MD88",
+      "maxPassengers": 172,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "MD88",
+          "name": "Default",
+          "icao": "MD88",
+          "registration": "N888SB",
+          "maxPassengers": 172,
+          "source": "SimBrief"
+        },
+        {
+          "id": "144968_1679042492747",
+          "name": "Leonardo Maddog (MSFS) - Y162 Config",
+          "icao": "MD88",
+          "registration": "N911DE",
+          "maxPassengers": 162,
+          "source": "SimBrief"
+        },
+        {
+          "id": "144968_1676987062112",
+          "name": "Leonardo Maddog (P3D) - J14Y134 Config",
+          "icao": "MD88",
+          "registration": "N911DE",
+          "maxPassengers": 148,
+          "source": "SimBrief"
+        },
+        {
+          "id": "144968_1676987255879",
+          "name": "Leonardo Maddog (P3D) - Y162 Config",
+          "icao": "MD88",
+          "registration": "N911DE",
+          "maxPassengers": 162,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "MD90",
+      "name": "MD-90-30",
+      "icao": "MD90",
+      "maxPassengers": 172,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "MD90",
+          "name": "Default",
+          "icao": "MD90",
+          "registration": "N890SB",
+          "maxPassengers": 172,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "MU2",
+      "name": "MU-2B-60",
+      "icao": "MU2",
+      "maxPassengers": 6,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "MU2",
+          "name": "Default",
+          "icao": "MU2",
+          "registration": "N060SB",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "P06T",
+      "name": "Tecnam P2006T",
+      "icao": "P06T",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "P06T",
+          "name": "Default",
+          "icao": "P06T",
+          "registration": "N006SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "P180",
+      "name": "P.180 Avanti II",
+      "icao": "P180",
+      "maxPassengers": 7,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "P180",
+          "name": "Default",
+          "icao": "P180",
+          "registration": "N180SB",
+          "maxPassengers": 7,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1738801725154",
+          "name": "FlightFX (MSFS) - P.180 Avanti II [credit: Awemeter]",
+          "icao": "P180",
+          "registration": "FFX180",
+          "maxPassengers": 8,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "P18E",
+      "name": "P.180 Avanti EVO",
+      "icao": "P180",
+      "maxPassengers": 7,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "P18E",
+          "name": "Default",
+          "icao": "P180",
+          "registration": "N181SB",
+          "maxPassengers": 7,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "P212",
+      "name": "Tecnam P2012",
+      "icao": "P212",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "P212",
+          "name": "Default",
+          "icao": "P212",
+          "registration": "N012SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "P46T",
+      "name": "Piper M500",
+      "icao": "P46T",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "P46T",
+          "name": "Default",
+          "icao": "P46T",
+          "registration": "N500SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "M600",
+      "name": "Piper M600",
+      "icao": "M600",
+      "maxPassengers": 5,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "M600",
+          "name": "Default",
+          "icao": "M600",
+          "registration": "N600SB",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "PA24",
+      "name": "Piper Comanche",
+      "icao": "PA24",
+      "maxPassengers": 4,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "PA24",
+          "name": "Default",
+          "icao": "PA24",
+          "registration": "N024SB",
+          "maxPassengers": 4,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "PA31",
+      "name": "Piper Chieftain",
+      "icao": "PA31",
+      "maxPassengers": 7,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "PA31",
+          "name": "Default",
+          "icao": "PA31",
+          "registration": "N031SB",
+          "maxPassengers": 7,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "PA34",
+      "name": "Piper Seneca",
+      "icao": "PA34",
+      "maxPassengers": 6,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "PA34",
+          "name": "Default",
+          "icao": "PA34",
+          "registration": "N034SB",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "PA44",
+      "name": "Piper Seminole",
+      "icao": "PA44",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "PA44",
+          "name": "Default",
+          "icao": "PA44",
+          "registration": "N044SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "PAY3",
+      "name": "Piper Cheyenne III",
+      "icao": "PAY3",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "PAY3",
+          "name": "Default",
+          "icao": "PAY3",
+          "registration": "N042SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "PC12",
+      "name": "Pilatus PC12",
+      "icao": "PC12",
+      "maxPassengers": 9,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "PC12",
+          "name": "Default",
+          "icao": "PC12",
+          "registration": "N012SB",
+          "maxPassengers": 9,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1702068886464",
+          "name": "SimWorks Studios (MSFS) - Commuter [credit: Awemeter]",
+          "icao": "PC12",
+          "registration": "SWS12",
+          "maxPassengers": 8,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1701995083157",
+          "name": "SimWorks Studios (MSFS) - Executive [credit: Awemeter]",
+          "icao": "PC12",
+          "registration": "SWS12",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1702069779120",
+          "name": "SimWorks Studios (MSFS) - Cargo [credit: Awemeter]",
+          "icao": "PC12",
+          "registration": "SWS12",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "PC24",
+      "name": "Pilatus PC24",
+      "icao": "PC24",
+      "maxPassengers": 10,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "PC24",
+          "name": "Default",
+          "icao": "PC24",
+          "registration": "N024SB",
+          "maxPassengers": 10,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "RJ70",
+      "name": "Avro RJ70",
+      "icao": "RJ70",
+      "maxPassengers": 82,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "RJ70",
+          "name": "Default",
+          "icao": "RJ70",
+          "registration": "N070SB",
+          "maxPassengers": 82,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1720179995963",
+          "name": "Just Flight (MSFS) - RJ70 Passenger",
+          "icao": "RJ70",
+          "registration": "G-JUST",
+          "maxPassengers": 95,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "RJ85",
+      "name": "Avro RJ85",
+      "icao": "RJ85",
+      "maxPassengers": 100,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "RJ85",
+          "name": "Default",
+          "icao": "RJ85",
+          "registration": "N085SB",
+          "maxPassengers": 100,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1720180363822",
+          "name": "Just Flight (MSFS) - RJ85 Passenger",
+          "icao": "RJ85",
+          "registration": "G-JUST",
+          "maxPassengers": 112,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "RJ1H",
+      "name": "Avro RJ100",
+      "icao": "RJ1H",
+      "maxPassengers": 112,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "RJ1H",
+          "name": "Default",
+          "icao": "RJ1H",
+          "registration": "N100SB",
+          "maxPassengers": 112,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1720180848486",
+          "name": "Just Flight (MSFS) - RJ100 Passenger",
+          "icao": "RJ1H",
+          "registration": "G-JUST",
+          "maxPassengers": 112,
+          "source": "SimBrief"
+        },
+        {
+          "id": "624280_1752678882328",
+          "name": "Just Flight (MSFS) - RJ100 QT",
+          "icao": "RJ1H",
+          "registration": "G-JUST",
+          "maxPassengers": 0,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "SF34",
+      "name": "Saab 340B",
+      "icao": "SF34",
+      "maxPassengers": 34,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "SF34",
+          "name": "Default",
+          "icao": "SF34",
+          "registration": "N340SB",
+          "maxPassengers": 34,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "SF50",
+      "name": "Vision JET",
+      "icao": "SF50",
+      "maxPassengers": 6,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "SF50",
+          "name": "Default",
+          "icao": "SF50",
+          "registration": "N050SB",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1668992178449",
+          "name": "FlightFX (MSFS) - Executive [credit: Awemeter]",
+          "icao": "SF50",
+          "registration": "N22FX",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        },
+        {
+          "id": "349674_1669206892498",
+          "name": "FlightFX (MSFS) - Complete & Family [credit: Awemeter]",
+          "icao": "SF50",
+          "registration": "N22FX",
+          "maxPassengers": 5,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "SH33",
+      "name": "Short 330",
+      "icao": "SH33",
+      "maxPassengers": 33,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "SH33",
+          "name": "Default",
+          "icao": "SH33",
+          "registration": "N330SB",
+          "maxPassengers": 33,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "SH36",
+      "name": "Short 360",
+      "icao": "SH36",
+      "maxPassengers": 36,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "SH36",
+          "name": "Default",
+          "icao": "SH36",
+          "registration": "N360SB",
+          "maxPassengers": 36,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "SR22",
+      "name": "Cirrus SR22",
+      "icao": "SR22",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "SR22",
+          "name": "Default",
+          "icao": "SR22",
+          "registration": "N225SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "SR2T",
+      "name": "Cirrus SR22T",
+      "icao": "S22T",
+      "maxPassengers": 3,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "SR2T",
+          "name": "Default",
+          "icao": "S22T",
+          "registration": "N226SB",
+          "maxPassengers": 3,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "STAR",
+      "name": "Starship 2000A",
+      "icao": "STAR",
+      "maxPassengers": 6,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "STAR",
+          "name": "Default",
+          "icao": "STAR",
+          "registration": "N001SB",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "SW4",
+      "name": "Metroliner",
+      "icao": "SW4",
+      "maxPassengers": 19,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "SW4",
+          "name": "Default",
+          "icao": "SW4",
+          "registration": "N133SB",
+          "maxPassengers": 19,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "T134",
+      "name": "TU-134A-3",
+      "icao": "T134",
+      "maxPassengers": 84,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "T134",
+          "name": "Default",
+          "icao": "T134",
+          "registration": "N134SB",
+          "maxPassengers": 84,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "T154",
+      "name": "TU-154B2",
+      "icao": "T154",
+      "maxPassengers": 180,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "T154",
+          "name": "Default",
+          "icao": "T154",
+          "registration": "RA-154",
+          "maxPassengers": 180,
+          "source": "SimBrief"
+        },
+        {
+          "id": "3_1720024519482",
+          "name": "Felis (X-Plane) - Tu-154M [credit: KevinAviationHD]",
+          "icao": "T154",
+          "registration": "RA-85684",
+          "maxPassengers": 180,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "TBM8",
+      "name": "TBM 850",
+      "icao": "TBM8",
+      "maxPassengers": 6,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "TBM8",
+          "name": "Default",
+          "icao": "TBM8",
+          "registration": "N850SB",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "TBM9",
+      "name": "TBM 900",
+      "icao": "TBM9",
+      "maxPassengers": 6,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "TBM9",
+          "name": "Default",
+          "icao": "TBM9",
+          "registration": "N900SB",
+          "maxPassengers": 6,
+          "source": "SimBrief"
+        }
+      ]
+    },
+    {
+      "id": "YS11",
+      "name": "Namc YS-11",
+      "icao": "YS11",
+      "maxPassengers": 60,
+      "maxCostIndex": 0,
+      "supportsCostIndex": false,
+      "variants": [
+        {
+          "id": "YS11",
+          "name": "Default",
+          "icao": "YS11",
+          "registration": "N111SB",
+          "maxPassengers": 60,
+          "source": "SimBrief"
+        }
+      ]
+    }
+  ],
+  "source": "SimBrief",
+  "updatedAt": "2026-10-19T15:59:04.462Z"
+}

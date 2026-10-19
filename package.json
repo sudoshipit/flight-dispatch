@@ -1,0 +1,86 @@
+{
+  "name": "flight-dispatch",
+  "version": "1.0.0",
+  "description": "A focused Windows flight planning companion for SimBrief and VATSIM.",
+  "author": "Flight Dispatch",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.mjs",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "tsc --noEmit && vite build",
+    "start": "electron .",
+    "test": "node --test tests/*.test.mjs",
+    "test:smoke": "node scripts/smoke.mjs",
+    "check:live": "node scripts/check-live.mjs",
+    "package": "npm run build && electron-builder --win portable nsis",
+    "test:dispatch": "node scripts/dispatch-smoke.mjs",
+    "test:browser": "node scripts/browser-smoke.mjs"
+  },
+  "build": {
+    "appId": "com.flightdispatch.desktop",
+    "productName": "Flight Dispatch",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "shared/**/*",
+      "data/**/*",
+      "assets/icon.*",
+      "package.json",
+      "companion/**/*"
+    ],
+    "win": {
+      "target": [
+        "portable",
+        "nsis"
+      ],
+      "icon": "assets/icon.ico",
+      "signExecutable": false,
+      "signAndEditExecutable": true
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "artifactName": "Flight-Dispatch-Setup-${version}.${ext}",
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "Flight-Dispatch-${version}-Portable.${ext}"
+    },
+    "extraFiles": [
+      {
+        "from": "README.md",
+        "to": "README.md"
+      }
+    ]
+  },
+  "dependencies": {
+    "d3-geo": "^3.1.1",
+    "lucide-react": "^1.59.0",
+    "playwright-core": "^1.64.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/d3-geo": "^3.1.1",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/topojson-client": "^3.1.5",
+    "@vitejs/plugin-react": "^6.1.2",
+    "electron": "^44.9.0",
+    "electron-builder": "^26.15.3",
+    "jsdom": "^29.1.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4"
+  }
+}

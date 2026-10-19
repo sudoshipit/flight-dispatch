@@ -1,0 +1,15 @@
+node_modules/
+dist/
+release/
+artifacts/
+.env*
+*.log
+.DS_Store
+browser-profile/
+vatsim-companion/
+vatsim-companion-connection.json
+**/secrets.json
+**/settings.json
+**/history.json
+**/personal-airframes.json
+companion/config.mjs

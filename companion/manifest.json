@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Flight Dispatch — VATSIM Companion",
+  "version": "1.0.0",
+  "description": "Files the flight plan requested by your local Flight Dispatch app using your signed-in VATSIM browser session.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq2PoLkiFIAtafLR6cRwdnPYEDjDWNF2vpmzeOVwbf9AguYtWFaG26q3OLe+nVMwfKmU/+fHpyhvD6xWPIaG7IECqtQz7jdFiOaGqRCzify+FiZK09Pe24H1cQ5uk7EX3rfwFRR11+CGC6DCIYGHlioFmuGI1efS2cq1h16owQMraVlGaFddjTLGwjzdzwZHhq4ZxFuamgoC4PH8veNyG1htpJA+x/q9V+vkQR+u5XT/w3RAWv2WgvD4948SpmAxdUy6nNVk/dvSbWiJqdGNEgU4zKSnijVsNq4UnRfQ5XTLLonjadyLTGhYVCW1uvcXwUy7rPJv7zKw5C1/9/p0SMQIDAQAB",
+  "minimum_chrome_version": "120",
+  "permissions": [
+    "scripting",
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://my.vatsim.net/*",
+    "https://auth.vatsim.net/*",
+    "https://connect.vatsim.net/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "worker.mjs",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Flight Dispatch",
+    "default_popup": "popup.html"
+  }
+}
