@@ -68,7 +68,7 @@ The generated folder contains a local pairing secret and should not be shared. T
 4. On **New flight**, select **Aircraft type**, then **Variant or airframe**. **Set as default for [aircraft]** saves that variant immediately. For personal SimBrief airframes, select the base aircraft, choose **Sync my airframes**, then select a synced variant and save it as the default if wanted.
 5. Check the full passenger capacity for the selected variant. **Full flight** uses that capacity; **Auto** lets SimBrief randomize the load; **Custom** accepts an explicit count, including zero.
 
-New flight starts with cleared flight fields. Saved variant defaults apply after you select the aircraft type. Personal airframes are associated with your saved SimBrief ID; sync them again for another account.
+New flight clears flight details and sets departure date and off-block time to **current UTC + 30 minutes**, including the next UTC date when crossing midnight. Both fields remain editable. Saved variant defaults apply after you select the aircraft type. Personal airframes are associated with your saved SimBrief ID; sync them again for another account.
 
 ### 5. Set up gate information, if wanted
 
@@ -85,7 +85,7 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 ### 6. Generate your first flight
 
 1. Open **New flight**. Enter the airline prefix in **Callsign** (for example, `SWA`) and the number in **Flight number** (`123`). The combined callsign is `SWA123`.
-2. Select aircraft/variant and enter departure/destination ICAOs, departure date, and off-block time in **UTC**.
+2. Select aircraft/variant and enter departure/destination ICAOs. Departure date and off-block time default to **current UTC + 30 minutes**; adjust either field if needed. The fields and their pickers use the selected UTC values.
 3. Select the passenger mode. Optionally paste a **Custom route** and set taxi times, extra fuel, final reserve, cruise altitude and alternate. Blank optional planning fields use SimBrief defaults.
 4. Confirm SimBrief's dedicated sign-in windows are closed and the VATSIM companion browser is running. Choose **Generate & file flight plan**.
 5. Follow the progress screen. If prompted, finish SimBrief sign-in and close its windows, or finish VATSIM sign-in/verification and **keep its browser open**. Work resumes automatically; no click on VATSIM's File button is needed.

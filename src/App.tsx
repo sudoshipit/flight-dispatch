@@ -9,7 +9,10 @@ import './briefing.css';
 const fmt = (value: number | null | undefined) => value == null ? '—' : value.toLocaleString();
 const shortDate = (date: string) => date ? new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }) : '—';
 const utc = (date: string) => date ? new Date(date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) + 'Z' : '—';
-const emptyFlight = (): FlightInput => ({ airline: '', flightNumber: '', aircraft: '', variant: '', origin: '', destination: '', route: '', date: '', time: '', passengerMode: 'auto', passengers: '', taxiOut: '', taxiIn: '', extraFuel: '', reserve: '', altitude: '', alternate: '' });
+const newFlightInput = (): FlightInput => {
+  const departure = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+  return { airline: '', flightNumber: '', aircraft: '', variant: '', origin: '', destination: '', route: '', date: departure.slice(0, 10), time: departure.slice(11, 16), passengerMode: 'auto', passengers: '', taxiOut: '', taxiIn: '', extraFuel: '', reserve: '', altitude: '', alternate: '' };
+};
 const duration = (value: string) => `${Number(value.slice(0, 2))}h ${value.slice(2)}m`;
 function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) { return <label className="field"><span>{label}</span>{children}{hint && <small>{hint}</small>}</label>; }
 function Stat({ label, value, unit }: { label: string; value: ReactNode; unit?: string }) { return <div className="stat"><span className="eyebrow">{label}</span><div>{value}<small>{unit}</small></div></div>; }
@@ -26,8 +29,8 @@ export default function App() {
   const [toast, setToast] = useState<{ message: string; error?: boolean } | null>(null);
   const [now, setNow] = useState(new Date());
   const [version, setVersion] = useState('1.0.0');
-  const [input, setInput] = useState<FlightInput>(emptyFlight);
-  const newFlight = () => { if (busy) return; setInput(emptyFlight()); setPage('dispatch'); setToast(null); window.scrollTo(0, 0); };
+  const [input, setInput] = useState<FlightInput>(newFlightInput);
+  const newFlight = () => { if (busy) return; setInput(newFlightInput()); setPage('dispatch'); setToast(null); window.scrollTo(0, 0); };
   const update = (key: keyof FlightInput, value: string) => setInput(i => ({ ...i, [key]: value }));
   const notify = (message: string, error = false) => setToast({ message, error });
   useEffect(() => {

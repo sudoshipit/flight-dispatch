@@ -22,15 +22,20 @@ try {
     localRequire('./electron/services.mjs').Services.prototype.ofp = async () => fixture;
   }, parseOFP(ofp));
   const errors=[]; page.on('pageerror',error=>errors.push(error.message));
+  // Exercise UTC midnight/year rollover even when Windows is using a local time zone.
+  await page.clock.setFixedTime('2026-12-31T23:45:37Z');
+  await page.reload();
   await expect(page.getByRole('heading',{name:"Let's get you airborne."})).toBeVisible();
   await expect(page.getByLabel('Aircraft type')).toBeEnabled({timeout:45000});
-  const expectCleared = async () => {
-    for (const label of ['Callsign','Flight number','Aircraft type','Variant or airframe','Departure','Destination','Custom route','Departure date','Off block time','Taxi out minutes','Taxi in minutes','Extra fuel minutes','Final reserve','Cruise altitude feet','Alternate airport']) await expect(page.getByLabel(label,{exact:true})).toHaveValue('');
+  const expectNewFlight = async (time = '01:35') => {
+    for (const label of ['Callsign','Flight number','Aircraft type','Variant or airframe','Departure','Destination','Custom route','Taxi out minutes','Taxi in minutes','Extra fuel minutes','Final reserve','Cruise altitude feet','Alternate airport']) await expect(page.getByLabel(label,{exact:true})).toHaveValue('');
+    await expect(page.getByLabel('Departure date')).toHaveValue('2027-01-01');
+    await expect(page.getByLabel('Off block time')).toHaveValue(time);
     await expect(page.getByRole('button',{name:'Auto Let SimBrief decide'})).toHaveAttribute('aria-pressed','true');
     await expect(page.getByLabel('Variant or airframe')).toBeDisabled();
     await expect(page.locator('.route-map')).toHaveCount(0);
   };
-  await expectCleared();
+  await expectNewFlight('00:15');
   await page.screenshot({path:'artifacts/new-flight-empty.png',fullPage:true});
   await page.getByLabel('Callsign',{exact:true}).fill('SWA');
   await page.getByLabel('Aircraft type').selectOption('B737');
@@ -57,6 +62,9 @@ try {
   await page.getByLabel('Final reserve').selectOption('45');
   await page.getByRole('button',{name:'Custom Set your own count'}).click();
   await page.getByLabel('Passenger count').fill('100');
+  await page.clock.setFixedTime('2027-01-01T01:05:42Z');
+  await expect(page.getByLabel('Departure date')).toHaveValue('2026-10-19');
+  await expect(page.getByLabel('Off block time')).toHaveValue('14:15');
   await expect(page.locator('.route-map')).toHaveCount(0);
   await page.evaluate(() => scrollTo(0,0));
   await page.screenshot({path:'artifacts/dispatch.png',fullPage:true});
@@ -67,13 +75,13 @@ try {
   await page.getByRole('button',{name:'Save preferences'}).click();
   await expect(page.getByRole('status').filter({hasText:'Preferences saved.'})).toBeVisible();
   await page.getByRole('button',{name:'New flight',exact:true}).click();
-  await expectCleared();
+  await expectNewFlight();
   await page.getByLabel('Callsign',{exact:true}).fill('SWA');
   await page.getByLabel('Aircraft type').selectOption('B737');
   await expect(page.getByLabel('Variant or airframe')).toHaveValue('746599_1776105415884');
   await expect(page.locator('.ci-pill')).toHaveText('42');
   await page.getByRole('button',{name:'New flight',exact:true}).click();
-  await expectCleared();
+  await expectNewFlight();
   await page.getByRole('button',{name:'Settings',exact:true}).click();
   await page.getByRole('button',{name:'Restore default rules'}).click();
   await page.getByRole('button',{name:'Save preferences'}).click();
@@ -127,9 +135,11 @@ try {
   await page.getByRole('button',{name:'Edit & regenerate'}).click();
   await expect(page.getByLabel('Taxi out minutes')).not.toHaveValue('');
   await expect(page.getByLabel('Callsign',{exact:true})).toHaveValue(imported.airline);
+  await expect(page.getByLabel('Departure date')).toHaveValue(imported.offBlock.slice(0,10));
+  await expect(page.getByLabel('Off block time')).toHaveValue(imported.offBlock.slice(11,16));
   await expect(page.locator('.route-map')).toHaveCount(0);
   await page.getByRole('button',{name:'New flight',exact:true}).click();
-  await expectCleared();
+  await expectNewFlight();
   expect(errors).toEqual([]);
-  console.log('Desktop smoke passed: cleared initial form and New flight resets, saved variant defaults on aircraft selection, map only in briefing, edit/regenerate preserved, CI rules, custom route, passenger modes, map controls, OFP details, SID/STAR, navlog, settings, history, sample import, compact layout, automatic VATSIM submission against a local form, and no renderer errors.');
+  console.log('Desktop smoke passed: new flight UTC + 30 minute defaults with midnight/year rollover and fresh resets, manual and edit/regenerate times preserved, saved variant defaults on aircraft selection, map only in briefing, CI rules, custom route, passenger modes, map controls, OFP details, SID/STAR, navlog, settings, history, sample import, compact layout, automatic VATSIM submission against a local form, and no renderer errors.');
 } finally { await companion?.close(); await app.close(); }
