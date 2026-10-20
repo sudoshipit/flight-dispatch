@@ -15,8 +15,8 @@ export default function LiveTimings({ plan, telemetry, now }: { plan: Plan; tele
     phase === 'taxi-out' ? 'Taxiing out' : phase === 'airborne' ? 'Airborne' : phase === 'taxi-in' ? 'Taxiing in' : 'Waiting for departure';
   return <section className="card live-timings" aria-label="Live flight timings">
     <div className="card-title"><div><h2><Clock3 size={18}/> Live flight timeline</h2><p>Actual UTC times against your SimBrief plan</p></div><span className={`tag ${tracking ? 'success-tag' : ''}`}><Radio size={12}/>{label}</span></div>
-    {['countdown', 'overdue'].includes(departure.state) && <div className={`offblock-countdown ${departure.state}`} role="region" aria-label="Off-block countdown">
-      <div><span className="eyebrow">{departure.state === 'overdue' ? 'OFF BLOCKS OVERDUE' : 'UNTIL OFF BLOCKS'}</span><p>Planned {utc(departure.target)} · {date(departure.target)}</p></div>
+    {['countdown', 'soon', 'overdue'].includes(departure.state) && <div className={`offblock-countdown ${departure.state}`} role="region" aria-label="Off-block countdown">
+      <div><span className="eyebrow">{departure.state === 'overdue' ? 'OFF BLOCKS OVERDUE' : departure.state === 'soon' ? 'OFF BLOCKS SOON' : 'UNTIL OFF BLOCKS'}</span><p>Planned {utc(departure.target)} · {date(departure.target)}</p></div>
       <strong>{departure.state === 'overdue' ? '+' : ''}{elapsedTime(departure.seconds)}</strong>
     </div>}
     {departure.state === 'departed' && <p className="departure-recorded">Off blocks recorded at {utc(departure.target)} · Countdown complete</p>}
@@ -30,7 +30,7 @@ export default function LiveTimings({ plan, telemetry, now }: { plan: Plan; tele
         <th scope="row">{window.label}{window.live && <span>LIVE</span>}</th><td>{elapsedTime(window.planned)}</td><td>{elapsedTime(window.actual)}</td>
         <td className={window.delta != null && window.delta > 0 ? 'timing-over' : 'timing-under'}>{timingDelta(window.delta, window.live)}</td>
       </tr>)}</tbody></table></div>
-    <p className="timing-explainer">Off blocks: first sustained movement after stopping. On block: parked below 3 kt with the parking brake set for 5 seconds. Elapsed time uses the real UTC clock, including simulator pauses. Unobserved events stay blank.</p>
+    <details className="timing-explainer"><summary>How times are recorded</summary><p>Off blocks: first sustained movement after stopping. On block: parked below 3 kt with the parking brake set for 5 seconds. Elapsed time uses the real UTC clock, including simulator pauses. Unobserved events stay blank.</p></details>
     {tracking && ['waiting', 'paused', 'error'].includes(telemetry.status) && <p className="timing-connection" role="status">{telemetry.message}</p>}
   </section>;
 }

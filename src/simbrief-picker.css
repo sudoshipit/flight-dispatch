@@ -1,0 +1,12 @@
+.simbrief-picker{position:fixed;inset:0;margin:auto;width:min(900px,calc(100vw - 60px));max-height:calc(100vh - 60px);padding:26px;overflow:auto;border:1px solid #526b50;border-radius:14px;background:#152025;color:#e1e9e5;box-shadow:0 25px 100px #0009}
+.simbrief-picker::backdrop{background:#080f13c9;backdrop-filter:blur(4px)}
+.simbrief-picker header,.picker-tools,.picker-actions{display:flex;align-items:center;gap:14px;justify-content:space-between}
+.simbrief-picker h2{font-size:25px;margin:7px 0 0}.simbrief-picker>.helper{line-height:1.7;margin:16px 0}
+.picker-tools{margin:20px 0}.picker-tools>label:first-child{position:relative;flex:1}.picker-tools>label:first-child svg{position:absolute;left:12px;top:12px;color:#93a797}.picker-tools input:not([type]){padding-left:36px}
+.picker-tools .picker-upcoming{display:flex;align-items:center;gap:7px;font-size:11px;white-space:nowrap}.picker-tools input[type=checkbox],.picker-flight input{width:15px;height:15px;accent-color:#bfdd9a;flex:none}
+.picker-list{max-height:360px;overflow:auto;border-block:1px solid #35453d}.picker-flight{display:grid;grid-template-columns:16px 1fr 1.6fr 1.3fr;align-items:center;gap:16px;padding:17px 12px;cursor:pointer;border-bottom:1px solid #2a3934}
+.picker-flight:last-child{border-bottom:0}.picker-flight:hover{background:#24362d}.picker-flight.selected{background:#304332;box-shadow:inset 3px 0 #bfdd9a}
+.picker-flight strong{font:600 15px Consolas,monospace}.picker-flight small{display:block;font-size:10px;color:#9eafa3;margin-top:6px}.picker-route{display:flex;align-items:center;gap:9px}.picker-release{text-align:right}
+.picker-progress{display:flex;align-items:center;gap:10px;color:#c5dfa9;background:#24342a;padding:14px;font-size:12px;line-height:1.6;margin-bottom:16px}.picker-progress svg{flex:none}
+.picker-error{color:#ffaca4;font-size:12px;line-height:1.6}.picker-empty{text-align:center;color:#9cafa1;padding:32px 10px;font-size:13px}.picker-actions{justify-content:flex-end;margin-top:20px}
+.import-line{flex-wrap:wrap;gap:14px!important}.import-actions{display:flex;gap:10px;flex-wrap:wrap}

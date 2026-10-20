@@ -39,8 +39,8 @@ export function offBlockCountdown(plan, now) {
   const target = plan.ofp?.timing?.out?.estimated || plan.ofp?.timing?.out?.scheduled || plan.offBlock;
   const planned = timestamp(target);
   if (planned == null || !Number.isFinite(now)) return { state: 'unavailable', seconds: null, target: null };
-  const seconds = Math.ceil((planned - now) / 1000);
-  return { state: seconds < 0 ? 'overdue' : 'countdown', seconds: Math.abs(seconds), target };
+  const remaining = planned - now;
+  return { state: remaining < 0 ? 'overdue' : remaining <= 600000 ? 'soon' : 'countdown', seconds: Math.ceil(Math.abs(remaining) / 1000), target };
 }
 export function elapsedTime(seconds) {
   if (!Number.isFinite(seconds)) return '—';

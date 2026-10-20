@@ -177,8 +177,24 @@ try {
   // Opening the briefing already started detection; no tracking click is needed.
   await expect(page.getByRole('button',{name:'Stop tracking'})).toBeVisible();
   const plannedDeparture = Date.parse(filed.ofp.timing.out.estimated || filed.offBlock);
-  await page.clock.setFixedTime(new Date(plannedDeparture-30000));
   const countdown = page.getByRole('region',{name:'Off-block countdown'});
+  await page.clock.setFixedTime(new Date(plannedDeparture-601000));
+  await expect(countdown).toHaveClass(/countdown$/);
+  await expect(countdown.locator('strong')).toHaveCSS('color','rgb(212, 237, 177)');
+  await page.clock.setFixedTime(new Date(plannedDeparture-600000));
+  await expect(countdown).toHaveClass(/soon/);
+  await expect(countdown.locator('strong')).toHaveCSS('color','rgb(255, 180, 93)');
+  const banner = page.getByRole('region',{name:'Flight summary'});
+  const bannerBounds = await banner.boundingBox(), overviewBounds = await page.locator('.briefing-overview').boundingBox();
+  expect(bannerBounds.height).toBeLessThan(160);
+  expect(Math.abs(bannerBounds.width-overviewBounds.width)).toBeLessThan(2);
+  expect(bannerBounds.y+bannerBounds.height).toBeLessThan(overviewBounds.y);
+  expect(await countdown.evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('.airport-grid')) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
+  await page.evaluate(() => scrollTo(0,0));
+  await page.screenshot({path:'artifacts/briefing-banner-compact.png'});
+  await app.evaluate(({BrowserWindow}) => BrowserWindow.getAllWindows()[0].setSize(1380,940));
+  await page.screenshot({path:'artifacts/briefing-banner.png'});
+  await page.clock.setFixedTime(new Date(plannedDeparture-30000));
   await expect(countdown).toContainText('00:00:30');
   await page.clock.setFixedTime(new Date(plannedDeparture-29000));
   await expect(countdown).toContainText('00:00:29');
@@ -186,6 +202,8 @@ try {
   await page.clock.setFixedTime(new Date(plannedDeparture+1000));
   await expect(countdown).toContainText('OFF BLOCKS OVERDUE');
   await expect(countdown).toContainText('+00:00:01');
+  await expect(countdown.locator('strong')).toHaveCSS('color','rgb(255, 154, 152)');
+  await countdown.screenshot({path:'artifacts/offblock-overdue.png'});
   await page.clock.setFixedTime(new Date(filed.offBlock));
   const telemetryBase = await page.evaluate(() => Date.now());
   await app.evaluate((_, base) => {

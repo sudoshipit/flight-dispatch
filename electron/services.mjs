@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import { normalizeAircraft, mergePersonalAirframes } from '../shared/aircraft.mjs';
 import { fileURLToPath } from 'node:url';
 import { parseOFP, selectGates, str, number } from '../shared/domain.mjs';
+import { isSimbriefXmlUrl } from './simbrief-import.mjs';
 
 const isoTime = value => { const date = new Date(str(value)); return Number.isFinite(date.getTime()) ? date.toISOString() : ''; };
 
@@ -61,6 +62,14 @@ export class Services {
     const query = new URLSearchParams({ [/^\d+$/.test(id) ? 'userid' : 'username']: id, json: '1' });
     if (staticId) query.set('static_id', staticId);
     return parseOFP(await fetchJson(`https://www.simbrief.com/api/xml.fetcher.php?${query}`));
+  }
+  async ofpFile(url) {
+    if (!isSimbriefXmlUrl(url)) throw new Error('SimBrief did not provide a supported OFP download.');
+    const response = await fetch(url, { redirect: 'error', signal: AbortSignal.timeout(20000) });
+    if (!response.ok) throw new Error(`The selected SimBrief OFP could not be downloaded (${response.status}). Try refreshing the list.`);
+    const xml = await response.text();
+    if (xml.length > 25_000_000) throw new Error('The SimBrief OFP download was too large.');
+    return xml;
   }
   async weather(plan) {
     const ids = [plan.origin.icao, plan.destination.icao];

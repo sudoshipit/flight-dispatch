@@ -26,7 +26,7 @@ Choose one build from `release/`:
 | [Flight-Dispatch-Setup-1.0.0.exe](https://github.com/sudoshipit/flight-dispatch/releases/download/v1.0.0/Flight-Dispatch-Setup-1.0.0.exe) | Run the installer, choose an installation directory, then open the desktop shortcut. |
 | [Flight-Dispatch-1.0.0-Portable.exe](https://github.com/sudoshipit/flight-dispatch/releases/download/v1.0.0/Flight-Dispatch-1.0.0-Portable.exe) | Save the executable in a folder you want to keep and run it directly. No installation is required. |
 
-Close older copies of Flight Dispatch first. Check the version at the bottom of the app's sidebar: it should say **v1.0.0**. The current rebuild includes **Live flight timeline**, an off-block countdown and automatic **Flight recorder** detection in a briefing. Both builds store settings/history in your Windows profile rather than beside the executable. These builds are unsigned; this project does not include a code-signing certificate. Checksums are in the release's **SHA256SUMS.txt**, and **BUILD-INFO.json** identifies the exact source commit and build time.
+Close older copies of Flight Dispatch first. Check the version at the bottom of the app's sidebar: it should say **v1.0.0**. The current rebuild includes a slim flight banner, live timings near the top, an orange/red off-block countdown, a SimBrief flight picker and automatic **Flight recorder** detection. Both builds store settings/history in your Windows profile rather than beside the executable. These builds are unsigned; this project does not include a code-signing certificate. Checksums are in the release's **SHA256SUMS.txt**, and **BUILD-INFO.json** identifies the exact source commit and build time.
 
 ### 2. Connect SimBrief
 
@@ -93,7 +93,7 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 5. Follow the progress screen. If prompted, finish SimBrief sign-in and close its windows, or finish VATSIM sign-in/verification and **keep its browser open**. Work resumes automatically; no click on VATSIM's File button is needed.
 6. Check the briefing's filing result. **Filed on VATSIM** appears only after a new success confirmation. Failures produce a persistent alert and a Windows notification.
 
-**Import latest from SimBrief** loads an existing OFP without generating or filing another flight. Use **File automatically on VATSIM** from that briefing to submit it. Refreshing the briefing/weather/gates updates airport data; **Edit & regenerate** recalculates the plan after planning changes.
+**Import latest from SimBrief** still imports your most recently generated OFP in one click. **Choose from SimBrief**, beside it on New flight and Recent flights, opens a searchable list of generated plans saved in your SimBrief account. Select by callsign, route, aircraft, UTC departure and release; **Upcoming only** filters later departures. Click **Import selected flight** to load that exact OFP. Refresh list retrieves up to 500 recent releases from SimBrief Dispatch History. If needed, sign in through the dedicated SimBrief browser, then close its windows to resume. No extra API key is needed. Saved flight options without a generated OFP must first be generated in SimBrief. Neither import action generates or files another flight. Use **File automatically on VATSIM** from that briefing to submit it. Refreshing the briefing/weather/gates updates airport data; **Edit & regenerate** recalculates the plan after planning changes.
 
 ### Replacing an earlier build or updating later
 
@@ -138,7 +138,7 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 
 The **Live flight timeline** compares observed UTC timestamps with SimBrief's estimated times, falling back to scheduled times when estimates are absent. It also shows planned and actual taxi-out, air time, taxi-in and total block durations. Active windows count up every second; their difference shows time remaining or time over plan. Completed windows show signed differences (`+` means later or longer).
 
-Before departure, **Until off blocks** counts down to the planned UTC departure every second, including across midnight. If departure is late it changes to **Off blocks overdue** and counts upward. It stops when off-block movement is observed, and is not shown as a departure countdown when tracking begins midair.
+Before departure, **Until off blocks** counts down to the planned UTC departure every second, including across midnight. The countdown is green above 10 minutes, orange **Off blocks soon** in the final 10 minutes, and red **Off blocks overdue** after planned departure, counting upward. The slim flight banner spans the briefing width, with live timings directly below beside the map (stacked in smaller windows). It stops when off-block movement is observed, and is not shown as a departure countdown when tracking begins midair.
 
 - **Off blocks** is the first movement at or above 1 kt, with the parking brake released, sustained for two seconds after observing the aircraft stationary. The recorded time is the beginning of that movement, including pushback.
 - **Takeoff** is the first observed ground-to-air transition, confirmed after three seconds airborne and reaching 30 ft AGL.
@@ -216,7 +216,8 @@ npm test             # Domain, form-adapter, caching, quota and persistence test
 npm run check:live   # Read-only aircraft / OFP / METAR / VATSIM AIP checks
 npm run build        # TypeScript check and renderer build
 npx playwright install chromium # Browser for isolated extension tests
-npm run test:smoke   # Electron UI smoke test; uses a temporary user profile
+npm run test:smoke
+node scripts/import-smoke.mjs   # Electron UI smoke test; uses a temporary user profile
 npm run test:dispatch # Complete automatic generation + filing with local service mocks
 npm run test:browser  # Dedicated browser session and personal-airframe fixture checks
 npm run package      # Windows x64 portable executable and NSIS installer

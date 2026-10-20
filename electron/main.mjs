@@ -4,7 +4,8 @@ import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
 import { Store } from './store.mjs';
 import { Services } from './services.mjs';
-import { validateFlight, simbriefUrl, matchGeneratedPlan, vatsimUrl, vatsimFields, planningParameters } from '../shared/domain.mjs';
+import { validateFlight, simbriefUrl, matchGeneratedPlan, vatsimUrl, vatsimFields, planningParameters, parseOFP } from '../shared/domain.mjs';
+import { readSimbriefFlights, readSimbriefXmlLink, parseSimbriefXml } from './simbrief-import.mjs';
 import { simbriefPageStep } from './automation.mjs';
 import { BrowserSessions, LOGIN_URLS } from './browser.mjs';
 import { VatsimBridge } from './vatsim-bridge.mjs';
@@ -13,6 +14,7 @@ import { Telemetry } from './telemetry.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 if (process.env.FLIGHT_DISPATCH_TEST_DATA) app.setPath('userData', process.env.FLIGHT_DISPATCH_TEST_DATA);
 let main, store, services, browser, vatsim, telemetry, active = null;
+let importChoices = new Map();
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const emit = (stage, message, extra = {}) => { if (!main?.isDestroyed()) main.webContents.send('dispatch:progress', { stage, message, ...extra }); };
 const browserOptions = operation => ({ isCancelled: () => operation.cancelled, onWaiting: message => emit('sign-in', message) });
@@ -151,6 +153,27 @@ async function briefingResult(plan) {
   // Recording can advance while weather/gate lookups are pending.
   return { plan: store.getPlan(plan.id), details };
 }
+async function saveImportedPlan(imported) {
+  const existing = store.read('history', []).find(p => p.id === imported.id && p.raw === imported.raw && p.offBlock === imported.offBlock);
+  const plan = store.savePlan(existing ? { ...imported, filing: existing.filing, requestedRoute: existing.requestedRoute, planningInput: existing.planningInput, variantId: existing.variantId, variantName: existing.variantName, landing: existing.landing, actual: existing.actual } : imported);
+  telemetry.follow(plan.id, { replaceWaiting: true });
+  return briefingResult(plan);
+}
+async function readImportPage(url, reader, operation) {
+  const tab = await browser.open('simbrief', url, browserOptions(operation));
+  let readySince = Date.now();
+  while (!operation.cancelled) {
+    if (!await prepareBrowser(tab, operation)) { readySince = Date.now(); continue; }
+    // Unlike generation, reader errors must be surfaced rather than retried.
+    if (new URL(tab.page.url()).hostname === 'dispatch.simbrief.com') {
+      const value = await tab.page.evaluate(reader);
+      if (value !== null) return { tab, value };
+    }
+    if (Date.now() - readySince > 60000) throw new Error('SimBrief did not load the saved flight data. Refresh the list or use Import latest.');
+    await sleep(1000);
+  }
+  throw new Error('SimBrief import cancelled.');
+}
 
 async function start() {
 await app.whenReady();
@@ -185,11 +208,38 @@ handle('airport-positions', ids => services.airportPositions(ids));
 handle('settings', async input => { if (active) throw new Error('Wait until the current dispatch finishes before changing settings.'); const old = store.settings().browser; if (input.browser !== old && browser.interactive && !browser.interactive.closed) throw new Error('Close the Flight Dispatch browser windows before switching browsers.'); const saved = store.saveSettings(input); if (old !== saved.browser) await browser.close(); return saved; });
 handle('import', async () => {
   if (active) throw new Error('Wait until the current dispatch finishes.');
-  const imported = await services.ofp();
-  const existing = store.read('history', []).find(p => p.id === imported.id && p.raw === imported.raw && p.offBlock === imported.offBlock);
-  const plan = store.savePlan(existing ? { ...imported, filing: existing.filing, requestedRoute: existing.requestedRoute, planningInput: existing.planningInput, variantId: existing.variantId, variantName: existing.variantName, landing: existing.landing } : imported);
-  telemetry.follow(plan.id, { replaceWaiting: true });
-  return briefingResult(plan);
+  const operation = { cancelled: false }; active = operation;
+  try {
+    const imported = await services.ofp();
+    if (operation.cancelled) throw new Error('SimBrief import cancelled.');
+    return await saveImportedPlan(imported);
+  } finally { active = null; }
+});
+handle('simbrief-flights', async () => {
+  if (active) throw new Error('Wait until the current dispatch finishes.');
+  const operation = { cancelled: false }; active = operation; importChoices.clear();
+  try {
+    emit('importing', 'Loading saved SimBrief flight plans in the background.');
+    const { value } = await readImportPage('https://dispatch.simbrief.com/flights/all#flights-history', readSimbriefFlights, operation);
+    if (operation.cancelled) throw new Error('SimBrief import cancelled.');
+    importChoices = new Map(value.map(item => [item.id, item]));
+    return value;
+  } finally { await browser.close(); active = null; }
+});
+handle('import-selected', async id => {
+  if (active) throw new Error('Wait until the current dispatch finishes.');
+  const choice = typeof id === 'string' && importChoices.get(id);
+  if (!choice) throw new Error('Refresh the SimBrief flight list and select a flight.');
+  const operation = { cancelled: false }; active = operation;
+  try {
+    emit('importing', `Importing ${choice.callsign} from SimBrief.`);
+    const { tab, value: url } = await readImportPage(`https://dispatch.simbrief.com/briefing/${encodeURIComponent(id)}`, readSimbriefXmlLink, operation);
+    const xml = await services.ofpFile(url);
+    const imported = parseOFP(await tab.page.evaluate(parseSimbriefXml, xml));
+    if (imported.id !== id || imported.callsign !== choice.callsign || imported.origin.icao !== choice.origin || imported.destination.icao !== choice.destination) throw new Error('SimBrief returned a different flight. Refresh the list and select the plan again.');
+    if (operation.cancelled) throw new Error('SimBrief import cancelled.');
+    return await saveImportedPlan(imported);
+  } finally { await browser.close(); active = null; }
 });
 handle('sync-airframes', async base => {
   if (!store.settings().simbriefId) throw new Error('Enter your SimBrief Pilot ID or username in Settings and save preferences first.');

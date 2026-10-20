@@ -12,6 +12,10 @@ test('off-block countdown ticks across midnight, reports overdue, and stops on o
   assert.equal(offBlockCountdown(plan, base).seconds, 30);
   assert.equal(offBlockCountdown(plan, base + 1000).seconds, 29);
   assert.equal(offBlockCountdown(plan, base + 30000).seconds, 0);
+  assert.equal(offBlockCountdown(plan, base - 570001).state, 'countdown');
+  assert.equal(offBlockCountdown(plan, base - 570000).state, 'soon');
+  assert.equal(offBlockCountdown(plan, base + 30000).state, 'soon');
+  assert.equal(offBlockCountdown(plan, base + 30001).state, 'overdue');
   assert.deepEqual(offBlockCountdown(plan, base + 31000), { state: 'overdue', seconds: 1, target: plan.offBlock });
   assert.equal(offBlockCountdown({ ...plan, actual: { out: iso(31000) } }, base + 40000).state, 'departed');
   assert.equal(offBlockCountdown({ ...plan, actual: { phase: 'airborne' } }, base + 40000).state, 'unobserved');

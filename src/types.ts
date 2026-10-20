@@ -30,6 +30,7 @@ export type Gates = { departure: Gate | null; arrival: Gate | null; message?: st
 export type Details = { weather: Record<string, Weather>; airports: Record<string, Aip>; gates: Gates };
 export type FlightInput = { airline: string; flightNumber: string; aircraft: string; variant: string; origin: string; destination: string; route: string; date: string; time: string; passengerMode: 'auto' | 'full' | 'custom'; passengers: string; taxiOut: string; taxiIn: string; extraFuel: string; reserve: string; altitude: string; alternate: string };
 export type Result = { plan: Plan; details: Details };
+export type SimbriefFlight = { id: string; callsign: string; origin: string; destination: string; aircraft: string; registration: string; offBlock: string; generatedAt: string; release: string };
 export type Progress = { stage: string; message: string; plan?: Plan; details?: Details; serviceUrl?: string };
 declare global {
   interface Window {
@@ -40,6 +41,8 @@ declare global {
       airportPositions(ids: string[]): Promise<MapPoint[]>;
       saveSettings(settings: Settings): Promise<Settings>;
       importLatest(): Promise<Result>;
+      simbriefFlights(): Promise<SimbriefFlight[]>;
+      importSelected(id: string): Promise<Result>;
       generate(input: FlightInput): Promise<Result>;
       cancel(): Promise<boolean>;
       refresh(id: string, kind?: string): Promise<Details | Record<string, Weather> | Gates>;
