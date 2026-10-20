@@ -23,7 +23,11 @@ let companion;
 const scenario = { signedIn: true, reject: false, unconfirmed: false, blocked: false, filingPages: 0 };
 try {
   await app.evaluate(async ({app, session, BrowserWindow}, data) => {
-    BrowserWindow.getAllWindows().forEach(win=>win.webContents.setBackgroundThrottling(false));
+    // Full-page captures need a painting window on Windows; do not take focus.
+    BrowserWindow.getAllWindows().forEach(win=>{
+      win.webContents.setBackgroundThrottling(false);
+      win.showInactive();
+    });
     const localRequire = process.getBuiltinModule('node:module').createRequire(app.getAppPath() + '/package.json');
     const { Services } = localRequire('./electron/services.mjs');
     let generated = false, staticId = '';

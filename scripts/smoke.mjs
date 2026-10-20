@@ -16,7 +16,12 @@ const app = await electron.launch({ executablePath: process.env.FLIGHT_DISPATCH_
 let companion;
 try {
   const page = await app.firstWindow();
-  await app.evaluate(({BrowserWindow}) => BrowserWindow.getAllWindows().forEach(win=>win.webContents.setBackgroundThrottling(false)));
+  // Windows can stop painting hidden windows after full-page screenshot resizing.
+  // Show the isolated test window without taking focus so captures keep rendering.
+  await app.evaluate(({BrowserWindow}) => BrowserWindow.getAllWindows().forEach(win=>{
+    win.webContents.setBackgroundThrottling(false);
+    win.showInactive();
+  }));
   await app.evaluate(({app}, fixture) => {
     const localRequire = process.getBuiltinModule('node:module').createRequire(app.getAppPath() + '/package.json');
     localRequire('./electron/services.mjs').Services.prototype.ofp = async () => fixture;
