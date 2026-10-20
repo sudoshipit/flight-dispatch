@@ -59,7 +59,9 @@ export class LandingRecorder {
       }
     } else {
       if (!this.actual.off && !this.contacts.length) {
-        if (s.groundspeed < 1) this.groundReady = true;
+        // A connection first observed in motion has missed departure. A later
+        // taxiway stop must not be mistaken for the original off-block position.
+        if (!previous && s.groundspeed < 1) this.groundReady = true;
         if (this.groundReady && s.groundspeed >= 1 && !s.parkingBrake) {
           this.movingSince ??= s.at;
           if (!this.actual.out && s.at - this.movingSince >= 2000) {

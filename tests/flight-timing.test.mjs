@@ -40,6 +40,8 @@ test('jitter, brake release alone and taxiing on first connection do not invent 
   assert.equal(r.actual.out, null);
   const late = new LandingRecorder();
   for (let ms = 0; ms <= 5000; ms += 100) late.ingest(sample(ms, { groundspeed: 20, parkingBrake: false }));
+  late.ingest(sample(5100, { groundspeed: 0, parkingBrake: false }));
+  for (let ms = 5200; ms <= 9000; ms += 100) late.ingest(sample(ms, { groundspeed: 20, parkingBrake: false }));
   assert.equal(late.actual.out, null);
 });
 test('midair connection, data gaps, pauses and slew do not create missing departure events', () => {
