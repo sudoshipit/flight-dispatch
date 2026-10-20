@@ -2,7 +2,7 @@
 
 A Windows desktop flight planning companion for SimBrief and VATSIM. Built with Electron, React, and TypeScript. All settings and flight history stay on your computer.
 
-> The enhanced route explorer and landing recorder are currently in the source version. The existing v1.0.0 release downloads have not been rebuilt with these additions. To use them now, follow **Development** below (`npm ci`, `npm run build`, `npm start`) or create a local installer with `npm run package`.
+> **v1.0.0 rebuilt October 20, 2026.** The installer and portable downloads include the enhanced route explorer, simulator landing recorder, earlier SID/STAR section, UTC departure defaults, and removal of password-manager setup. If you downloaded v1.0.0 before this date, download it again to get these changes; the version number remains 1.0.0.
 
 ## Install and set up
 
@@ -26,7 +26,7 @@ Choose one build from `release/`:
 | [Flight-Dispatch-Setup-1.0.0.exe](https://github.com/sudoshipit/flight-dispatch/releases/download/v1.0.0/Flight-Dispatch-Setup-1.0.0.exe) | Run the installer, choose an installation directory, then open the desktop shortcut. |
 | [Flight-Dispatch-1.0.0-Portable.exe](https://github.com/sudoshipit/flight-dispatch/releases/download/v1.0.0/Flight-Dispatch-1.0.0-Portable.exe) | Save the executable in a folder you want to keep and run it directly. No installation is required. |
 
-Close older copies of Flight Dispatch first. Check the version at the bottom of the app's sidebar: it should say **v1.0.0**. Both builds store settings/history in your Windows profile rather than beside the executable. These builds are unsigned; this project does not include a code-signing certificate. Checksums are in `release/SHA256SUMS.txt`.
+Close older copies of Flight Dispatch first. Check the version at the bottom of the app's sidebar: it should say **v1.0.0**. The October 20 rebuild adds **Route explorer** and **Flight recorder** to a flight briefing. Both builds store settings/history in your Windows profile rather than beside the executable. These builds are unsigned; this project does not include a code-signing certificate. Checksums are in the release's **SHA256SUMS.txt**, and **BUILD-INFO.json** identifies the exact source commit and build time.
 
 ### 2. Connect SimBrief
 
