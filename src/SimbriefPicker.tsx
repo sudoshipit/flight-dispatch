@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Download, LoaderCircle, RefreshCw, Search, X } from 'lucide-react';
 import type { Progress, Result, SimbriefFlight } from './types';
 import './simbrief-picker.css';
+import { userMessage } from '../shared/briefing-tools.mjs';
 
 const date = (value: string) => value ? new Date(value).toLocaleString('en-GB', { timeZone: 'UTC', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + 'Z' : 'None';
 export default function SimbriefPicker({ close, imported, busyChanged, progress }: {
@@ -15,7 +16,7 @@ export default function SimbriefPicker({ close, imported, busyChanged, progress 
     if (running.current) return;
     running.current = true; setBusy(name); busyChanged(name); setError('');
     try { await work(); }
-    catch (e) { setError((e as Error).message.replace(/^Error invoking remote method '[^']+': Error: /, '')); }
+    catch (e) { setError(userMessage(e)); }
     finally { running.current = false; setBusy(''); busyChanged(''); }
   };
   const refresh = () => run('import-list', async () => {
@@ -46,6 +47,6 @@ export default function SimbriefPicker({ close, imported, busyChanged, progress 
       {loaded && !filtered.length && <p className="picker-empty">{flights.length ? 'No flights match your search.' : 'No downloadable OFPs found. Generate a plan in SimBrief, then refresh this list.'}</p>}
     </div>
     <p className="helper">{loaded ? `${filtered.length} of ${flights.length} plans · newest generated first. ` : ''}Checks up to 500 recent releases. Only plans with an available OFP download are shown. Regenerate expired plans or saved flight options in SimBrief first.</p>
-    <div className="picker-actions">{busy ? <button className="secondary-button" onClick={() => { void window.dispatch.cancel().catch(e => setError(e.message)); }}>Cancel operation</button> : <button className="secondary-button" onClick={close}>Cancel</button>}<button className="primary-button" disabled={!!busy || !chosen} onClick={() => run('import-selected', async () => { const result = await window.dispatch.importSelected(selected); imported(result); close(); })}><Download size={16}/> Import selected flight</button></div>
+    <div className="picker-actions">{busy ? <button className="secondary-button" onClick={() => { void window.dispatch.cancel().catch(e => setError(userMessage(e))); }}>Cancel operation</button> : <button className="secondary-button" onClick={close}>Cancel</button>}<button className="primary-button" disabled={!!busy || !chosen} onClick={() => run('import-selected', async () => { const result = await window.dispatch.importSelected(selected); imported(result); close(); })}><Download size={16}/> Import selected flight</button></div>
   </dialog>;
 }

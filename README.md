@@ -26,7 +26,7 @@ Choose one build from `release/`:
 | [Flight-Dispatch-Setup-1.0.0.exe](https://github.com/sudoshipit/flight-dispatch/releases/download/v1.0.0/Flight-Dispatch-Setup-1.0.0.exe) | Run the installer, choose an installation directory, then open the desktop shortcut. |
 | [Flight-Dispatch-1.0.0-Portable.exe](https://github.com/sudoshipit/flight-dispatch/releases/download/v1.0.0/Flight-Dispatch-1.0.0-Portable.exe) | Save the executable in a folder you want to keep and run it directly. No installation is required. |
 
-Close older copies of Flight Dispatch first. Check the version at the bottom of the app's sidebar: it should say **v1.0.0**. The current rebuild includes a slim flight banner, live timings near the top, an orange/red off-block countdown, a SimBrief flight picker and automatic **Flight recorder** detection. Both builds store settings/history in your Windows profile rather than beside the executable. These builds are unsigned; this project does not include a code-signing certificate. Checksums are in the release's **SHA256SUMS.txt**, and **BUILD-INFO.json** identifies the exact source commit and build time.
+Close older copies of Flight Dispatch first. Check the version at the bottom of the app's sidebar: it should say **v1.0.0**. The current rebuild includes searchable flight history, a tracked-flight shortcut, copyable briefing details, a slim flight banner, live timings near the top, a SimBrief flight picker and automatic **Flight recorder** detection. Both builds store settings/history in your Windows profile rather than beside the executable. These builds are unsigned; this project does not include a code-signing certificate. Checksums are in the release's **SHA256SUMS.txt**, and **BUILD-INFO.json** identifies the exact source commit and build time.
 
 ### 2. Connect SimBrief
 
@@ -124,7 +124,10 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 - A 15-minute gate-request cache, request deduplication, and a configurable local monthly cap (90 by default). No paid historical endpoints are called. The cap covers this app only; other apps using the same key count against the provider's quota separately.
 - Automatic simulator detection and landing recording, with ft/min, UTC timestamp, groundspeed, pitch/bank, repeated contacts and distance from the planned destination. Touchdown opens a centered popup on any app page, and the result stays at the top of the briefing and in Recent flights.
 - Live actual-versus-planned flight timeline: off-block, takeoff, touchdown and on-block UTC times; taxi-out, air time, taxi-in and total block durations. Running windows update every second, with remaining/over-plan time and saved final differences.
-- Local history for the latest 30 generated/imported briefings, persistent preferences, and encrypted API keys using Electron safeStorage / Windows encryption.
+- Searchable local history for the latest 30 generated/imported briefings. Search by callsign, airport, aircraft or registration; filter upcoming flights, completed flights or failed/unconfirmed VATSIM filings; sort by saved order or UTC departure.
+- Click the tracked-flight card in the sidebar to return to its briefing from any page.
+- **Copy route** and **Copy briefing** are available near the top of the briefing. The briefing text includes UTC dates, planned fuel in the OFP units, SID/STAR, runways, alternate, elevation, CTAF, gates and METARs. Historical gates and weather snapshots retain their labels. Copying does not generate or file a flight.
+- Persistent preferences and encrypted API keys using Electron safeStorage / Windows encryption.
 
 ## Landing recorder setup
 

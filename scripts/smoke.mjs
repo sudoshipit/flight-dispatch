@@ -104,7 +104,26 @@ try {
   await page.screenshot({path:'artifacts/settings.png',fullPage:true});
   await page.getByRole('button',{name:'Recent flights 1'}).click();
   await expect(page.locator('.history-row')).toHaveCount(1);
+  await page.getByLabel('Search recent flights').fill('SWA Tampa');
+  await expect(page.locator('.history-row')).toHaveCount(1);
+  await page.getByLabel('Search recent flights').fill('no-match');
+  await expect(page.getByRole('heading',{name:'No matching flights'})).toBeVisible();
+  await page.getByRole('button',{name:'Show all flights',exact:true}).click();
+  await page.getByLabel('Filter recent flights').selectOption('attention');
+  await expect(page.locator('.history-row')).toHaveCount(0);
+  await page.getByRole('button',{name:'Show all flights',exact:true}).click();
+  await page.screenshot({path:'artifacts/history-search.png'});
   await page.locator('.history-row').click();
+  await expect(page.locator('.progress')).toHaveCount(0,{timeout:60000});
+  await expect(page.locator('.callsign-link')).toHaveText('SWA123');
+  // Keep the user's actual Windows clipboard untouched during UI checks.
+  await page.evaluate(() => Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>{window.__copiedBriefing=text;}}}));
+  await page.getByRole('button',{name:'Copy briefing',exact:true}).click();
+  expect(await page.evaluate(()=>window.__copiedBriefing)).toContain('Planned fuel (LBS)');
+  await page.locator('.briefing-actions').getByRole('button',{name:'Copy route',exact:true}).click();
+  expect(await page.evaluate(()=>window.__copiedBriefing)).toBe(parseOFP(ofp).route);
+  await page.getByRole('button',{name:'Settings',exact:true}).click();
+  await page.getByRole('button',{name:'Return to tracked flight SWA123',exact:true}).click();
   await expect(page.locator('.progress')).toHaveCount(0,{timeout:60000});
   await expect(page.locator('.callsign-link')).toHaveText('SWA123');
   await expect(page.locator('.stat').first()).toContainText('FL370');
@@ -255,6 +274,9 @@ try {
   await page.clock.setFixedTime('2027-01-01T01:05:42Z');
 
   await page.getByRole('button',{name:'Recent flights 1'}).click();
+  await page.getByLabel('Filter recent flights').selectOption('complete');
+  await expect(page.locator('.history-row')).toHaveCount(1);
+  await expect(page.locator('.history-row')).toContainText('Flight complete');
   await page.getByRole('button',{name:'Import latest',exact:true}).click();
   await expect(page.locator('.progress')).toHaveCount(0,{timeout:60000});
   const imported = JSON.parse(fs.readFileSync(path.join(userData,'data/history.json'),'utf8'))[0];
