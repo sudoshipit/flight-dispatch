@@ -43,9 +43,9 @@ export default function SimbriefPicker({ close, imported, busyChanged, progress 
         <span><strong className="picker-route">{flight.origin}<ArrowRight size={15}/>{flight.destination}</strong><small>Off blocks {date(flight.offBlock)}</small></span>
         <span className="picker-release"><small>Release {flight.release || 'None'}</small><small>Generated {date(flight.generatedAt)}</small></span>
       </label>)}
-      {loaded && !filtered.length && <p className="picker-empty">{flights.length ? 'No flights match your search.' : 'No generated flight plans found in this SimBrief account.'}</p>}
+      {loaded && !filtered.length && <p className="picker-empty">{flights.length ? 'No flights match your search.' : 'No downloadable OFPs found. Generate a plan in SimBrief, then refresh this list.'}</p>}
     </div>
-    <p className="helper">{loaded ? `${filtered.length} of ${flights.length} plans · newest generated first. ` : ''}SimBrief lists up to 500 recent releases. Saved flight options need an OFP generated in SimBrief before they can be imported.</p>
+    <p className="helper">{loaded ? `${filtered.length} of ${flights.length} plans · newest generated first. ` : ''}Checks up to 500 recent releases. Only plans with an available OFP download are shown. Regenerate expired plans or saved flight options in SimBrief first.</p>
     <div className="picker-actions">{busy ? <button className="secondary-button" onClick={() => { void window.dispatch.cancel().catch(e => setError(e.message)); }}>Cancel operation</button> : <button className="secondary-button" onClick={close}>Cancel</button>}<button className="primary-button" disabled={!!busy || !chosen} onClick={() => run('import-selected', async () => { const result = await window.dispatch.importSelected(selected); imported(result); close(); })}><Download size={16}/> Import selected flight</button></div>
   </dialog>;
 }

@@ -22,6 +22,13 @@ test('archived XML preserves full OFP details and rejects malformed or entity-be
   assert.deepEqual(parseOFP(JSON.parse(JSON.stringify(run('',parseSimbriefXml,toXml(ofp))))),parseOFP(ofp));
   for(const bad of ['<!DOCTYPE OFP><OFP/>','<OFP><broken></OFP>','<html/>']) assert.throws(()=>run('',parseSimbriefXml,bad),/invalid/i);
 });
+test('expired OFPs with disabled View links do not prevent importing available history', () => {
+  const expired = '<div class="row-item row-parent"><a class="disabled" data-key="request_id" data-disable="xml_link">View</a><a data-key="request_id" href="./options/123">Edit</a></div>';
+  const html = `<main id="flights"><div id="flights-history">${expired}${row('available','2027-01-01T01:00:00')}</div></main>`;
+  const flights = run(html,readSimbriefFlights);
+  assert.equal(flights.length,1); assert.equal(flights[0].id,'available');
+  assert.equal(run(`<main id="flights"><div id="flights-history">${expired}</div></main>`,readSimbriefFlights).length,0);
+});
 test('only SimBrief XML downloads are permitted and export links are read from the selected briefing', () => {
   const url='https://www.simbrief.com/ofp/flightplans/xml/test-123.xml';
   assert.equal(isSimbriefXmlUrl(url),true);

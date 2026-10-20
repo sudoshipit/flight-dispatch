@@ -3,7 +3,10 @@
 export function readSimbriefFlights() {
   const list = document.querySelector('main#flights #flights-history');
   if (!list) return null;
-  const rows = [...list.querySelectorAll('.row-item:not(.row-empty)')];
+  // SimBrief retains editable history after the XML expires. Its View link is
+  // then disabled and has no href; those entries cannot supply an existing OFP.
+  const rows = [...list.querySelectorAll('.row-item:not(.row-empty)')].filter(row =>
+    !row.querySelector('a[data-disable="xml_link"].disabled:not([href])'));
   const flights = rows.map(row => {
     const field = key => row.querySelector(`[data-key="${key}"]`)?.textContent.trim() || '';
     const timestamp = key => {
