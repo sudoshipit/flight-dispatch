@@ -11,6 +11,34 @@ import { connectSimConnect, connectXPlane, decodeRref, rrefRequest, XPLANE_FIELD
 
 const sample = (ms, extra = {}) => ({ at: Date.parse('2026-10-20T12:00:00Z') + ms, simTime: ms / 1000,
   onGround: false, agl: 100, verticalSpeed: -180, groundspeed: 130, lat: 42.94, lon: -78.73, simulator: 'Test simulator', ...extra });
+test('briefings automatically detect a live simulator, remain idempotent, and respect explicit stop', t => {
+  const plans = new Map(['first', 'second', 'third'].map(id => [id, { id, callsign: id, destination: {} }]));
+  const store = { read: (_, fallback) => fallback, write() {}, getPlan: id => plans.get(id), savePlan: p => { plans.set(p.id, p); return p; } };
+  const callbacks = {}, events = []; let starts = 0;
+  const adapter = name => cb => { starts++; callbacks[name] = cb; return { close() {} }; };
+  const tracker = new Telemetry(store, event => events.push(event), { simconnect: adapter('simconnect'), xplane: adapter('xplane') });
+  t.after(() => tracker.stop(false));
+  assert.equal(tracker.follow('first').planId, 'first'); assert.equal(starts, 2);
+  tracker.follow('first'); assert.equal(starts, 2);
+  tracker.follow('second'); assert.equal(tracker.status().planId, 'first');
+  tracker.follow('second', { replaceWaiting: true }); assert.equal(tracker.status().planId, 'second');
+  callbacks.simconnect(sample(0, { running: false }));
+  callbacks.xplane(sample(0)); assert.equal(tracker.selected, 'xplane');
+  tracker.follow('third', { replaceWaiting: true }); assert.equal(tracker.status().planId, 'second');
+  for (let ms = 100; ms <= 3000; ms += 100) callbacks.xplane(sample(ms));
+  callbacks.xplane(sample(3100, { onGround: true }));
+  callbacks.xplane(sample(3200, { onGround: true, touchdownVelocity: 2 }));
+  const contacts = events.filter(event => event.touchdownId);
+  assert.equal(contacts.length, 2);
+  assert.equal(contacts[0].touchdownId, contacts[1].touchdownId);
+  tracker.stop();
+  tracker.follow('third'); tracker.stop();
+  tracker.follow('third'); assert.equal(tracker.status().planId, null);
+  tracker.start('third', { simulator: 'auto', xplanePort: 49000 });
+  assert.equal(tracker.status().planId, 'third');
+  tracker.stop();
+  tracker.follow('second'); assert.equal(tracker.status().planId, null);
+});
 test('tracking locks to one simulator, saves contacts on the correct plan and preserves them during filing', t => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'flight-dispatch-telemetry-'));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
@@ -41,10 +69,12 @@ test('tracking locks to one simulator, saves contacts on the correct plan and pr
   for (let ms = 3100; ms <= 8200; ms += 100) callbacks.xplane(sample(ms, { onGround: true, agl: 0, groundspeed: 0, parkingBrake: true }));
   const saved = store.getPlan(plan.id);
   assert.ok(saved.landing.completedAt);
+  assert.ok(saved.actual.on); assert.ok(saved.actual.in);
   assert.equal(saved.filing.status, 'filed');
   store.savePlan({ ...plan, landing: { ...saved.landing, contacts: [], completedAt: null } });
   assert.equal(store.getPlan(plan.id).landing.contacts.length, 1);
   assert.ok(store.getPlan(plan.id).landing.completedAt);
+  assert.deepEqual(store.getPlan(plan.id).actual, saved.actual);
   assert.equal(tracker.status().planId, null);
   assert.equal(connections.xplane.closed, true);
   assert.ok(events.some(event => event.phase === 'complete' && event.plan?.landing.completedAt));

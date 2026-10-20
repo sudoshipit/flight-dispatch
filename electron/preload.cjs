@@ -7,7 +7,7 @@ contextBridge.exposeInMainWorld('dispatch', {
   refresh: invoke('dispatch:refresh'), file: invoke('dispatch:file'),
   open: invoke('dispatch:open'), login: invoke('dispatch:login'),
   companionStatus: invoke('dispatch:companion-status'), companionSetup: invoke('dispatch:companion-setup'),
-  startTracking: invoke('dispatch:telemetry-start'), stopTracking: invoke('dispatch:telemetry-stop'),
+  startTracking: invoke('dispatch:telemetry-start'), followFlight: invoke('dispatch:telemetry-follow'), stopTracking: invoke('dispatch:telemetry-stop'),
   onTelemetry: (callback) => { const handler = (_event, value) => callback(value); ipcRenderer.on('dispatch:telemetry', handler); return () => ipcRenderer.removeListener('dispatch:telemetry', handler); },
   onProgress: (callback) => { const handler = (_event, value) => callback(value); ipcRenderer.on('dispatch:progress', handler); return () => ipcRenderer.removeListener('dispatch:progress', handler); },
 });

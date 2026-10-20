@@ -29,6 +29,12 @@ try {
       win.showInactive();
     });
     const localRequire = process.getBuiltinModule('node:module').createRequire(app.getAppPath() + '/package.json');
+    const { Telemetry } = localRequire('./electron/telemetry.mjs');
+    const startTracking = Telemetry.prototype.start;
+    Telemetry.prototype.start = function(...args) {
+      this.adapters = { simconnect: () => ({ close() {} }), xplane: () => ({ close() {} }) };
+      return startTracking.apply(this, args);
+    };
     const { Services } = localRequire('./electron/services.mjs');
     let generated = false, staticId = '';
     globalThis.__dispatchTest = { generations: 0, filingPages: 0 };

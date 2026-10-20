@@ -1,10 +1,12 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowDown, ArrowLeftRight, ArrowRight, ArrowUpRight, Check, CheckCheck, ChevronRight, CircleAlert, Clipboard, Clock3, CloudSun, ExternalLink, FileText, Gauge, History, Link2, LoaderCircle, MapPin, Plane, PlaneLanding, PlaneTakeoff, Plus, Radio, RefreshCw, Settings2, ShieldCheck, SlidersHorizontal, Trash2, Users, X } from 'lucide-react';
 import { DEFAULT_SETTINGS, DEFAULT_RULES, resolveCostIndex, flightInputFromPlan } from '../shared/domain.mjs';
 import type { Aircraft, Catalog, CompanionStatus, Details, FlightInput, Gate, Plan, Progress, Result, Settings, TelemetryState, Weather } from './types';
 import OfpDetails, { ProcedureDetails } from './OfpDetails';
 import RouteMap from './RouteMap';
 import LandingCard from './LandingCard';
+import LandingPopup from './LandingPopup';
+import LiveTimings from './LiveTimings';
 import './briefing.css';
 
 const fmt = (value: number | null | undefined) => value == null ? '—' : value.toLocaleString();
@@ -24,6 +26,8 @@ export default function App() {
   const [catalog, setCatalog] = useState<Catalog | null>(null);
   const [history, setHistory] = useState<Plan[]>([]);
   const [telemetry, setTelemetry] = useState<TelemetryState | null>(null);
+  const [landingPopup, setLandingPopup] = useState<Plan | null>(null);
+  const lastTouchdown = useRef('');
   const [plan, setPlan] = useState<Plan | null>(null);
   const [details, setDetails] = useState<Details | null>(null);
   const [busy, setBusy] = useState('');
@@ -46,12 +50,25 @@ export default function App() {
         const updated = state.plan;
         setHistory(old => [updated, ...old.filter(item => item.id !== updated.id)].slice(0, 30));
         setPlan(old => old?.id === updated.id ? updated : old);
+        if (state.touchdownId && state.touchdownId !== lastTouchdown.current && updated.landing?.contacts.length) {
+          lastTouchdown.current = state.touchdownId;
+          setLandingPopup(updated);
+        } else {
+          // Keep a visible popup current when MSFS refines the rate a frame later,
+          // a bounce is recorded, or the aircraft parks. Never reopen on refinement.
+          setLandingPopup(old => old?.id === updated.id ? updated : old);
+        }
         if (state.phase === 'complete') notify(`${updated.callsign}: flight complete. Landing summary saved in Recent flights.`);
       }
     });
     const timer = setInterval(() => setNow(new Date()), 1000);
     return () => { unsubscribe(); untrack(); clearInterval(timer); };
   }, []);
+  useEffect(() => {
+    if (page !== 'briefing' || !plan?.id || !window.dispatch) return;
+    // The main process owns tracking so it continues across page changes.
+    void window.dispatch.followFlight(plan.id).then(setTelemetry).catch(e => notify(e.message, true));
+  }, [page, plan?.id]);
   useEffect(() => { if (!toast) return; const timer = setTimeout(() => setToast(null), toast.error ? 14000 : 4500); return () => clearTimeout(timer); }, [toast]);
   const open = (url: string) => window.dispatch.open(url).catch(e => notify(e.message, true));
   const accept = ({ plan: p, details: d }: Result) => { setPlan(p); setDetails(d); setHistory(h => [p, ...h.filter(item => item.id !== p.id)].slice(0, 30)); setPage('briefing'); };
@@ -128,6 +145,7 @@ export default function App() {
         <ProcedureDetails plan={plan}/>
         <p className="variant-note">Airframe · {plan.variantName || plan.aircraftName} {plan.variantId && plan.variantId !== plan.aircraft && <span>· {plan.variantId}</span>}</p><section className="stats-row"><Stat label="CRUISE ALTITUDE" value={`FL${Math.round(plan.altitude / 100)}`} unit={`${fmt(plan.altitude)} ft`}/><Stat label="DESTINATION ELEVATION" value={fmt(details?.airports[plan.destination.icao]?.elevation ?? plan.destination.elevation)} unit="ft MSL"/><Stat label="COST INDEX" value={fmt(plan.costIndex)} unit={plan.aircraft}/><Stat label="PASSENGERS" value={fmt(plan.passengers)} unit="on board"/></section>
         {!plan.landing?.contacts.length && <LandingCard key={plan.id} plan={plan} telemetry={telemetry} start={config => action('tracking', async () => { setTelemetry(await window.dispatch.startTracking(plan.id, config)); })} stop={() => action('tracking', async () => { setTelemetry(await window.dispatch.stopTracking()); })}/>}
+        <LiveTimings plan={plan} telemetry={telemetry} now={now.getTime()}/>
         <OfpDetails plan={plan}/>
         <section className="card route-card"><div className="card-title"><h2>Flight route</h2><button className="text-button" onClick={() => navigator.clipboard.writeText(plan.route).then(() => notify('Route copied.')).catch(() => notify('Could not copy route.', true))}><Clipboard size={13}/> Copy route</button></div><p className="route-text">{plan.route}</p>{plan.requestedRoute && <p className="navlog-note">Planned by SimBrief from your custom route. The generated route above is used for filing.</p>}<div className="route-meta"><span>Alternate <b>{plan.alternate || 'None'}</b></span><span>True airspeed <b>{plan.speed} kt</b></span><span>Fuel endurance <b>{duration(plan.endurance)}</b></span><span>Block fuel <b>{fmt(plan.blockFuel)} {plan.units}</b></span></div></section>
         <div className="filing-bar"><div><ShieldCheck size={22}/><div><strong>{plan.filing.status === 'filed' ? 'VATSIM confirmed your flight plan' : 'VATSIM filing'}</strong><p>{plan.filing.message}</p><small>IFR · Equipment L · Transponder blank · Voice · Other details blank</small></div></div><button className="secondary-button" disabled={!!busy} onClick={() => action('file', async () => accept(await window.dispatch.file(plan.id)))}>{['filed','unconfirmed'].includes(plan.filing.status) ? 'Review on VATSIM' : 'File automatically on VATSIM'}<ArrowUpRight size={15}/></button></div>
@@ -139,6 +157,11 @@ export default function App() {
       </div>
     </main>
     {['generate','file','variants'].includes(busy) && <div className="dispatch-progress-backdrop"><section className="dispatch-progress-dialog progress" role="dialog" aria-modal="true" aria-label="Dispatch progress"><div className="progress-plane"><PlaneTakeoff size={32}/></div><div className="eyebrow green">{busy === 'variants' ? 'YOUR SAVED AIRFRAMES' : 'YOUR FLIGHT IS COMING TOGETHER'}</div><h2>{busy === 'variants' ? 'Syncing airframes' : busy === 'file' ? `Filing ${plan?.callsign || callsign}` : callsign}</h2>{busy === 'generate' && <p className="progress-route">{input.origin} <ArrowRight size={16}/> {input.destination}</p>}<div className="progress-current" role="status"><LoaderCircle className="spin" size={20}/><span>{progress?.message || 'Connecting to your flight services…'}</span></div>{busy === 'generate' && <ol className="dispatch-stages"><li className={['generated','connecting','filing','vatsim-sign-in','verification','complete','filing-failed'].includes(progress?.stage || '') ? 'done' : ''}>SimBrief plan</li><li className={progress?.stage === 'complete' && plan?.filing.status === 'filed' ? 'done' : ''}>VATSIM filing</li><li>Flight briefing</li></ol>}<p className="helper">{['vatsim-sign-in','verification'].includes(progress?.stage || '') ? 'Keep your VATSIM browser open. You only need to complete sign-in or verification; filing resumes automatically.' : progress?.stage === 'sign-in' ? 'Finish signing in to SimBrief, then close its dedicated browser windows. Generation resumes automatically.' : 'Working in the background. No filing button clicks are needed.'}</p><button className="secondary-button" onClick={() => { void window.dispatch.cancel(); notify('Stopping automation. Any submitted flight plan remains on VATSIM.'); }} autoFocus>Cancel</button></section></div>}
+    {landingPopup && !['generate','file','variants'].includes(busy) && <LandingPopup plan={landingPopup} dismiss={() => setLandingPopup(null)} viewBriefing={() => {
+      const landed = landingPopup;
+      setPlan(landed); setPage('briefing'); setLandingPopup(null); setDetails(null); window.scrollTo(0, 0);
+      void window.dispatch.refresh(landed.id).then(value => setDetails(value as Details)).catch(e => notify(e.message, true));
+    }}/>}
     {toast && <div className={`toast ${toast.error ? 'error-toast' : ''}`} role={toast.error ? 'alert' : 'status'}>{toast.error ? <CircleAlert size={18}/> : <Check size={18}/>}<span>{toast.message}</span><button className="icon-button" aria-label="Dismiss notification" onClick={() => setToast(null)}><X size={16}/></button></div>}
   </div>;
 }

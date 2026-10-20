@@ -4,16 +4,33 @@ import { connectSimConnect, connectXPlane } from './simulators.mjs';
 export class Telemetry {
   constructor(store, emit, adapters = { simconnect: connectSimConnect, xplane: connectXPlane }) {
     this.store = store; this.emit = emit; this.adapters = adapters; this.connections = {};
-    this.state = { status: 'idle', message: 'Start tracking before takeoff to record your landing.', planId: null, callsign: '', simulator: '', phase: 'waiting' };
+    this.stoppedPlans = new Set();
+    this.state = { status: 'idle', message: 'Open a briefing to detect your simulator and record landing rate automatically.', planId: null, callsign: '', simulator: '', phase: 'waiting' };
   }
   status() { return { ...this.state, config: this.store.read('telemetry-settings', { simulator: 'auto', xplanePort: 49000 }) }; }
+  follow(id, { replaceWaiting = false } = {}) {
+    const plan = this.store.getPlan(String(id));
+    if (this.stoppedPlans.has(plan.id) || plan.landing?.contacts.length || this.state.planId === plan.id) return this.status();
+    if (this.state.planId) {
+      // A new dispatch may replace a briefing that never connected. Browsing
+      // history must never take a recording away from the flight being flown.
+      if (!replaceWaiting || this.selected || this.recorder?.contacts.length) return this.status();
+      this.stop(false);
+    }
+    const saved = this.store.read('telemetry-settings', {});
+    return this.start(plan.id, {
+      simulator: ['auto', 'simconnect', 'xplane'].includes(saved.simulator) ? saved.simulator : 'auto',
+      xplanePort: Number.isInteger(saved.xplanePort) && saved.xplanePort >= 1024 && saved.xplanePort <= 65535 ? saved.xplanePort : 49000,
+    });
+  }
   start(id, config = {}) {
     if (this.state.planId) throw new Error(`Stop tracking ${this.state.callsign} before starting another flight.`);
     if (!['auto', 'simconnect', 'xplane'].includes(config.simulator) || !Number.isInteger(config.xplanePort) || config.xplanePort < 1024 || config.xplanePort > 65535) throw new Error('Choose a simulator and a valid X-Plane UDP port (1024–65535).');
     const plan = this.store.getPlan(String(id));
     if (plan.landing?.contacts.length) throw new Error('This flight already has landing results. Generate or import a new flight to record another session.');
     this.store.write('telemetry-settings', config);
-    this.recorder = new LandingRecorder(); this.startedAt = new Date().toISOString(); this.plan = plan;
+    this.stoppedPlans.delete(plan.id);
+    this.recorder = new LandingRecorder(plan.actual); this.startedAt = new Date().toISOString(); this.plan = plan;
     this.selected = null; this.lastReceived = 0; this.lastEmit = 0; this.saveError = false;
     const generation = this.generation = (this.generation || 0) + 1;
     this.state = { status: 'waiting', message: 'Looking for your simulator. Load a flight; tracking starts automatically.', planId: plan.id, callsign: plan.callsign, simulator: '', phase: 'waiting' };
@@ -26,6 +43,11 @@ export class Telemetry {
             if (this.generation !== generation) return;
             if (!Number.isFinite(sample.at)) { if (this.selected === name) this.recorder.resetContinuity(); return; }
             if (!this.selected) {
+              // Ignore a simulator's menu, replay or paused feed while detecting
+              // which simulator is actually providing a live flight.
+              if (sample.paused || sample.replay || sample.slew || sample.running === false ||
+                  ![sample.simTime, sample.agl, sample.verticalSpeed, sample.groundspeed, sample.lat, sample.lon].every(Number.isFinite) ||
+                  typeof sample.onGround !== 'boolean') return;
               this.selected = name;
               for (const [other, connection] of Object.entries(this.connections)) if (other !== name) connection.close();
             }
@@ -60,27 +82,34 @@ export class Telemetry {
     this.state.phase = this.recorder.phase;
     this.state.status = sample.paused || sample.replay || sample.slew || sample.running === false ? 'paused' : 'tracking';
     this.state.message = this.state.status === 'paused' ? 'Simulator paused, loading or in replay. Recording suspended.' :
-      this.recorder.phase === 'airborne' ? 'Airborne. Recording touchdown automatically.' :
+      this.recorder.phase === 'airborne' ? 'Airborne. Timing your flight and recording touchdown automatically.' :
       this.recorder.phase === 'landed' ? 'Touchdown recorded. Park and set the parking brake, or finish tracking.' :
-      this.recorder.phase === 'complete' ? 'Flight complete. Landing results saved.' : 'Connected. Waiting for sustained flight before recording a landing.';
+      this.recorder.phase === 'complete' ? 'Flight complete. Landing results and timings saved.' :
+      this.recorder.actual.phase === 'taxi-out' ? 'Taxiing out. Timing your flight and watching for takeoff.' : 'Connected. Waiting for off-block movement and takeoff.';
     let plan;
     if (changed) {
       try { plan = this.save(this.recorder.phase === 'complete'); this.saveError = false; }
       catch { this.saveError = true; }
     }
-    if (this.saveError) { this.state.message = 'Landing detected, but saving failed. Keep the app open and try Finish tracking again.'; this.state.status = 'error'; }
-    if (changed || Date.now() - this.lastEmit > 500) { this.lastEmit = Date.now(); this.emit({ ...this.status(), plan }); }
+    if (this.saveError) { this.state.message = 'Flight recording could not be saved. Keep the app open and try stopping or finishing tracking again.'; this.state.status = 'error'; }
+    if (changed || Date.now() - this.lastEmit > 500) {
+      this.lastEmit = Date.now();
+      // A stable contact identifier distinguishes new touchdowns from rate
+      // refinements and parking completion, so the UI only opens once per contact.
+      this.emit({ ...this.status(), plan, touchdownId: changed && this.recorder.contacts.length ? `${this.state.planId}:${this.recorder.contacts.at(-1).time}` : undefined });
+    }
     if (this.recorder.phase === 'complete' && plan) this.stop(false);
   }
   save(complete) {
     const plan = this.store.getPlan(this.state.planId);
     const landing = { startedAt: this.startedAt, completedAt: complete ? new Date().toISOString() : null, simulator: this.state.simulator,
       contacts: this.recorder.contacts.map(contact => ({ ...contact, destinationDistanceNm: distanceNm(contact, this.plan.destination) })) };
-    return this.store.savePlan({ ...plan, landing }, { updateLanding: true });
+    return this.store.savePlan({ ...plan, ...(landing.contacts.length ? { landing } : {}), actual: { ...this.recorder.actual } }, { updateLanding: true, updateActual: true });
   }
   stop(finish = true) {
     let plan;
-    if (finish && this.recorder?.contacts.length && this.state.planId) plan = this.save(true);
+    if (finish && this.recorder && this.state.planId) plan = this.save(Boolean(this.recorder.contacts.length));
+    if (this.state.planId) this.stoppedPlans.add(this.state.planId);
     this.generation = (this.generation || 0) + 1;
     clearInterval(this.timer);
     for (const connection of Object.values(this.connections)) connection.close();

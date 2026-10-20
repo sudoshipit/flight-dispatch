@@ -25,6 +25,16 @@ try {
   await app.evaluate(({app}, fixture) => {
     const localRequire = process.getBuiltinModule('node:module').createRequire(app.getAppPath() + '/package.json');
     localRequire('./electron/services.mjs').Services.prototype.ofp = async () => fixture;
+    // Install fixtures before automatic tracking can start when a briefing opens.
+    const { Telemetry } = localRequire('./electron/telemetry.mjs');
+    const start = Telemetry.prototype.start;
+    Telemetry.prototype.start = function(...args) {
+      this.adapters = {
+        simconnect: () => ({ close() {} }),
+        xplane: sample => { globalThis.__sample = sample; return { close() {} }; },
+      };
+      return start.apply(this, args);
+    };
   }, parseOFP(ofp));
   const errors=[]; page.on('pageerror',error=>errors.push(error.message));
   await expect(page.getByRole('heading',{name:"Let's get you airborne."})).toBeVisible();
@@ -164,31 +174,67 @@ try {
   const filed = JSON.parse(fs.readFileSync(path.join(userData,'data/history.json'),'utf8'))[0];
   expect(filed.filing.status).toBe('filed');
   expect(filed.filing.message).toContain('Local test only.');
-  // Inject local telemetry through the same recorder; never connect to a live sim.
-  await app.evaluate(({app}) => {
-    const localRequire = process.getBuiltinModule('node:module').createRequire(app.getAppPath() + '/package.json');
-    const {Telemetry} = localRequire('./electron/telemetry.mjs');
-    const start = Telemetry.prototype.start;
-    Telemetry.prototype.start = function(...args) {
-      this.adapters = { xplane: sample => { globalThis.__sample = sample; return { close() {} }; } };
-      return start.apply(this,args);
-    };
-  });
-  await page.getByLabel('Tracking simulator').selectOption('xplane');
-  await page.getByRole('button',{name:'Track this flight'}).click();
+  // Opening the briefing already started detection; no tracking click is needed.
   await expect(page.getByRole('button',{name:'Stop tracking'})).toBeVisible();
+  const plannedDeparture = Date.parse(filed.ofp.timing.out.estimated || filed.offBlock);
+  await page.clock.setFixedTime(new Date(plannedDeparture-30000));
+  const countdown = page.getByRole('region',{name:'Off-block countdown'});
+  await expect(countdown).toContainText('00:00:30');
+  await page.clock.setFixedTime(new Date(plannedDeparture-29000));
+  await expect(countdown).toContainText('00:00:29');
+  await countdown.screenshot({path:'artifacts/offblock-countdown.png'});
+  await page.clock.setFixedTime(new Date(plannedDeparture+1000));
+  await expect(countdown).toContainText('OFF BLOCKS OVERDUE');
+  await expect(countdown).toContainText('+00:00:01');
+  await page.clock.setFixedTime(new Date(filed.offBlock));
+  const telemetryBase = await page.evaluate(() => Date.now());
+  await app.evaluate((_, base) => {
+    globalThis.__telemetryBase = base;
+    for (let ms = 0; ms <= 4000; ms += 100) globalThis.__sample({ at:base+ms, simTime:ms/1000, simulator:'Local telemetry fixture',
+      onGround:true, agl:0, verticalSpeed:0, groundspeed:ms<1000?0:10, lat:42.94, lon:-78.73, parkingBrake:ms<1000 });
+  }, telemetryBase);
+  const timings = page.getByRole('region',{name:'Live flight timings'});
+  await expect(timings).toContainText('Taxiing out');
+  await expect(countdown).toHaveCount(0);
+  await page.clock.setFixedTime(new Date(telemetryBase+6500));
+  await expect(timings.getByRole('row').filter({hasText:'Taxi-out'})).toContainText('00:00:05');
+  await page.getByRole('button',{name:'Settings',exact:true}).click();
   await app.evaluate(() => {
-    const base = Date.now();
-    for (let ms = 0; ms <= 8200; ms += 100) globalThis.__sample({ at:base+ms, simTime:ms/1000, simulator:'Local telemetry fixture',
-      onGround:ms>=3100, agl:ms>=3100?0:100, verticalSpeed:-180, groundspeed:ms>=3200?0:130, lat:42.94, lon:-78.73, pitch:3, bank:1, parkingBrake:ms>=3200 });
+    for (let ms = 4100; ms <= 7200; ms += 100) globalThis.__sample({ at:globalThis.__telemetryBase+ms, simTime:ms/1000, simulator:'Local telemetry fixture',
+      onGround:ms>=7200, agl:ms>=7200?0:100, verticalSpeed:-180, groundspeed:130, lat:42.94, lon:-78.73, pitch:3, bank:1 });
   });
+  const popup = page.getByRole('dialog',{name:'Your landing rate'});
+  await expect(popup).toContainText('-180');
+  await expect(popup).toContainText('Estimated');
+  const popupBounds = await popup.boundingBox(), viewport = await page.evaluate(() => ({width:document.documentElement.clientWidth,height:innerHeight}));
+  expect(Math.abs(popupBounds.x + popupBounds.width/2 - viewport.width/2)).toBeLessThan(2);
+  expect(Math.abs(popupBounds.y + popupBounds.height/2 - viewport.height/2)).toBeLessThan(2);
+  await page.screenshot({path:'artifacts/landing-popup.png'});
+  await popup.getByRole('button',{name:'View briefing'}).click();
+  await expect(popup).toHaveCount(0);
+  await expect(timings).toContainText('Taxiing in');
+  // A native measurement arriving a frame later updates the page, not a dismissed popup.
+  await app.evaluate(() => {
+    for (let ms = 7300; ms <= 12400; ms += 100) globalThis.__sample({ at:globalThis.__telemetryBase+ms, simTime:ms/1000, simulator:'Local telemetry fixture',
+      onGround:true, agl:0, verticalSpeed:0, touchdownVelocity:3, groundspeed:0, lat:42.94, lon:-78.73, pitch:3, bank:1, parkingBrake:true });
+  });
+  await expect(popup).toHaveCount(0);
+  await expect(timings).toContainText('Flight complete');
+  await expect(timings.getByRole('row').filter({hasText:'Taxi-out'})).toContainText('00:00:03');
+  await expect(timings.getByRole('row').filter({hasText:'Air time'})).toContainText('00:00:03');
   await expect(page.getByRole('region',{name:'Landing summary'})).toContainText('-180');
   await expect(page.getByRole('region',{name:'Landing summary'})).toContainText('Flight complete');
-  await expect(page.getByRole('region',{name:'Landing summary'})).toContainText('Estimated');
+  await expect(page.getByRole('region',{name:'Landing summary'})).toContainText('Simulator touchdown measurement');
   await page.getByRole('region',{name:'Landing summary'}).screenshot({path:'artifacts/landing-summary.png'});
   const landed = JSON.parse(fs.readFileSync(path.join(userData,'data/history.json'),'utf8'))[0];
   expect(landed.landing.contacts[0].rateFpm).toBe(-180);
   expect(landed.landing.completedAt).toBeTruthy();
+  expect(landed.actual.out).toBe(new Date(telemetryBase+1000).toISOString());
+  expect(landed.actual.off).toBe(new Date(telemetryBase+4100).toISOString());
+  expect(landed.actual.on).toBe(new Date(telemetryBase+7200).toISOString());
+  expect(landed.actual.in).toBe(new Date(telemetryBase+7300).toISOString());
+  await timings.screenshot({path:'artifacts/live-timings.png'});
+  await page.clock.setFixedTime('2027-01-01T01:05:42Z');
 
   await page.getByRole('button',{name:'Recent flights 1'}).click();
   await page.getByRole('button',{name:'Import latest',exact:true}).click();
@@ -196,6 +242,7 @@ try {
   const imported = JSON.parse(fs.readFileSync(path.join(userData,'data/history.json'),'utf8'))[0];
   await expect(page.locator('.callsign-link')).toHaveText(imported.callsign);
   expect(imported.landing.contacts[0].rateFpm).toBe(-180);
+  expect(imported.actual).toEqual(landed.actual);
   await expect(page.getByRole('region',{name:'Landing summary'})).toContainText('Flight complete');
   await app.evaluate(({BrowserWindow}) => BrowserWindow.getAllWindows()[0].setSize(1380,940));
   await page.evaluate(() => scrollTo(0,0));

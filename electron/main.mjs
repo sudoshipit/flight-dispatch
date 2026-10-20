@@ -133,16 +133,23 @@ async function generate(input) {
     }
     if (!plan) throw new Error(operation.cancelled ? 'Dispatch cancelled. Any plan generated on SimBrief is still available there.' : 'Timed out waiting for a matching plan. Check SimBrief, then use Import latest.');
     if (!win.isDestroyed()) await win.close();
+    telemetry.follow(plan.id, { replaceWaiting: true });
     emit('generated', 'Flight plan generated. Preparing your briefing.', { plan });
     const enrichment = services.enrich(plan);
     if (store.settings().autoFile && !operation.cancelled) plan = await filePlan(plan, operation, true);
     const details = await enrichment;
+    plan = store.getPlan(plan.id);
     emit('complete', plan.filing.status === 'filed' ? 'Flight plan filed. Your briefing is ready.' : 'Your briefing is ready. VATSIM filing is incomplete.', { plan, details });
     return { plan, details };
   } finally { active = null; await browser.close(); }
 }
 function allowedExternal(value) {
   try { const u = new URL(value); return u.protocol === 'https:' && !u.username && !u.password && ['dispatch.simbrief.com','www.simbrief.com','my.vatsim.net','www.flightaware.com','flightaware.com','aviationstack.com','www.southwest.com','www.delta.com'].includes(u.hostname); } catch { return false; }
+}
+async function briefingResult(plan) {
+  const details = await services.enrich(plan);
+  // Recording can advance while weather/gate lookups are pending.
+  return { plan: store.getPlan(plan.id), details };
 }
 
 async function start() {
@@ -171,6 +178,7 @@ function handle(channel, fn) {
 }
 handle('bootstrap', () => ({ settings: store.publicSettings(), history: store.read('history', []), version: app.getVersion(), telemetry: telemetry.status() }));
 handle('telemetry-start', (id, config) => telemetry.start(id, config));
+handle('telemetry-follow', id => telemetry.follow(id));
 handle('telemetry-stop', () => telemetry.stop());
 handle('catalog', refresh => services.aircraft(refresh === true));
 handle('airport-positions', ids => services.airportPositions(ids));
@@ -180,7 +188,8 @@ handle('import', async () => {
   const imported = await services.ofp();
   const existing = store.read('history', []).find(p => p.id === imported.id && p.raw === imported.raw && p.offBlock === imported.offBlock);
   const plan = store.savePlan(existing ? { ...imported, filing: existing.filing, requestedRoute: existing.requestedRoute, planningInput: existing.planningInput, variantId: existing.variantId, variantName: existing.variantName, landing: existing.landing } : imported);
-  return { plan, details: await services.enrich(plan) };
+  telemetry.follow(plan.id, { replaceWaiting: true });
+  return briefingResult(plan);
 });
 handle('sync-airframes', async base => {
   if (!store.settings().simbriefId) throw new Error('Enter your SimBrief Pilot ID or username in Settings and save preferences first.');
@@ -214,9 +223,9 @@ handle('refresh', async (id, kind) => { const plan = store.getPlan(String(id)); 
 handle('file', async id => {
   if (active) throw new Error('Another dispatch is in progress.');
   const plan = store.getPlan(String(id));
-  if (plan.filing.status === 'filed' || plan.filing.status === 'unconfirmed') { await openVatsim(vatsimUrl(plan)); return { plan, details: await services.enrich(plan) }; }
+  if (plan.filing.status === 'filed' || plan.filing.status === 'unconfirmed') { await openVatsim(vatsimUrl(plan)); return briefingResult(plan); }
   const operation = { cancelled: false }; active = operation;
-  try { const filed = await filePlan(plan, operation, true); return { plan: filed, details: await services.enrich(filed) }; }
+  try { const filed = await filePlan(plan, operation, true); return await briefingResult(filed); }
   finally { active = null; await browser.close(); }
 });
 handle('open', async url => {

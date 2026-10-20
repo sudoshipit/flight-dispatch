@@ -9,8 +9,16 @@ export function distanceNm(a, b) {
 
 // Read-only telemetry. Require observed flight before recognizing ground contact.
 export class LandingRecorder {
-  constructor() { this.contacts = []; this.phase = 'waiting'; this.resetContinuity(); }
-  resetContinuity() { this.previous = null; this.airSince = null; this.armed = false; this.parkedSince = null; this.pending = null; if (this.phase !== 'complete') this.phase = 'waiting'; }
+  constructor(actual = {}) {
+    this.contacts = []; this.phase = 'waiting';
+    this.actual = { out: null, off: null, on: null, in: null, phase: 'waiting', lastObservedAt: null, ...actual };
+    this.resetContinuity();
+  }
+  resetContinuity() {
+    this.previous = null; this.airSince = null; this.armed = false; this.parkedSince = null; this.pending = null;
+    this.groundReady = false; this.movingSince = null; this.takeoffAt = null;
+    if (this.phase !== 'complete') this.phase = 'waiting';
+  }
   ingest(sample) {
     const s = sample;
     if (!s || ![s.at, s.simTime, s.agl, s.verticalSpeed, s.groundspeed, s.lat, s.lon].every(finite) || typeof s.onGround !== 'boolean' ||
@@ -28,6 +36,7 @@ export class LandingRecorder {
       }
     }
     let changed = false;
+    this.actual.lastObservedAt = new Date(s.at).toISOString();
     // MSFS can update its touchdown-specific SimVar one frame after ground contact.
     if (this.pending && s.at - this.pending.at <= 600 && s.onGround &&
         finite(s.touchdownVelocity) && s.touchdownVelocity !== this.pending.baseline && Math.abs(s.touchdownVelocity) < 200) {
@@ -38,9 +47,27 @@ export class LandingRecorder {
     }
     if (!s.onGround) {
       this.parkedSince = null;
+      if (previous?.onGround) this.takeoffAt = s.at;
       this.airSince ??= s.at;
-      if (s.at - this.airSince >= 3000 && s.agl >= 30) { this.armed = true; this.phase = 'airborne'; }
+      if (s.at - this.airSince >= 3000 && s.agl >= 30) {
+        this.armed = true; this.phase = 'airborne';
+        if (this.actual.phase !== 'airborne') {
+          // Only timestamp a takeoff we actually observed, never a midair spawn.
+          if (!this.actual.off && this.takeoffAt != null) this.actual.off = new Date(this.takeoffAt).toISOString();
+          this.actual.on = null; this.actual.in = null; this.actual.phase = 'airborne'; changed = true;
+        }
+      }
     } else {
+      if (!this.actual.off && !this.contacts.length) {
+        if (s.groundspeed < 1) this.groundReady = true;
+        if (this.groundReady && s.groundspeed >= 1 && !s.parkingBrake) {
+          this.movingSince ??= s.at;
+          if (!this.actual.out && s.at - this.movingSince >= 2000) {
+            this.actual.out = new Date(this.movingSince).toISOString();
+            this.actual.phase = 'taxi-out'; changed = true;
+          }
+        } else this.movingSince = null;
+      }
       const latest = this.contacts.at(-1);
       const bounce = latest && s.at - latest.at <= 10000 && previous?.agl < 30 && this.phase === 'landed';
       if (previous && !previous.onGround && (this.armed || bounce)) {
@@ -58,11 +85,16 @@ export class LandingRecorder {
         this.contacts = this.contacts.slice(-50);
         this.pending = native ? null : { at: s.at, baseline: previous.touchdownVelocity };
         this.armed = false; this.phase = 'landed'; changed = true;
+        if (!bounce) this.actual.on = new Date(s.at).toISOString();
+        this.actual.phase = 'taxi-in';
       }
       this.airSince = null;
       if (this.phase === 'landed' && s.groundspeed < 3 && s.parkingBrake) {
         this.parkedSince ??= s.at;
-        if (s.at - this.parkedSince >= 5000) { this.phase = 'complete'; changed = true; }
+        if (s.at - this.parkedSince >= 5000) {
+          this.phase = 'complete'; changed = true;
+          this.actual.in = new Date(this.parkedSince).toISOString(); this.actual.phase = 'complete';
+        }
       } else this.parkedSince = null;
     }
     this.previous = s;

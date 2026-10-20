@@ -2,7 +2,7 @@
 
 A Windows desktop flight planning companion for SimBrief and VATSIM. Built with Electron, React, and TypeScript. All settings and flight history stay on your computer.
 
-> **v1.0.0 rebuilt October 20, 2026.** The installer and portable downloads include the enhanced route explorer, simulator landing recorder, earlier SID/STAR section, UTC departure defaults, and removal of password-manager setup. If you downloaded v1.0.0 before this date, download it again to get these changes; the version number remains 1.0.0.
+> **v1.0.0 rebuilt October 20, 2026.** The current downloads include automatic simulator detection, a centered landing-rate popup, live actual-versus-planned timings and an off-block countdown, along with the enhanced route explorer and earlier updates. If these controls are missing from your briefing, download again; the version number remains 1.0.0.
 
 ## Install and set up
 
@@ -26,7 +26,7 @@ Choose one build from `release/`:
 | [Flight-Dispatch-Setup-1.0.0.exe](https://github.com/sudoshipit/flight-dispatch/releases/download/v1.0.0/Flight-Dispatch-Setup-1.0.0.exe) | Run the installer, choose an installation directory, then open the desktop shortcut. |
 | [Flight-Dispatch-1.0.0-Portable.exe](https://github.com/sudoshipit/flight-dispatch/releases/download/v1.0.0/Flight-Dispatch-1.0.0-Portable.exe) | Save the executable in a folder you want to keep and run it directly. No installation is required. |
 
-Close older copies of Flight Dispatch first. Check the version at the bottom of the app's sidebar: it should say **v1.0.0**. The October 20 rebuild adds **Route explorer** and **Flight recorder** to a flight briefing. Both builds store settings/history in your Windows profile rather than beside the executable. These builds are unsigned; this project does not include a code-signing certificate. Checksums are in the release's **SHA256SUMS.txt**, and **BUILD-INFO.json** identifies the exact source commit and build time.
+Close older copies of Flight Dispatch first. Check the version at the bottom of the app's sidebar: it should say **v1.0.0**. The current rebuild includes **Live flight timeline**, an off-block countdown and automatic **Flight recorder** detection in a briefing. Both builds store settings/history in your Windows profile rather than beside the executable. These builds are unsigned; this project does not include a code-signing certificate. Checksums are in the release's **SHA256SUMS.txt**, and **BUILD-INFO.json** identifies the exact source commit and build time.
 
 ### 2. Connect SimBrief
 
@@ -122,16 +122,29 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 - Destination elevation and designated CTAF frequencies from VATSIM AIP. SimBrief elevation is a fallback. Multiple designated CTAFs are preserved; missing CTAFs are not guessed.
 - Optional gates from Aviationstack or FlightAware AeroAPI. Matches callsign, route, and date. An absent gate can fall back to a previously observed gate for the same flight and route, clearly labeled with source/date. Saved observations expire after 30 days.
 - A 15-minute gate-request cache, request deduplication, and a configurable local monthly cap (90 by default). No paid historical endpoints are called. The cap covers this app only; other apps using the same key count against the provider's quota separately.
-- Optional simulator landing recorder with automatic touchdown detection, ft/min, UTC timestamp, groundspeed, pitch/bank, repeated contacts and distance from the planned destination. Results are saved with the briefing and shown at its top and in Recent flights.
+- Automatic simulator detection and landing recording, with ft/min, UTC timestamp, groundspeed, pitch/bank, repeated contacts and distance from the planned destination. Touchdown opens a centered popup on any app page, and the result stays at the top of the briefing and in Recent flights.
+- Live actual-versus-planned flight timeline: off-block, takeoff, touchdown and on-block UTC times; taxi-out, air time, taxi-in and total block durations. Running windows update every second, with remaining/over-plan time and saved final differences.
 - Local history for the latest 30 generated/imported briefings, persistent preferences, and encrypted API keys using Electron safeStorage / Windows encryption.
 
 ## Landing recorder setup
 
-1. Generate or import the flight you are about to fly. In its briefing, find **Flight recorder** and choose **Auto detect** or your simulator.
-2. Start/load a live simulator flight, then select **Track this flight** before takeoff. The app waits for the simulator if necessary. Keep Flight Dispatch running; switching app pages does not stop tracking. Only one briefing is tracked at a time.
-3. After at least three seconds of observed airborne telemetry and reaching 30 ft AGL, the recorder arms. Touchdown automatically creates **Your landing** at the top of the briefing. Repeated contacts within ten seconds and below 30 ft are marked as bounces; sustained flight re-arms for another approach.
-4. After landing, remain below 3 kt with the parking brake set for five seconds to complete automatically. If an add-on does not report its parking brake, select **Finish tracking**. Results are saved on every detected contact, so a normal app exit still retains them. A recorder session itself does not resume after restarting the app.
-5. Open **Recent flights** to see the recorded rate and reopen the summary. Importing the same OFP and filing it on VATSIM preserve its landing result. A flight with results cannot be tracked again; use a new OFP for the next flight.
+1. Generate or import the flight you are about to fly, or open its saved briefing. **Flight recorder** automatically searches for a supported simulator; no tracking button is required. Start/load the simulator flight and leave pause/replay before departure.
+2. Keep Flight Dispatch running; switching pages does not stop tracking. Only one briefing is tracked at a time. Browsing other saved flights does not steal an active recording. Generating/importing a new flight replaces a pending briefing only if it has never connected to a simulator.
+3. After at least three seconds of observed airborne telemetry and reaching 30 ft AGL, the recorder arms. Touchdown opens a centered **Your landing rate** popup, even while viewing Settings or another page, and creates **Your landing** at the top of the briefing. Dismiss the popup with its button or Escape; **View briefing** returns to the flight. Later measurement refinements and parking completion update the result without reopening a dismissed popup. New ground contacts can show a new popup.
+4. After landing, remain below 3 kt with the parking brake set for five seconds to complete automatically. If an add-on does not report its parking brake, select **Finish tracking**. Results and timing transitions are saved as observed. After restarting the app, open the unfinished briefing to reconnect; a briefing that already contains a landing result is never automatically recorded again.
+5. **Stop tracking** stops automatic detection for that briefing for the rest of this app session. **Resume tracking** lets you explicitly restart, select a simulator, or change the X-Plane UDP port under **Connection setup**. Open **Recent flights** to review saved rates and timings. Importing the same OFP and filing it on VATSIM preserve both. Use a new OFP for the next flight.
+
+### Live actual-versus-planned timings
+
+The **Live flight timeline** compares observed UTC timestamps with SimBrief's estimated times, falling back to scheduled times when estimates are absent. It also shows planned and actual taxi-out, air time, taxi-in and total block durations. Active windows count up every second; their difference shows time remaining or time over plan. Completed windows show signed differences (`+` means later or longer).
+
+Before departure, **Until off blocks** counts down to the planned UTC departure every second, including across midnight. If departure is late it changes to **Off blocks overdue** and counts upward. It stops when off-block movement is observed, and is not shown as a departure countdown when tracking begins midair.
+
+- **Off blocks** is the first movement at or above 1 kt, with the parking brake released, sustained for two seconds after observing the aircraft stationary. The recorded time is the beginning of that movement, including pushback.
+- **Takeoff** is the first observed ground-to-air transition, confirmed after three seconds airborne and reaching 30 ft AGL.
+- **Touchdown** uses the recorder's detected contact. Brief bounces do not restart taxi-in timing. Sustained flight after a touch-and-go returns to air time; the final landing supplies the arrival timestamp.
+- **On block** is the start of a five-second period below 3 kt with the parking brake set after landing. Selecting **Finish tracking** manually does not invent an on-block time.
+- Durations use the real UTC clock, including simulator pauses and elapsed time while disconnected; they are not accelerated simulator time. The recorder does not infer transitions during a data gap, replay, slew or loading. Joining midair or after taxi has started leaves any unobserved departure timestamps blank. Stopping tracking freezes unfinished durations at the last observation; reopening the briefing preserves recorded milestones.
 
 | Simulator | Connection and measurement |
 | --- | --- |
@@ -140,7 +153,7 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 | X-Plane 11 / 12 | Built-in RREF UDP telemetry at 20 Hz on this PC, normally port **49000**. No plugin or API key is required. **Connection setup** in the recorder lets you change the port to match X-Plane. Rate is estimated from the last airborne vertical-velocity sample. |
 | Other simulators / Xbox / cloud streaming | No connector is included. A simulator must expose a supported telemetry interface; SimBrief and VATSIM alone cannot provide touchdown measurements. |
 
-**Auto detect** locks to the first simulator that supplies telemetry and stays with that simulator through reconnects. If both simulator families are running, select one explicitly. X-Plane traffic is restricted to `127.0.0.1`; it is not a network-PC setup. SimConnect discovery honors an existing `SimConnect.cfg`, then searches the local simulator connection. An invalid/stale configuration is reported as a connection error. For an existing remote SimConnect setup, keep its configured address/port accessible; this app does not edit simulator configuration files.
+**Auto detect** locks to the first simulator that supplies valid, live, unpaused telemetry and stays with that simulator through reconnects. If both simulator families are running, stop tracking and select one explicitly before resuming. X-Plane traffic is restricted to `127.0.0.1`; it is not a network-PC setup. SimConnect discovery honors an existing `SimConnect.cfg`, then searches the local simulator connection. An invalid/stale configuration is reported as a connection error. For an existing remote SimConnect setup, keep its configured address/port accessible; this app does not edit simulator configuration files.
 
 If connection stays pending, load into the aircraft (not just the simulator's main menu), confirm the selected simulator/UDP port, and check Windows Firewall rules for the app and simulator. For X-Plane, verify its receiving UDP port in network settings. For SimConnect, check any existing `SimConnect.cfg` and restart the simulator. No simulator controls are written by the recorder.
 
@@ -230,7 +243,7 @@ Remove-Item Env:FLIGHT_DISPATCH_TEST_BROWSER
 
 `npm run check:live` checks public aircraft and airport data using a sample route by default. To opt into reading your own latest OFP, set `$env:SIMBRIEF_TEST_USER` to your Pilot ID or username for that command, then remove the environment variable. Never commit your own OFP, screenshots, account ID or keys as test fixtures.
 
-Landing tests replay airborne/ground telemetry, native and estimated measurements, bounces, pauses, disconnects, persistence and UDP subscriptions without attaching to a live simulator. The desktop smoke test verifies the landing summary, history preservation, map inspector/zoom/expanded view and procedure order. Tests use temporary application/browser profiles. Companion tests load the real extension, resolve VATSIM hosts to a local HTTPS fixture server and block other DNS in that browser. SimBrief generation uses local fixture pages. The UI smoke test also makes read-only public airport/catalog calls. Tests do not generate/file real flights or attach to everyday browser sessions. Local test certificates under `tests/https/` are excluded from release builds.
+Landing tests replay airborne/ground telemetry, native and estimated measurements, bounces, pauses, disconnects, persistence and UDP subscriptions without attaching to a live simulator. The desktop smoke test verifies automatic tracking, the centered landing popup, live timers, the off-block countdown and overdue state, saved timing transitions, history preservation, map inspector/zoom/expanded view and procedure order. Tests use temporary application/browser profiles. Companion tests load the real extension, resolve VATSIM hosts to a local HTTPS fixture server and block other DNS in that browser. SimBrief generation uses local fixture pages. The UI smoke test also makes read-only public airport/catalog calls. Tests do not generate/file real flights or attach to everyday browser sessions. Local test certificates under `tests/https/` are excluded from release builds.
 
 The complete Generate → File → Briefing checks cover requested fields, route/planning overrides, variant capacity, existing signed-in sessions, login recovery, separate verification prompts, cancellation, one submission, failure alerts and confirmation. Live authenticated generation/filing still needs verification with each user's account after setup. Gate normalization, caching, matching and quotas have automated tests; live API-key gate lookups have not been tested without a user-supplied key.
 
