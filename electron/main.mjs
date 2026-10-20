@@ -8,10 +8,11 @@ import { validateFlight, simbriefUrl, matchGeneratedPlan, vatsimUrl, vatsimField
 import { simbriefPageStep } from './automation.mjs';
 import { BrowserSessions, LOGIN_URLS } from './browser.mjs';
 import { VatsimBridge } from './vatsim-bridge.mjs';
+import { Telemetry } from './telemetry.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 if (process.env.FLIGHT_DISPATCH_TEST_DATA) app.setPath('userData', process.env.FLIGHT_DISPATCH_TEST_DATA);
-let main, store, services, browser, vatsim, active = null;
+let main, store, services, browser, vatsim, telemetry, active = null;
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const emit = (stage, message, extra = {}) => { if (!main?.isDestroyed()) main.webContents.send('dispatch:progress', { stage, message, ...extra }); };
 const browserOptions = operation => ({ isCancelled: () => operation.cancelled, onWaiting: message => emit('sign-in', message) });
@@ -159,13 +160,18 @@ if (process.platform === 'win32' && app.isPackaged) {
 }
 main.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
 main.webContents.on('will-navigate', event => event.preventDefault());
+telemetry = new Telemetry(store, value => {
+  if (!main.isDestroyed()) main.webContents.send('dispatch:telemetry', value);
+});
 function handle(channel, fn) {
   ipcMain.handle(`dispatch:${channel}`, async (event, ...args) => {
     if (event.sender !== main.webContents || event.senderFrame !== main.webContents.mainFrame) throw new Error('Untrusted caller.');
     return fn(...args);
   });
 }
-handle('bootstrap', () => ({ settings: store.publicSettings(), history: store.read('history', []), version: app.getVersion() }));
+handle('bootstrap', () => ({ settings: store.publicSettings(), history: store.read('history', []), version: app.getVersion(), telemetry: telemetry.status() }));
+handle('telemetry-start', (id, config) => telemetry.start(id, config));
+handle('telemetry-stop', () => telemetry.stop());
 handle('catalog', refresh => services.aircraft(refresh === true));
 handle('airport-positions', ids => services.airportPositions(ids));
 handle('settings', async input => { if (active) throw new Error('Wait until the current dispatch finishes before changing settings.'); const old = store.settings().browser; if (input.browser !== old && browser.interactive && !browser.interactive.closed) throw new Error('Close the Flight Dispatch browser windows before switching browsers.'); const saved = store.saveSettings(input); if (old !== saved.browser) await browser.close(); return saved; });
@@ -173,7 +179,7 @@ handle('import', async () => {
   if (active) throw new Error('Wait until the current dispatch finishes.');
   const imported = await services.ofp();
   const existing = store.read('history', []).find(p => p.id === imported.id && p.raw === imported.raw && p.offBlock === imported.offBlock);
-  const plan = store.savePlan(existing ? { ...imported, filing: existing.filing, requestedRoute: existing.requestedRoute, planningInput: existing.planningInput, variantId: existing.variantId, variantName: existing.variantName } : imported);
+  const plan = store.savePlan(existing ? { ...imported, filing: existing.filing, requestedRoute: existing.requestedRoute, planningInput: existing.planningInput, variantId: existing.variantId, variantName: existing.variantName, landing: existing.landing } : imported);
   return { plan, details: await services.enrich(plan) };
 });
 handle('sync-airframes', async base => {
@@ -245,7 +251,7 @@ else await main.loadFile(path.join(root, 'dist/index.html'));
 app.on('window-all-closed', () => app.quit());
 main.on('closed', () => { if (active) active.cancelled = true; });
 let quitting = false;
-app.on('before-quit', event => { if (!quitting) { event.preventDefault(); quitting = true; if (active) active.cancelled = true; void Promise.allSettled([browser.close(), vatsim.close()]).finally(() => app.quit()); } });
+app.on('before-quit', event => { if (!quitting) { event.preventDefault(); quitting = true; if (active) active.cancelled = true; telemetry.stop(false); void Promise.allSettled([browser.close(), vatsim.close()]).finally(() => app.quit()); } });
 }
 if (!app.requestSingleInstanceLock()) app.quit();
 else {

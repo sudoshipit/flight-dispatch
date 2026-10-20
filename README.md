@@ -2,6 +2,8 @@
 
 A Windows desktop flight planning companion for SimBrief and VATSIM. Built with Electron, React, and TypeScript. All settings and flight history stay on your computer.
 
+> The enhanced route explorer and landing recorder are currently in the source version. The existing v1.0.0 release downloads have not been rebuilt with these additions. To use them now, follow **Development** below (`npm ci`, `npm run build`, `npm start`) or create a local installer with `npm run package`.
+
 ## Install and set up
 
 The current release is **v1.0.0**, containing the complete current app and VATSIM companion. Complete both service setups before your first automatic dispatch.
@@ -110,9 +112,9 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 - Automatically determined route, cruise altitude, time enroute, and fuel endurance from the generated OFP.
 - Optional custom route input accepts pasted waypoints, airways, coordinates, and speed/level changes. The app normalizes whitespace and case, passes the route to SimBrief, and verifies it is loaded before automatic generation. SimBrief's resulting route is used for VATSIM filing.
 - New flight opens with empty flight fields on launch and every time you choose **New flight**. Passenger loading resets to Auto; saved variant preferences apply after you select an aircraft. **Edit & regenerate** still restores the selected plan deliberately.
-- The route map appears only on the briefing, at top right. Pan, zoom, fit, and hover over the actual SimBrief navlog waypoints and AIRAC cycle.
+- The route explorer appears only on the briefing, at top right. Click a waypoint or use its picker to inspect planned altitude, UTC time/date, wind, temperature, groundspeed and remaining fuel. Climb/cruise/descent legs have distinct colors; TOC/TOD use diamond markers. Expand the map for a larger view, drag to pan, Ctrl + scroll or double-click to zoom, and use Fit route to reset. Keyboard: Tab to a waypoint and Enter/Space to select; focus the map and use arrows to pan, +/− to zoom, Home to fit, and Escape to close the expanded view. Geographic detail is bundled and works offline; missing OFP coordinates leave gaps.
 - Detailed OFP briefing: estimated and scheduled out/off/on/in UTC times with dates; taxi, airborne, block and endurance durations; block/takeoff/landing fuel plus trip, contingency, alternate, final reserve, extra and ETOPS fuel; cost index, cruise/climb/descent profiles, Mach, average winds and head/tailwind, ISA deviation, tropopause and step climbs. Fuel and weights retain the OFP's LBS/KGS units.
-- SID and STAR names, transitions, and planned runways. Missing procedures and transitions display **None**. Airport weather, frequencies, and gates appear above the OFP details.
+- SID and STAR names, transitions, and planned runways. Missing procedures and transitions display **None**. Procedures sit immediately below airport weather, frequencies and gates, ahead of the statistics, timings and fuel.
 - Expandable weights/payload and waypoint log with planned altitude, ETO, wind, temperature, groundspeed, and fuel remaining. Waypoint ETO is calculated from estimated takeoff plus cumulative navlog time, including UTC date changes. Missing numbers remain unavailable; zero stays zero.
 - VATSIM: **IFR**, generated callsign/type/wake/route/times/altitude/speed/alternate, **equipment L**, **blank transponder**, **Voice**, and blank optional section-18 details to match the supplied screenshot. The user's written blank-transponder instruction overrides the screenshot's LB1 value.
 - Clickable combined callsign links to the specific SimBrief briefing.
@@ -120,7 +122,31 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 - Destination elevation and designated CTAF frequencies from VATSIM AIP. SimBrief elevation is a fallback. Multiple designated CTAFs are preserved; missing CTAFs are not guessed.
 - Optional gates from Aviationstack or FlightAware AeroAPI. Matches callsign, route, and date. An absent gate can fall back to a previously observed gate for the same flight and route, clearly labeled with source/date. Saved observations expire after 30 days.
 - A 15-minute gate-request cache, request deduplication, and a configurable local monthly cap (90 by default). No paid historical endpoints are called. The cap covers this app only; other apps using the same key count against the provider's quota separately.
+- Optional simulator landing recorder with automatic touchdown detection, ft/min, UTC timestamp, groundspeed, pitch/bank, repeated contacts and distance from the planned destination. Results are saved with the briefing and shown at its top and in Recent flights.
 - Local history for the latest 30 generated/imported briefings, persistent preferences, and encrypted API keys using Electron safeStorage / Windows encryption.
+
+## Landing recorder setup
+
+1. Generate or import the flight you are about to fly. In its briefing, find **Flight recorder** and choose **Auto detect** or your simulator.
+2. Start/load a live simulator flight, then select **Track this flight** before takeoff. The app waits for the simulator if necessary. Keep Flight Dispatch running; switching app pages does not stop tracking. Only one briefing is tracked at a time.
+3. After at least three seconds of observed airborne telemetry and reaching 30 ft AGL, the recorder arms. Touchdown automatically creates **Your landing** at the top of the briefing. Repeated contacts within ten seconds and below 30 ft are marked as bounces; sustained flight re-arms for another approach.
+4. After landing, remain below 3 kt with the parking brake set for five seconds to complete automatically. If an add-on does not report its parking brake, select **Finish tracking**. Results are saved on every detected contact, so a normal app exit still retains them. A recorder session itself does not resume after restarting the app.
+5. Open **Recent flights** to see the recorded rate and reopen the summary. Importing the same OFP and filing it on VATSIM preserve its landing result. A flight with results cannot be tracked again; use a new OFP for the next flight.
+
+| Simulator | Connection and measurement |
+| --- | --- |
+| MSFS 2020 / 2024 on Windows | SimConnect, using the simulator's touchdown normal velocity when a fresh value is available, converted from ft/sec to ft/min. Falls back to the last airborne sample with an **Estimated** label. No SDK or separate helper installation is needed for the usual local connection. |
+| FSX SP2 / Steam Edition and Prepar3D | SimConnect-compatible connection; estimated rate from the last airborne vertical-speed sample. Uses the older SimConnect protocol and standard variables. |
+| X-Plane 11 / 12 | Built-in RREF UDP telemetry at 20 Hz on this PC, normally port **49000**. No plugin or API key is required. **Connection setup** in the recorder lets you change the port to match X-Plane. Rate is estimated from the last airborne vertical-velocity sample. |
+| Other simulators / Xbox / cloud streaming | No connector is included. A simulator must expose a supported telemetry interface; SimBrief and VATSIM alone cannot provide touchdown measurements. |
+
+**Auto detect** locks to the first simulator that supplies telemetry and stays with that simulator through reconnects. If both simulator families are running, select one explicitly. X-Plane traffic is restricted to `127.0.0.1`; it is not a network-PC setup. SimConnect discovery honors an existing `SimConnect.cfg`, then searches the local simulator connection. An invalid/stale configuration is reported as a connection error. For an existing remote SimConnect setup, keep its configured address/port accessible; this app does not edit simulator configuration files.
+
+If connection stays pending, load into the aircraft (not just the simulator's main menu), confirm the selected simulator/UDP port, and check Windows Firewall rules for the app and simulator. For X-Plane, verify its receiving UDP port in network settings. For SimConnect, check any existing `SimConnect.cfg` and restart the simulator. No simulator controls are written by the recorder.
+
+Rates are negative for descent. X-Plane/older-simulator measurements are sampled estimates, not exact impact measurements; sample age is shown. Pauses, X-Plane replay, slew/loading states, backward simulator time, large position jumps and telemetry gaps reset detection rather than infer a landing across missing data. Keep replay and third-party replay tools off while recording; their behavior varies, particularly on SimConnect simulators. A brief low bounce is counted separately; this is not an aircraft structural-load or landing-quality assessment. G-force is not calculated. UTC timestamps use the PC clock, not the simulator's selected date.
+
+The connectors and detection logic have automated fixture/transport tests, including localhost X-Plane UDP. Live landings in each simulator and add-on aircraft still need validation; compatibility above describes the implemented interfaces, not a claim that every simulator/aircraft combination has been flight-tested.
 
 ## Setup and filing troubleshooting
 
@@ -204,7 +230,7 @@ Remove-Item Env:FLIGHT_DISPATCH_TEST_BROWSER
 
 `npm run check:live` checks public aircraft and airport data using a sample route by default. To opt into reading your own latest OFP, set `$env:SIMBRIEF_TEST_USER` to your Pilot ID or username for that command, then remove the environment variable. Never commit your own OFP, screenshots, account ID or keys as test fixtures.
 
-Tests use temporary application/browser profiles. Companion tests load the real extension, resolve VATSIM hosts to a local HTTPS fixture server and block other DNS in that browser. SimBrief generation uses local fixture pages. The UI smoke test also makes read-only public airport/catalog calls. Tests do not generate/file real flights or attach to everyday browser sessions. Local test certificates under `tests/https/` are excluded from release builds.
+Landing tests replay airborne/ground telemetry, native and estimated measurements, bounces, pauses, disconnects, persistence and UDP subscriptions without attaching to a live simulator. The desktop smoke test verifies the landing summary, history preservation, map inspector/zoom/expanded view and procedure order. Tests use temporary application/browser profiles. Companion tests load the real extension, resolve VATSIM hosts to a local HTTPS fixture server and block other DNS in that browser. SimBrief generation uses local fixture pages. The UI smoke test also makes read-only public airport/catalog calls. Tests do not generate/file real flights or attach to everyday browser sessions. Local test certificates under `tests/https/` are excluded from release builds.
 
 The complete Generate → File → Briefing checks cover requested fields, route/planning overrides, variant capacity, existing signed-in sessions, login recovery, separate verification prompts, cancellation, one submission, failure alerts and confirmation. Live authenticated generation/filing still needs verification with each user's account after setup. Gate normalization, caching, matching and quotas have automated tests; live API-key gate lookups have not been tested without a user-supplied key.
 
@@ -227,6 +253,10 @@ Development structure:
 Local application data is stored beneath Electron's Windows `userData` directory, normally `%APPDATA%/flight-dispatch/data`. SimBrief sessions and extensions use the adjacent `browser-profile/msedge` or `browser-profile/chrome` directory. The installed VATSIM extension is in `vatsim-companion`; its pairing secret is also saved in `vatsim-companion-connection.json` beside that directory. Remote pages have no Electron preload or Node bridge. Cancelling dispatch cannot retract an already submitted flight and leaves a sign-in/verification tab available for the user.
 
 ## Primary integration references
+
+- [SimConnect connector and connection setup](https://github.com/EvenAR/node-simconnect)
+- [Microsoft touchdown simulation variables](https://docs.flightsimulator.com/msfs2024/html/6_Programming_APIs/SimVars/Aircraft_SimVars/Aircraft_Misc_Variables.htm)
+- [X-Plane RREF telemetry](https://www.x-plane.com/kb/x-plane-10-40-release-notes/) and [velocity units](https://developer.x-plane.com/article/movingtheplane/)
 
 - [SimBrief dispatch redirect guide](https://forum.navigraph.com/t/dispatch-redirect-guide/5299)
 - [SimBrief current aircraft catalog](https://forum.navigraph.com/t/getting-currently-supported-aircraft-layout-options/5296)

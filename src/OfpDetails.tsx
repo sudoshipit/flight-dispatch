@@ -9,6 +9,18 @@ const day = (date: string | null) => date ? new Date(date).toLocaleDateString('e
 function TimeStop({ label, event }: { label: string; event: TimeEvent }) {
   return <div className="time-stop"><span className="eyebrow">{label}</span><strong>{time(event.estimated)}</strong><span>{day(event.estimated)}</span><small>Sched. {time(event.scheduled)}{event.scheduled && event.scheduled.slice(0, 10) !== event.estimated?.slice(0, 10) ? ` · ${day(event.scheduled)}` : ''}</small></div>;
 }
+export function ProcedureDetails({ plan }: { plan: Plan }) {
+  const data = plan.ofp;
+  if (!data) return null;
+  return <section className="card procedures-card" aria-label="SID and STAR">
+      <div className="card-title"><h2><Route size={17}/> Departure & arrival procedures</h2></div>
+      <div className="procedures-grid">{([['departure', 'SID', plan.origin.icao], ['arrival', 'STAR', plan.destination.icao]] as const).map(([key, label, airport]) => {
+        const procedure = data.procedures[key];
+        return <div key={key}><span className="eyebrow">{airport} · {label}</span><strong>{procedure.name || 'None'}</strong><div><span>Transition <b>{procedure.transition || 'None'}</b></span><span>Runway <b>{procedure.runway || 'None'}</b></span></div></div>;
+      })}</div>
+    </section>;
+}
+
 export default function OfpDetails({ plan }: { plan: Plan }) {
   const data = plan.ofp;
   if (!data) return <p className="ofp-legacy">This saved briefing predates the detailed OFP view. Import the flight again while it is your latest SimBrief plan to load these details.</p>;
@@ -45,13 +57,6 @@ export default function OfpDetails({ plan }: { plan: Plan }) {
         <div className="step-climbs"><span className="eyebrow">ALTITUDE / STEP PLAN</span><p>{c.stepClimbs || 'None'}</p></div>
       </section>
     </div>
-    <section className="card procedures-card" aria-label="SID and STAR">
-      <div className="card-title"><h2><Route size={17}/> Departure & arrival procedures</h2></div>
-      <div className="procedures-grid">{([['departure', 'SID', plan.origin.icao], ['arrival', 'STAR', plan.destination.icao]] as const).map(([key, label, airport]) => {
-        const procedure = data.procedures[key];
-        return <div key={key}><span className="eyebrow">{airport} · {label}</span><strong>{procedure.name || 'None'}</strong><div><span>Transition <b>{procedure.transition || 'None'}</b></span><span>Runway <b>{procedure.runway || 'None'}</b></span></div></div>;
-      })}</div>
-    </section>
     <details className="card ofp-disclosure"><summary><span><Scale size={17}/> Weights & payload</span><small>{units}</small><ChevronDown size={16}/></summary><div className="weights-grid">{[['Zero fuel', w.zeroFuel, w.maxZeroFuel], ['Takeoff', w.takeoff, w.maxTakeoff], ['Landing', w.landing, w.maxLanding]].map(([label, value, limit]) => <div key={String(label)}><span>{label}</span><strong>{fmt(value as number | null)}</strong><small>OFP limit {fmt(limit as number | null)}</small></div>)}</div><div className="timing-durations"><span>Payload <b>{fmt(w.payload)} {units}</b></span><span>Cargo <b>{fmt(w.cargo)} {units}</b></span></div></details>
     <details className="card ofp-disclosure navlog-disclosure"><summary><span><Gauge size={17}/> Waypoint winds & fuel</span><small>{data.navlog.length} fixes</small><ChevronDown size={16}/></summary>
       <p className="navlog-note">OFP winds at planned altitudes. ETO = estimated takeoff + cumulative flight time. Fuel is planned remaining in {units}.</p>

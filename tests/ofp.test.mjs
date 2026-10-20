@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseOFP, validateFlight, simbriefUrl, DEFAULT_RULES } from '../shared/domain.mjs';
 import { parseOfpDetails, formatSeconds, formatWind, formatWindComponent } from '../shared/ofp.mjs';
-import { routeGeometry, routeProjection } from '../shared/map.mjs';
+import { routeGeometry, routeProjection, zoomRouteView } from '../shared/map.mjs';
 import { ofp, aircraft, input } from './fixtures.mjs';
 
 test('custom route is normalized, encoded, optional, and validated', () => {
@@ -48,4 +48,14 @@ test('map preserves unknown-coordinate gaps and fits antimeridian and polar rout
     const p=routeProjection(points);
     for(const point of points) { const xy=p([point.lon,point.lat]); assert.ok(xy.every(Number.isFinite)); assert.ok(xy[0]>=0&&xy[0]<=480&&xy[1]>=0&&xy[1]<=300); }
   }
+});
+
+test('map zoom holds the geographic point under the pointer and respects limits', () => {
+  const before = { zoom: 2, x: 17, y: -12 }, pointer = { x: 350, y: 210 };
+  const after = zoomRouteView(before, 1.4, pointer);
+  const coordinate = view => [(pointer.x - 240 - view.x) / view.zoom, (pointer.y - 150 - view.y) / view.zoom];
+  coordinate(before).forEach((value, i) => assert.ok(Math.abs(value - coordinate(after)[i]) < 1e-9));
+  assert.equal(zoomRouteView(before, 100).zoom, 8);
+  assert.equal(zoomRouteView(before, .001).zoom, 1);
+  assert.deepEqual(zoomRouteView({ zoom: 8, x: 2, y: 3 }, 2), { zoom: 8, x: 2, y: 3 });
 });

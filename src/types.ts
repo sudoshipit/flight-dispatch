@@ -6,6 +6,10 @@ export type Aircraft = { id: string; icao: string; name: string; maxPassengers: 
 export type Catalog = { aircraft: Aircraft[]; updatedAt: string; mode: string; warning?: string };
 export type Airport = { icao: string; iata: string; name: string; elevation: number | null; lat: number | null; lon: number | null; runway: string; metar: string; metarTime: string; category: string };
 export type TimeEvent = { estimated: string | null; scheduled: string | null };
+export type LandingContact = { time: string; rateFpm: number | null; method: 'simulator-touchdown' | 'sampled-estimate'; bounce: boolean; groundspeed: number; pitch: number | null; bank: number | null; lat: number; lon: number; sampleAgeMs: number; destinationDistanceNm: number | null };
+export type LandingSummary = { startedAt: string; completedAt: string | null; simulator: string; contacts: LandingContact[] };
+export type TelemetryConfig = { simulator: 'auto' | 'simconnect' | 'xplane'; xplanePort: number };
+export type TelemetryState = { status: 'idle' | 'waiting' | 'paused' | 'tracking' | 'error'; message: string; planId: string | null; callsign: string; simulator: string; phase: 'waiting' | 'airborne' | 'landed' | 'complete'; config: TelemetryConfig; plan?: Plan };
 export type MapPoint = { ident: string; lat: number | null; lon: number | null };
 export type NavFix = MapPoint & { name: string; stage: string; airway: string; altitude: number | null; elapsedSeconds: number | null; eta: string | null; windDirection: number | null; windSpeed: number | null; temperature: number | null; groundspeed: number | null; fuelRemaining: number | null };
 export type OfpSummary = {
@@ -17,7 +21,7 @@ export type OfpSummary = {
   weights: { zeroFuel: number | null; maxZeroFuel: number | null; takeoff: number | null; maxTakeoff: number | null; landing: number | null; maxLanding: number | null; payload: number | null; cargo: number | null };
   navlog: NavFix[];
 };
-export type Plan = { id: string; staticId: string; generatedAt: string; callsign: string; airline: string; flightNumber: string; aircraft: string; aircraftName: string; aircraftBase: string; registration: string; origin: Airport; destination: Airport; alternate: string; altitude: number; speed: number; costIndex: number | null; passengers: number | null; distance: number | null; route: string; requestedRoute?: string; planningInput?: FlightInput; variantId?: string; variantName?: string; raw: string; wake: string; enroute: string; endurance: string; offBlock: string; blockFuel: number | null; units: string; ofpUrl: string; ofp?: OfpSummary; filing: { status: 'not-filed' | 'pending' | 'unconfirmed' | 'filed' | 'failed'; message: string; confirmedAt?: string } };
+export type Plan = { id: string; staticId: string; generatedAt: string; callsign: string; airline: string; flightNumber: string; aircraft: string; aircraftName: string; aircraftBase: string; registration: string; origin: Airport; destination: Airport; alternate: string; altitude: number; speed: number; costIndex: number | null; passengers: number | null; distance: number | null; route: string; requestedRoute?: string; planningInput?: FlightInput; variantId?: string; variantName?: string; raw: string; wake: string; enroute: string; endurance: string; offBlock: string; blockFuel: number | null; units: string; ofpUrl: string; ofp?: OfpSummary; landing?: LandingSummary; filing: { status: 'not-filed' | 'pending' | 'unconfirmed' | 'filed' | 'failed'; message: string; confirmedAt?: string } };
 export type Weather = { raw: string; observedAt: string; fetchedAt: string | null; category: string; source: string; stale: boolean; error?: string };
 export type Aip = { icao: string; name?: string; elevation?: number | null; frequencies: { frequency: string; name: string; callsign: string }[]; source: string; fetchedAt?: string; error?: string };
 export type Gate = { value: string; terminal: string; date: string; historical: boolean; source: string; fetchedAt: string };
@@ -29,7 +33,7 @@ export type Progress = { stage: string; message: string; plan?: Plan; details?: 
 declare global {
   interface Window {
     dispatch: {
-      bootstrap(): Promise<{ settings: Settings; history: Plan[]; version: string }>;
+      bootstrap(): Promise<{ settings: Settings; history: Plan[]; version: string; telemetry: TelemetryState }>;
       catalog(refresh?: boolean): Promise<Catalog>;
       syncAirframes(base: string): Promise<Catalog>;
       airportPositions(ids: string[]): Promise<MapPoint[]>;
@@ -43,6 +47,9 @@ declare global {
       login(service: string): Promise<void>;
       companionStatus(): Promise<CompanionStatus>;
       companionSetup(): Promise<CompanionStatus>;
+      startTracking(id: string, config: TelemetryConfig): Promise<TelemetryState>;
+      stopTracking(): Promise<TelemetryState>;
+      onTelemetry(callback: (state: TelemetryState) => void): () => void;
       onProgress(callback: (progress: Progress) => void): () => void;
     };
   }

@@ -49,8 +49,12 @@ export class Store {
     try { return this.secure.decryptString(Buffer.from(encoded, 'base64')); }
     catch { throw new Error('This API key could not be decrypted. Re-enter it in Settings.'); }
   }
-  savePlan(plan) {
-    const history = this.read('history', []).filter(p => p.id !== plan.id);
+  savePlan(plan, { updateLanding = false } = {}) {
+    const previous = this.read('history', []);
+    // Filing/import operations may have started before a touchdown was recorded.
+    const landing = previous.find(p => p.id === plan.id)?.landing;
+    if (!updateLanding && landing) plan = { ...plan, landing };
+    const history = previous.filter(p => p.id !== plan.id);
     this.write('history', [plan, ...history].slice(0, 30));
     return plan;
   }

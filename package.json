@@ -29,6 +29,8 @@
       "shared/**/*",
       "data/**/*",
       "assets/icon.*",
+      "assets/licenses/**/*",
+      "THIRD_PARTY_NOTICES.md",
       "package.json",
       "companion/**/*"
     ],
@@ -54,6 +56,14 @@
     },
     "extraFiles": [
       {
+        "from": "THIRD_PARTY_NOTICES.md",
+        "to": "THIRD_PARTY_NOTICES.md"
+      },
+      {
+        "from": "assets/licenses",
+        "to": "licenses"
+      },
+      {
         "from": "README.md",
         "to": "README.md"
       }
@@ -62,6 +72,7 @@
   "dependencies": {
     "d3-geo": "^3.1.1",
     "lucide-react": "^1.59.0",
+    "node-simconnect": "4.2.1",
     "playwright-core": "^1.64.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

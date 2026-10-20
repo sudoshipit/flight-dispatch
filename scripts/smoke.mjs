@@ -22,6 +22,7 @@ try {
     localRequire('./electron/services.mjs').Services.prototype.ofp = async () => fixture;
   }, parseOFP(ofp));
   const errors=[]; page.on('pageerror',error=>errors.push(error.message));
+  await expect(page.getByRole('heading',{name:"Let's get you airborne."})).toBeVisible();
   // Exercise UTC midnight/year rollover even when Windows is using a local time zone.
   await page.clock.setFixedTime('2026-12-31T23:45:37Z');
   await page.reload();
@@ -93,8 +94,38 @@ try {
   await expect(page.locator('.callsign-link')).toHaveText('SWA123');
   await expect(page.locator('.stat').first()).toContainText('FL370');
   await expect(page.locator('.route-map')).toHaveCount(1);
-  await page.getByRole('button',{name:'Zoom route map in'}).click();
-  await page.getByRole('button',{name:'Fit route map'}).click();
+  await page.getByRole('button',{name:'Zoom in',exact:true}).click();
+  await page.getByRole('button',{name:'Fit route',exact:true}).click();
+  await expect(page.getByLabel('Map zoom')).toHaveText('100%');
+  const tocOption = await page.getByLabel('Inspect waypoint').locator('option').filter({hasText:'TOC'}).getAttribute('value');
+  await page.getByLabel('Inspect waypoint').selectOption(tocOption);
+  const waypoint = page.getByRole('region',{name:'Waypoint details'});
+  await expect(waypoint).toContainText('17,386 LBS');
+  await expect(waypoint).toContainText('14:55Z');
+  await expect(waypoint).toContainText('-49 °C');
+  await page.getByRole('button',{name:'Fit route',exact:true}).click();
+  const map = page.getByRole('group',{name:'Interactive planned route'});
+  await map.focus(); await page.keyboard.press('+');
+  await expect(page.getByLabel('Map zoom')).toHaveText('140%');
+  await page.keyboard.press('Home');
+  await expect(page.getByLabel('Map zoom')).toHaveText('100%');
+  await map.hover(); await page.keyboard.down('Control'); await page.mouse.wheel(0,-100); await page.keyboard.up('Control');
+  await expect(page.getByLabel('Map zoom')).toHaveText('120%');
+  await page.mouse.wheel(0,40);
+  await expect(page.getByLabel('Map zoom')).toHaveText('120%');
+  await page.getByRole('button',{name:'Fit route',exact:true}).click();
+  await page.locator('.route-map').screenshot({path:'artifacts/map-detail.png'});
+  await page.getByRole('button',{name:'Expand route map'}).click();
+  await expect(page.getByRole('dialog',{name:'Expanded route map'})).toBeVisible();
+  await expect(waypoint).toContainText('TOC');
+  await page.screenshot({path:'artifacts/map-expanded.png'});
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog',{name:'Expanded route map'})).not.toBeVisible();
+  await expect(page.getByRole('button',{name:'Expand route map'})).toBeFocused();
+  await page.getByRole('button',{name:'Inspect TOC',exact:true}).focus();
+  await page.keyboard.press('Enter');
+  await expect(waypoint).toContainText('Top of climb');
+
   await expect(page.getByText('119.500',{exact:true})).toBeVisible();
   await expect(page.getByText('120.500',{exact:true})).toBeVisible();
   await expect(page.getByText('Not yet filed',{exact:true})).toBeVisible();
@@ -102,6 +133,10 @@ try {
   await expect(page.getByRole('region',{name:'Planned winds and cruise'})).toContainText('4 kt headwind');
   await expect(page.getByRole('region',{name:'SID and STAR'})).toContainText('BAYPO2');
   await expect(page.getByRole('region',{name:'SID and STAR'})).toContainText('CAMJO');
+  await expect(page.getByRole('region',{name:'SID and STAR'})).toHaveCount(1);
+  expect(await page.locator('.gate-card').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('.procedures-card')) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
+  expect(await page.locator('.procedures-card').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('.timing-card')) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
+
   expect(await page.locator('.gate-card').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('.ofp-details')) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true);
   await expect(page.getByText('Not specified in OFP')).toHaveCount(0);
   await page.locator('.navlog-disclosure summary').click();
@@ -124,11 +159,39 @@ try {
   const filed = JSON.parse(fs.readFileSync(path.join(userData,'data/history.json'),'utf8'))[0];
   expect(filed.filing.status).toBe('filed');
   expect(filed.filing.message).toContain('Local test only.');
+  // Inject local telemetry through the same recorder; never connect to a live sim.
+  await app.evaluate(({app}) => {
+    const localRequire = process.getBuiltinModule('node:module').createRequire(app.getAppPath() + '/package.json');
+    const {Telemetry} = localRequire('./electron/telemetry.mjs');
+    const start = Telemetry.prototype.start;
+    Telemetry.prototype.start = function(...args) {
+      this.adapters = { xplane: sample => { globalThis.__sample = sample; return { close() {} }; } };
+      return start.apply(this,args);
+    };
+  });
+  await page.getByLabel('Tracking simulator').selectOption('xplane');
+  await page.getByRole('button',{name:'Track this flight'}).click();
+  await expect(page.getByRole('button',{name:'Stop tracking'})).toBeVisible();
+  await app.evaluate(() => {
+    const base = Date.now();
+    for (let ms = 0; ms <= 8200; ms += 100) globalThis.__sample({ at:base+ms, simTime:ms/1000, simulator:'Local telemetry fixture',
+      onGround:ms>=3100, agl:ms>=3100?0:100, verticalSpeed:-180, groundspeed:ms>=3200?0:130, lat:42.94, lon:-78.73, pitch:3, bank:1, parkingBrake:ms>=3200 });
+  });
+  await expect(page.getByRole('region',{name:'Landing summary'})).toContainText('-180');
+  await expect(page.getByRole('region',{name:'Landing summary'})).toContainText('Flight complete');
+  await expect(page.getByRole('region',{name:'Landing summary'})).toContainText('Estimated');
+  await page.getByRole('region',{name:'Landing summary'}).screenshot({path:'artifacts/landing-summary.png'});
+  const landed = JSON.parse(fs.readFileSync(path.join(userData,'data/history.json'),'utf8'))[0];
+  expect(landed.landing.contacts[0].rateFpm).toBe(-180);
+  expect(landed.landing.completedAt).toBeTruthy();
+
   await page.getByRole('button',{name:'Recent flights 1'}).click();
   await page.getByRole('button',{name:'Import latest',exact:true}).click();
   await expect(page.locator('.progress')).toHaveCount(0,{timeout:60000});
   const imported = JSON.parse(fs.readFileSync(path.join(userData,'data/history.json'),'utf8'))[0];
   await expect(page.locator('.callsign-link')).toHaveText(imported.callsign);
+  expect(imported.landing.contacts[0].rateFpm).toBe(-180);
+  await expect(page.getByRole('region',{name:'Landing summary'})).toContainText('Flight complete');
   await app.evaluate(({BrowserWindow}) => BrowserWindow.getAllWindows()[0].setSize(1380,940));
   await page.evaluate(() => scrollTo(0,0));
   await page.screenshot({path:'artifacts/briefing-live.png',fullPage:true});
@@ -141,5 +204,5 @@ try {
   await page.getByRole('button',{name:'New flight',exact:true}).click();
   await expectNewFlight();
   expect(errors).toEqual([]);
-  console.log('Desktop smoke passed: new flight UTC + 30 minute defaults with midnight/year rollover and fresh resets, manual and edit/regenerate times preserved, saved variant defaults on aircraft selection, map only in briefing, CI rules, custom route, passenger modes, map controls, OFP details, SID/STAR, navlog, settings, history, sample import, compact layout, automatic VATSIM submission against a local form, and no renderer errors.');
+  console.log('Desktop smoke passed: new flight UTC + 30 minute defaults with midnight/year rollover and fresh resets, manual and edit/regenerate times preserved, saved variant defaults on aircraft selection, map only in briefing, CI rules, custom route, passenger modes, map waypoint inspector, keyboard/scroll zoom, expanded dialog, procedure order, landing summary and history persistence, OFP details, SID/STAR, navlog, settings, history, sample import, compact layout, automatic VATSIM submission against a local form, and no renderer errors.');
 } finally { await companion?.close(); await app.close(); }

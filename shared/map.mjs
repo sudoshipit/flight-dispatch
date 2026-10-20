@@ -1,5 +1,11 @@
 import { geoAzimuthalEquidistant, geoCentroid, geoPath } from 'd3-geo';
 
+export function zoomRouteView(view, factor, at = { x: 240, y: 150 }) {
+  const zoom = Math.max(1, Math.min(8, view.zoom * factor));
+  const ratio = zoom / view.zoom;
+  return { zoom, x: at.x - 240 - (at.x - 240 - view.x) * ratio, y: at.y - 150 - (at.y - 150 - view.y) * ratio };
+}
+
 export const validPoint = point => point && typeof point.lat === 'number' && typeof point.lon === 'number' && Number.isFinite(point.lat) && Number.isFinite(point.lon) && Math.abs(point.lat) <= 90 && Math.abs(point.lon) <= 180;
 // Preserve gaps instead of drawing an apparently verified leg through missing fixes.
 /** @returns {import('geojson').MultiLineString} */

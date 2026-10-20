@@ -13,3 +13,5 @@ vatsim-companion-connection.json
 **/history.json
 **/personal-airframes.json
 companion/config.mjs
+
+**/telemetry-settings.json
