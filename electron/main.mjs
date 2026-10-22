@@ -311,7 +311,7 @@ else await main.loadFile(path.join(root, 'dist/index.html'));
 app.on('window-all-closed', () => app.quit());
 main.on('closed', () => { if (active) active.cancelled = true; });
 let quitting = false;
-app.on('before-quit', event => { if (!quitting) { event.preventDefault(); quitting = true; if (active) active.cancelled = true; telemetry.stop(false); void Promise.allSettled([browser.close(), vatsim.close()]).finally(() => app.quit()); } });
+app.on('before-quit', event => { if (!quitting) { event.preventDefault(); quitting = true; if (active) active.cancelled = true; try { telemetry.shutdown(); } catch { console.error('Could not save the final flight recording checkpoint.'); } void Promise.allSettled([browser.close(), vatsim.close()]).finally(() => app.quit()); } });
 }
 if (!app.requestSingleInstanceLock()) app.quit();
 else {

@@ -47,6 +47,13 @@ test('jitter, brake release alone and taxiing on first connection do not invent 
   late.ingest(sample(5100, { groundspeed: 0, parkingBrake: false }));
   for (let ms = 5200; ms <= 9000; ms += 100) late.ingest(sample(ms, { groundspeed: 20, parkingBrake: false }));
   assert.equal(late.actual.out, null);
+  assert.equal(late.actual.phase, 'taxi-out');
+  late.resetContinuity();
+  late.ingest(sample(10000, { groundspeed: 0, parkingBrake: false }));
+  for (let ms = 10100; ms <= 13000; ms += 100) late.ingest(sample(ms, { groundspeed: 20, parkingBrake: false }));
+  assert.equal(late.actual.out, null, 'Reconnecting at a taxiway stop must not invent a late off-block time');
+  assert.equal(offBlockCountdown({ offBlock: iso(0), actual: late.actual }, base + 10000).state, 'unobserved');
+  assert.equal(timingComparison({ actual: late.actual }, base + 10000, true).windows[0].actual, null);
 });
 test('midair connection, data gaps, pauses and slew do not create missing departure events', () => {
   for (const interrupt of [{ paused: true }, { slew: true }, { replay: true }, { running: false }]) {

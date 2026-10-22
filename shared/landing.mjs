@@ -9,15 +9,16 @@ export function distanceNm(a, b) {
 
 // Read-only telemetry. Require observed flight before recognizing ground contact.
 export class LandingRecorder {
-  constructor(actual = {}) {
-    this.contacts = []; this.phase = 'waiting';
+  constructor(actual = {}, contacts = []) {
+    this.contacts = contacts.slice(-50).map(contact => ({ ...contact, at: finite(contact.at) ? contact.at : Date.parse(contact.time) })); this.phase = 'waiting';
     this.actual = { out: null, off: null, on: null, in: null, phase: 'waiting', lastObservedAt: null, ...actual };
     this.resetContinuity();
   }
   resetContinuity() {
     this.previous = null; this.airSince = null; this.armed = false; this.parkedSince = null; this.pending = null;
     this.groundReady = false; this.movingSince = null; this.takeoffAt = null;
-    if (this.phase !== 'complete') this.phase = 'waiting';
+    this.bounceEligible = false;
+    if (this.phase !== 'complete') this.phase = this.actual.phase === 'taxi-in' && this.contacts.length ? 'landed' : 'waiting';
   }
   ingest(sample) {
     const s = sample;
@@ -58,20 +59,22 @@ export class LandingRecorder {
         }
       }
     } else {
-      if (!this.actual.off && !this.contacts.length) {
+      if (!this.actual.off && !this.contacts.length && ['waiting', 'taxi-out'].includes(this.actual.phase)) {
         // A connection first observed in motion has missed departure. A later
         // taxiway stop must not be mistaken for the original off-block position.
-        if (!previous && s.groundspeed < 1) this.groundReady = true;
-        if (this.groundReady && s.groundspeed >= 1 && !s.parkingBrake) {
+        if (!previous && s.groundspeed < 1 && this.actual.phase === 'waiting') this.groundReady = true;
+        if (s.groundspeed >= 1 && !s.parkingBrake) {
           this.movingSince ??= s.at;
-          if (!this.actual.out && s.at - this.movingSince >= 2000) {
-            this.actual.out = new Date(this.movingSince).toISOString();
-            this.actual.phase = 'taxi-out'; changed = true;
+          if (s.at - this.movingSince >= 2000) {
+            if (this.groundReady && !this.actual.out) {
+              this.actual.out = new Date(this.movingSince).toISOString(); changed = true;
+            }
+            if (this.actual.phase !== 'taxi-out') { this.actual.phase = 'taxi-out'; changed = true; }
           }
         } else this.movingSince = null;
       }
       const latest = this.contacts.at(-1);
-      const bounce = latest && s.at - latest.at <= 10000 && previous?.agl < 30 && this.phase === 'landed';
+      const bounce = this.bounceEligible && latest && s.at - latest.at <= 10000 && previous?.agl < 30 && this.phase === 'landed';
       if (previous && !previous.onGround && (this.armed || bounce)) {
         const native = finite(s.touchdownVelocity) && s.touchdownVelocity !== previous.touchdownVelocity && Math.abs(s.touchdownVelocity) < 200;
         const rateFpm = native ? -Math.round(Math.abs(s.touchdownVelocity) * 60) :
@@ -87,6 +90,7 @@ export class LandingRecorder {
         this.contacts = this.contacts.slice(-50);
         this.pending = native ? null : { at: s.at, baseline: previous.touchdownVelocity };
         this.armed = false; this.phase = 'landed'; changed = true;
+        this.bounceEligible = true;
         if (!bounce) this.actual.on = new Date(s.at).toISOString();
         this.actual.phase = 'taxi-in';
       }

@@ -1,3 +1,5 @@
+import { elapsedTime, timingComparison, timingDelta } from './flight-timing.mjs';
+
 export function userMessage(error) {
   const message = typeof error === 'string' ? error : error?.message || '';
   return message.replace(/^Error invoking remote method '[^']+':\s*(?:Error:\s*)?/, '')
@@ -34,6 +36,23 @@ export function briefingText(plan, details) {
   ].join('\n');
 }
 
+export function flightReportText(plan, now = Date.now(), tracking = false) {
+  const utc = date => date && Number.isFinite(Date.parse(date)) ? new Date(date).toISOString().replace('T', ' ').replace('.000Z', 'Z') : 'Not observed';
+  const { events, windows } = timingComparison(plan, now, tracking);
+  const actual = plan.actual || {};
+  const state = actual.phase === 'complete' ? 'Complete' : plan.landing?.completedAt ? 'Tracking finished; on block not observed' : tracking ? 'Recording in progress' : 'Saved recording';
+  return [
+    `Flight report · ${plan.callsign} · ${plan.aircraft} · ${plan.registration || 'None'}`,
+    `${plan.origin.icao} → ${plan.destination.icao} · ${state}`,
+    `Report snapshot ${utc(new Date(now).toISOString())}`,
+    ...events.map(event => `${event.label}: ${utc(event.actual)} | planned ${event.planned ? utc(event.planned) : 'None'} | difference ${timingDelta(event.delta)}`),
+    ...windows.map(window => `${window.label}: ${elapsedTime(window.actual)}${window.live ? ' (elapsed so far)' : ''} | planned ${elapsedTime(window.planned)} | difference ${timingDelta(window.delta, window.live)}`),
+    ...(plan.landing?.contacts || []).map((contact, index) => `Touchdown ${index + 1}: ${utc(contact.time)} · ${Number.isFinite(contact.rateFpm) ? contact.rateFpm + ' ft/min' : 'rate unavailable'} · ${contact.method === 'simulator-touchdown' ? 'simulator measurement' : 'sampled estimate'}${contact.bounce ? ' · bounce' : ''}`),
+    `Simulator: ${plan.landing?.simulator || 'Not recorded in landing summary'}`,
+    'Unobserved events stay blank. Elapsed durations use real UTC time, including pauses. For flight simulation only.',
+  ].join('\n');
+}
+
 export function flightHistoryView(flights, { search = '', filter = 'all', sort = 'saved', now = Date.now() } = {}) {
   const terms = search.toLowerCase().trim().split(/\s+/).filter(Boolean);
   const complete = flight => flight.actual?.phase === 'complete' || !!flight.landing?.completedAt;
@@ -42,6 +61,7 @@ export function flightHistoryView(flights, { search = '', filter = 'all', sort =
     if (!terms.every(term => text.includes(term))) return false;
     if (filter === 'upcoming') return !complete(flight) && !flight.actual?.out && !['taxi-out','airborne','taxi-in'].includes(flight.actual?.phase) && Date.parse(flight.offBlock) >= now;
     if (filter === 'complete') return complete(flight);
+    if (filter === 'in-progress') return !complete(flight) && ['taxi-out', 'airborne', 'taxi-in'].includes(flight.actual?.phase);
     if (filter === 'attention') return ['failed','unconfirmed'].includes(flight.filing.status);
     return true;
   }).sort((a, b) => sort === 'departure' ? Date.parse(a.offBlock) - Date.parse(b.offBlock) : 0);

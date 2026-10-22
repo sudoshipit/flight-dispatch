@@ -74,18 +74,21 @@ export class Services {
   async weather(plan) {
     const ids = [plan.origin.icao, plan.destination.icao];
     const key = ids.join(',');
-    const cached = this.weatherCache.get(key);
-    if (cached && Date.now() - cached.at < 60000) return cached.value;
-    const fetchedAt = new Date().toISOString();
+    let cached = this.weatherCache.get(key);
     try {
-      const records = await fetchJson(`https://aviationweather.gov/api/data/metar?${new URLSearchParams({ ids: key, format: 'json' })}`);
-      if (!Array.isArray(records)) throw new Error('Unexpected weather data.');
-      const value = Object.fromEntries(ids.map(icao => {
+      if (!cached || Date.now() - cached.at >= 60000) {
+        const records = await fetchJson(`https://aviationweather.gov/api/data/metar?${new URLSearchParams({ ids: key, format: 'json' })}`);
+        if (!Array.isArray(records)) throw new Error('Unexpected weather data.');
+        cached = { at: Date.now(), fetchedAt: new Date().toISOString(), records };
+        this.weatherCache.set(key, cached);
+      }
+      // Cache only the provider response. A missing observation must fall back
+      // to this briefing's OFP, never another flight's snapshot of these airports.
+      const { records, fetchedAt } = cached;
+      return Object.fromEntries(ids.map(icao => {
         const r = records.filter(r => r.icaoId === icao).sort((a, b) => Number(b.obsTime) - Number(a.obsTime))[0];
         return [icao, r ? { raw: str(r.rawOb), observedAt: r.obsTime ? new Date(Number(r.obsTime) * 1000).toISOString() : str(r.reportTime), fetchedAt, category: str(r.fltCat), source: 'NOAA Aviation Weather Center', stale: !r.obsTime || Date.now() - Number(r.obsTime) * 1000 > 90 * 60000 } : this.planWeather(plan, icao, 'No recent observation returned.')];
       }));
-      this.weatherCache.set(key, { at: Date.now(), value });
-      return value;
     } catch (error) { return Object.fromEntries(ids.map(icao => [icao, this.planWeather(plan, icao, error.message)])); }
   }
   planWeather(plan, icao, error) {

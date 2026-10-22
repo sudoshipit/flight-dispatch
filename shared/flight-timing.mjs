@@ -35,7 +35,7 @@ export function timingComparison(plan, now, tracking = false) {
 export function offBlockCountdown(plan, now) {
   const actual = plan.actual || {};
   if (actual.out) return { state: 'departed', seconds: null, target: actual.out };
-  if (['airborne', 'taxi-in', 'complete'].includes(actual.phase)) return { state: 'unobserved', seconds: null, target: null };
+  if (['taxi-out', 'airborne', 'taxi-in', 'complete'].includes(actual.phase)) return { state: 'unobserved', seconds: null, target: null };
   const target = plan.ofp?.timing?.out?.estimated || plan.ofp?.timing?.out?.scheduled || plan.offBlock;
   const planned = timestamp(target);
   if (planned == null || !Number.isFinite(now)) return { state: 'unavailable', seconds: null, target: null };

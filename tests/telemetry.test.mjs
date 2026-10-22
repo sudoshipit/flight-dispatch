@@ -172,6 +172,63 @@ test('stopped connections cannot record late samples and a failed save remains r
   callback(sample(3100, { onGround: true }));
   assert.equal(plan.landing.contacts.length, 1);
 });
+
+test('periodic checkpoints and shutdown preserve progress without completing an unfinished landing', t => {
+  let now = Date.parse('2026-10-20T12:00:00Z'), callback, saves = 0;
+  let plan = { id: 'fixture', callsign: 'SWA123', destination: {} };
+  const store = { read: (_, fallback) => fallback, write() {}, getPlan: () => plan, savePlan: p => { saves++; return plan = p; } };
+  const adapters = { simconnect: cb => { callback = cb; return { close() {} }; }, xplane: () => ({ close() {} }) };
+  const events = [];
+  let tracker = new Telemetry(store, value => events.push(value), adapters, () => now);
+  t.after(() => tracker.stop(false));
+  tracker.follow('fixture');
+  for (let ms = 0; ms <= 100000; ms += 100) { now = sample(ms).at; callback(sample(ms)); }
+  assert.equal(saves, 4); // Initial airborne event, then at 33, 63 and 93 seconds.
+  assert.equal(plan.actual.lastObservedAt, new Date(sample(93000).at).toISOString());
+  now = sample(100100).at; callback(sample(100100, { onGround: true, agl: 0, groundspeed: 10 }));
+  const touchdown = plan.actual.on, startedAt = plan.landing.startedAt;
+  now = sample(101000).at; callback(sample(101000, { onGround: true, agl: 0, groundspeed: 10 }));
+  tracker.shutdown();
+  assert.equal(plan.actual.lastObservedAt, new Date(now).toISOString());
+  assert.equal(plan.landing.completedAt, null);
+  assert.equal(plan.actual.in, null);
+  events.length = 0;
+  tracker = new Telemetry(store, value => events.push(value), adapters, () => now);
+  tracker.follow('fixture');
+  assert.equal(tracker.status().planId, 'fixture');
+  for (let ms = 110000; ms <= 115000; ms += 100) {
+    now = sample(ms).at;
+    callback(sample(ms, { onGround: true, agl: 0, groundspeed: 0, parkingBrake: true }));
+  }
+  assert.equal(plan.actual.on, touchdown);
+  assert.equal(plan.actual.in, new Date(sample(110000).at).toISOString());
+  assert.equal(plan.landing.startedAt, startedAt);
+  assert.equal(plan.landing.contacts.length, 1);
+  assert.ok(plan.landing.completedAt);
+  assert.equal(events.filter(event => event.touchdownId).length, 0, 'Resuming/parking must not replay the touchdown popup');
+  tracker.follow('fixture');
+  assert.equal(tracker.status().planId, null);
+});
+
+test('failed checkpoints retry and invalid samples do not replace the last valid telemetry readout', t => {
+  let now = sample(0).at, callback, failSave = true;
+  let plan = { id: 'fixture', callsign: 'SWA123', destination: {} };
+  const store = { read: (_, fallback) => fallback, write() {}, getPlan: () => plan, savePlan: p => { if (failSave) throw Error('Disk'); return plan = p; } };
+  const tracker = new Telemetry(store, () => {}, { simconnect: cb => { callback = cb; return { close() {} }; } }, () => now);
+  t.after(() => tracker.stop(false));
+  tracker.start('fixture', { simulator: 'simconnect', xplanePort: 49000 });
+  for (let ms = 0; ms <= 3000; ms += 100) { now = sample(ms).at; callback(sample(ms)); }
+  assert.equal(tracker.status().status, 'error');
+  failSave = false;
+  for (let ms = 3100; ms <= 8000; ms += 100) { now = sample(ms).at; callback(sample(ms)); }
+  assert.equal(tracker.status().status, 'tracking');
+  assert.equal(plan.actual.phase, 'airborne');
+  const valid = tracker.status().sample;
+  assert.equal(valid.groundspeed, 130); assert.equal(valid.parkingBrake, null);
+  callback(sample(8100, { lat: NaN }));
+  assert.equal(tracker.status().status, 'waiting');
+  assert.deepEqual(tracker.status().sample, valid);
+});
 test('X-Plane request layout, response validation and actual localhost UDP conversion', async t => {
   const request = rrefRequest(0);
   assert.equal(request.length, 413); assert.equal(request.readInt32LE(5), 20); assert.equal(request.readInt32LE(9), 0);

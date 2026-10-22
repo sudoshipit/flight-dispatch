@@ -77,3 +77,22 @@ test('destination distance crosses the antimeridian and preserves missing coordi
   assert.ok(Math.abs(distanceNm({ lat: 0, lon: 179 }, { lat: 0, lon: -179 }) - 120.08) < .1);
   assert.equal(distanceNm({ lat: null, lon: 0 }, { lat: 0, lon: 0 }), null);
 });
+
+test('parking detection recovers after a pause or disconnect following touchdown', () => {
+  for (const interrupt of ['pause', 'disconnect', 'restart']) {
+    let r = new LandingRecorder(); airborne(r);
+    r.ingest(sample(3050, { onGround: true, agl: 0, groundspeed: 10 }));
+    const touchdown = r.actual.on;
+    for (let ms = 3100; ms <= 4000; ms += 100) r.ingest(sample(ms, { onGround: true, agl: 0, groundspeed: 0, parkingBrake: true }));
+    if (interrupt === 'pause') r.ingest(sample(4100, { paused: true }));
+    else if (interrupt === 'disconnect') r.resetContinuity();
+    else r = new LandingRecorder(r.actual, r.contacts);
+    for (let ms = 5000; ms < 10000; ms += 100) r.ingest(sample(ms, { onGround: true, agl: 0, groundspeed: 0, parkingBrake: true }));
+    assert.equal(r.actual.in, null, interrupt);
+    r.ingest(sample(10000, { onGround: true, agl: 0, groundspeed: 0, parkingBrake: true }));
+    assert.equal(r.phase, 'complete', interrupt);
+    assert.equal(r.actual.in, new Date(sample(5000).at).toISOString(), interrupt);
+    assert.equal(r.actual.on, touchdown);
+    assert.equal(r.contacts.length, 1);
+  }
+});

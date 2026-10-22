@@ -1,13 +1,14 @@
-import { Clock3, Radio } from 'lucide-react';
+import { Clipboard, Clock3, Radio } from 'lucide-react';
+import TelemetryDetails from './TelemetryDetails';
 import { elapsedTime, offBlockCountdown, timingComparison, timingDelta } from '../shared/flight-timing.mjs';
 import type { Plan, TelemetryState } from './types';
 import './timing.css';
 
 const utc = (value: string | null) => value ? new Date(value).toLocaleTimeString('en-GB', { timeZone: 'UTC' }) + 'Z' : '—';
 const date = (value: string | null) => value ? new Date(value).toLocaleDateString('en-GB', { timeZone: 'UTC', day: '2-digit', month: 'short' }) : 'Awaiting observation';
-export default function LiveTimings({ plan, telemetry, now, switchTracking, busy }: { plan: Plan; telemetry: TelemetryState | null; now: number; switchTracking: () => Promise<void>; busy: boolean }) {
+export default function LiveTimings({ plan, telemetry, now, switchTracking, copyReport, busy }: { plan: Plan; telemetry: TelemetryState | null; now: number; switchTracking: () => Promise<void>; copyReport: () => Promise<void>; busy: boolean }) {
   const tracking = telemetry?.planId === plan.id;
-  const otherFlight = telemetry?.planId && !tracking && !plan.landing?.contacts.length;
+  const otherFlight = telemetry?.planId && !tracking && !plan.landing?.completedAt && plan.actual?.phase !== 'complete';
   const { events, windows } = timingComparison(plan, now, tracking);
   const departure = offBlockCountdown(plan, now);
   const phase = plan.actual?.phase || 'waiting';
@@ -22,6 +23,7 @@ export default function LiveTimings({ plan, telemetry, now, switchTracking, busy
       <strong>{departure.state === 'overdue' ? '+' : ''}{elapsedTime(departure.seconds)}</strong>
     </div>}
     {departure.state === 'departed' && <p className="departure-recorded">Off blocks recorded at {utc(departure.target)} · Countdown complete</p>}
+    {departure.state === 'unobserved' && <p className="departure-recorded">Off blocks was not observed. Earlier departure times remain blank.</p>}
     <div className="actual-milestones">{events.map(event => <div key={event.key} className={event.actual ? 'observed' : ''}>
       <h3>{event.label}</h3><strong>{utc(event.actual)}</strong><span>{date(event.actual)}</span>
       <small>Plan {utc(event.planned)}{event.planned && event.actual?.slice(0, 10) !== event.planned.slice(0, 10) ? ` · ${date(event.planned)}` : ''}</small>
@@ -34,5 +36,7 @@ export default function LiveTimings({ plan, telemetry, now, switchTracking, busy
       </tr>)}</tbody></table></div>
     <details className="timing-explainer"><summary>How times are recorded</summary><p>Off blocks: first sustained movement after stopping. On block: parked below 3 kt with the parking brake set for 5 seconds. Elapsed time uses the real UTC clock, including simulator pauses. Unobserved events stay blank.</p></details>
     {tracking && ['waiting', 'paused', 'error'].includes(telemetry.status) && <p className="timing-connection" role="status">{telemetry.message}</p>}
+    {tracking && <TelemetryDetails telemetry={telemetry} now={now}/>}
+    <button className="text-button timing-report" onClick={() => void copyReport()}><Clipboard size={14}/> Copy flight report</button>
   </section>;
 }

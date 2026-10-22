@@ -2,7 +2,7 @@
 
 A Windows desktop flight planning companion for SimBrief and VATSIM. Built with Electron, React, and TypeScript. All settings and flight history stay on your computer.
 
-> **v1.0.0 rebuilt October 22, 2026.** This build fixes new-flight tracking remaining attached to an older briefing while parked at the gate, and adds a visible recording mismatch with **Track this flight**. It includes automatic simulator detection, landing-rate popup, live timings and the route explorer. Download again to update; the version number remains 1.0.0.
+> **v1.0.0 rebuilt October 22, 2026.** This build adds recorder recovery after pauses and restarts, periodic progress saves, simulator telemetry details, a copyable flight report and an In progress history filter. It also fixes stale weather fallback between briefings and includes the earlier flight-tracking handoff fix. Download again to update; the version number remains 1.0.0.
 
 ## Install and set up
 
@@ -124,7 +124,7 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 - A 15-minute gate-request cache, request deduplication, and a configurable local monthly cap (90 by default). No paid historical endpoints are called. The cap covers this app only; other apps using the same key count against the provider's quota separately.
 - Automatic simulator detection and landing recording, with ft/min, UTC timestamp, groundspeed, pitch/bank, repeated contacts and distance from the planned destination. Touchdown opens a centered popup on any app page, and the result stays at the top of the briefing and in Recent flights.
 - Live actual-versus-planned flight timeline: off-block, takeoff, touchdown and on-block UTC times; taxi-out, air time, taxi-in and total block durations. Running windows update every second, with remaining/over-plan time and saved final differences.
-- Searchable local history for the latest 30 generated/imported briefings. Search by callsign, airport, aircraft or registration; filter upcoming flights, completed flights or failed/unconfirmed VATSIM filings; sort by saved order or UTC departure.
+- Searchable local history for the latest 30 generated/imported briefings. Search by callsign, airport, aircraft or registration; filter upcoming, in-progress and completed flights or failed/unconfirmed VATSIM filings; sort by saved order or UTC departure. In progress includes unfinished saved recordings, even when tracking is currently stopped.
 - Click the tracked-flight card in the sidebar to return to its briefing from any page.
 - **Copy route** and **Copy briefing** are available near the top of the briefing. The briefing text includes UTC dates, planned fuel in the OFP units, SID/STAR, runways, alternate, elevation, CTAF, gates and METARs. Historical gates and weather snapshots retain their labels. Copying does not generate or file a flight.
 - Persistent preferences and encrypted API keys using Electron safeStorage / Windows encryption.
@@ -134,10 +134,16 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 1. Generate or import the flight you are about to fly, or open its saved briefing. **Flight recorder** automatically searches for a supported simulator; no tracking button is required. Start/load the simulator flight and leave pause/replay before departure.
 2. Keep Flight Dispatch running; switching pages does not stop tracking. Only one briefing is tracked at a time. Browsing other saved flights does not steal an active recording. Generating/importing a new flight automatically replaces a pending briefing if it has never connected, or if fresh telemetry shows the aircraft still stationary before any departure has been recorded. Once moving, the active recording is preserved.
 3. After at least three seconds of observed airborne telemetry and reaching 30 ft AGL, the recorder arms. Touchdown opens a centered **Your landing rate** popup, even while viewing Settings or another page, and creates **Your landing** at the top of the briefing. Dismiss the popup with its button or Escape; **View briefing** returns to the flight. Later measurement refinements and parking completion update the result without reopening a dismissed popup. New ground contacts can show a new popup.
-4. After landing, remain below 3 kt with the parking brake set for five seconds to complete automatically. If an add-on does not report its parking brake, select **Finish tracking**. Results and timing transitions are saved as observed. After restarting the app, open the unfinished briefing to reconnect; a briefing that already contains a landing result is never automatically recorded again.
+4. After landing, remain below 3 kt with the parking brake set for five seconds to complete automatically. Pausing or disconnecting resets that five-second parking check, then it resumes from fresh telemetry. If an add-on does not report its parking brake, select **Finish tracking**. Results and timing transitions are saved as observed. After restarting the app, open the unfinished briefing to reconnect, including a flight still taxiing in. Existing touchdown results remain saved and do not replay the landing popup; completed flights never restart automatically.
 5. **Stop tracking** stops automatic detection for that briefing for the rest of this app session. **Resume tracking** lets you explicitly restart, select a simulator, or change the X-Plane UDP port under **Connection setup**. Open **Recent flights** to review saved rates and timings. Importing the same OFP and filing it on VATSIM preserve both. Use a new OFP for the next flight.
 
 If off-block/taxi times do not appear, check the callsign being recorded in the sidebar. When another briefing owns the recorder, the timeline shows **Not recording this flight** and names both flights. **Track this flight** saves and stops the other recording, then starts recording the displayed briefing. Times from the other flight are not copied; start tracking the correct briefing while still parked to observe off blocks. This applies to Fenix and all other supported aircraft. Switching while taxiing or airborne leaves earlier, unobserved timestamps blank.
+
+Expand **Simulator telemetry** beneath the timeline to inspect the last valid groundspeed, ground/air state, parking brake, height above ground, vertical speed and sample time. Values remain visible for reference during pauses or a connection loss; the status and sample age distinguish them from fresh readings. No simulator controls are changed.
+
+Recording milestones save immediately. Progress also checkpoints every 30 seconds and when the app closes. Closing the app does not mark an unfinished flight complete or invent an on-block time. Reopen its briefing to resume; events during the interruption remain unobserved. If a save fails, the recorder shows the error and retries every five seconds while telemetry arrives.
+
+**Copy flight report** copies observed UTC milestones, planned times and differences, taxi/air/block durations and landing measurements to your clipboard. Active durations are labeled as elapsed so far; missing transitions remain unobserved, and sampled landing estimates are distinguished from simulator measurements. It does not send the report anywhere.
 
 ### Live actual-versus-planned timings
 
@@ -145,7 +151,7 @@ The **Live flight timeline** compares observed UTC timestamps with SimBrief's es
 
 Before departure, **Until off blocks** counts down to the planned UTC departure every second, including across midnight. The countdown is green above 10 minutes, orange **Off blocks soon** in the final 10 minutes, and red **Off blocks overdue** after planned departure, counting upward. The slim flight banner spans the briefing width, with live timings directly below beside the map (stacked in smaller windows). It stops when off-block movement is observed, and is not shown as a departure countdown when tracking begins midair.
 
-- **Off blocks** is the first movement at or above 1 kt, with the parking brake released, sustained for two seconds after observing the aircraft stationary. The recorded time is the beginning of that movement, including pushback.
+- **Off blocks** is the first movement at or above 1 kt, with the parking brake released, sustained for two seconds after observing the aircraft stationary. The recorded time is the beginning of that movement, including pushback. When tracking begins during taxi, the phase still changes to Taxiing out and the departure countdown stops, but the missed off-block timestamp and taxi-out duration stay blank. A later taxiway stop/reconnect does not manufacture that timestamp.
 - **Takeoff** is the first observed ground-to-air transition, confirmed after three seconds airborne and reaching 30 ft AGL.
 - **Touchdown** uses the recorder's detected contact. Brief bounces do not restart taxi-in timing. Sustained flight after a touch-and-go returns to air time; the final landing supplies the arrival timestamp.
 - **On block** is the start of a five-second period below 3 kt with the parking brake set after landing. Selecting **Finish tracking** manually does not invent an on-block time.
@@ -222,6 +228,7 @@ npm run check:live   # Read-only aircraft / OFP / METAR / VATSIM AIP checks
 npm run build        # TypeScript check and renderer build
 npx playwright install chromium # Browser for isolated extension tests
 npm run test:smoke
+npm run test:recorder # App-close/restart recovery, taxi-in completion, telemetry and report UI
 node scripts/import-smoke.mjs   # Electron UI smoke test; uses a temporary user profile
 npm run test:dispatch # Complete automatic generation + filing with local service mocks
 npm run test:browser  # Dedicated browser session and personal-airframe fixture checks
@@ -242,6 +249,7 @@ To test the packaged app after building:
 ```powershell
 $env:FLIGHT_DISPATCH_TEST_BROWSER = 'msedge'
 $env:FLIGHT_DISPATCH_EXECUTABLE = (Resolve-Path -LiteralPath 'release\win-unpacked\Flight Dispatch.exe').Path
+npm run test:recorder
 npm run test:dispatch
 Remove-Item Env:FLIGHT_DISPATCH_EXECUTABLE
 Remove-Item Env:FLIGHT_DISPATCH_TEST_BROWSER

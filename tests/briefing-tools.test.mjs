@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { briefingText, flightHistoryView, userMessage } from '../shared/briefing-tools.mjs';
+import { briefingText, flightReportText, flightHistoryView, userMessage } from '../shared/briefing-tools.mjs';
 import { parseOFP } from '../shared/domain.mjs';
 import { ofp } from './fixtures.mjs';
 
@@ -13,8 +13,27 @@ test('history search combines words and UTC filters do not mislabel a flight joi
   const flights = [later, earlier, airborne, complete];
   assert.deepEqual(flightHistoryView(flights, { search: 'swa tampa B737', filter: 'upcoming', sort: 'departure', now }).map(p => p.id), ['earlier','later']);
   assert.deepEqual(flightHistoryView(flights, { filter: 'complete' }).map(p => p.id), ['complete']);
+  assert.deepEqual(flightHistoryView(flights, { filter: 'in-progress' }).map(p => p.id), ['airborne']);
   assert.equal(flightHistoryView(flights, { search: 'nonexistent' }).length, 0);
   assert.equal(flights[0].id, 'later');
+});
+
+test('flight reports preserve observed UTC times, missing milestones and landing measurement provenance', () => {
+  const plan = { ...parseOFP(ofp), actual: { out: null, off: null, on: '2026-10-19T16:40:00Z', in: null,
+    phase: 'taxi-in', lastObservedAt: '2026-10-19T16:42:00Z' }, landing: { simulator: 'Fixture sim', contacts: [
+      { time: '2026-10-19T16:40:00Z', rateFpm: 0, method: 'simulator-touchdown', bounce: false },
+      { time: '2026-10-19T16:40:01Z', rateFpm: -120, method: 'sampled-estimate', bounce: true },
+    ] } };
+  const text = flightReportText(plan, Date.parse('2026-10-19T16:43:00Z'), true);
+  assert.match(text, /Off blocks: Not observed/);
+  assert.match(text, /Takeoff: Not observed/);
+  assert.match(text, /Taxi-in: 00:03:00 \(elapsed so far\)/);
+  assert.match(text, /0 ft\/min · simulator measurement/);
+  assert.match(text, /-120 ft\/min · sampled estimate · bounce/);
+  assert.ok(!text.includes('undefined'));
+  const stopped = flightReportText(plan, Date.parse('2026-10-19T20:00:00Z'), false);
+  assert.match(stopped, /Taxi-in: 00:02:00 \|/);
+  assert.ok(!stopped.includes('elapsed so far'));
 });
 test('history attention filter distinguishes failed and unconfirmed filings from unfiled plans', () => {
   const base = parseOFP(ofp);

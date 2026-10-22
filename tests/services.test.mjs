@@ -48,6 +48,21 @@ test('VATSIM AIP only designates CTAF when flagged and keeps multiple assigned f
   globalThis.fetch=async()=>new Response(JSON.stringify({data:{icao:'KTPA',altitude_ft:26,stations:[{frequency:'119.500',ctaf:true},{frequency:'120.100',ctaf:true},{frequency:'121.700',ctaf:false}]}}));
   try{const data=await services.airport('KTPA');assert.equal(data.elevation,26);assert.deepEqual(data.frequencies.map(f=>f.frequency),['119.500','120.100']);}finally{globalThis.fetch=original;}
 });
+
+test('cached missing METARs use the currently opened flight snapshot instead of another briefing', async () => {
+  const { services, plan } = setup(); const original = globalThis.fetch; let calls = 0;
+  globalThis.fetch = async () => { calls++; return new Response(JSON.stringify([])); };
+  try {
+    const first = { ...plan, destination: { ...plan.destination, metar: 'KBUF FIRST SNAPSHOT', metarTime: '2026-10-19T10:00:00Z' } };
+    const second = { ...plan, destination: { ...plan.destination, metar: 'KBUF SECOND SNAPSHOT', metarTime: '2026-10-19T12:00:00Z' } };
+    assert.equal((await services.weather(first)).KBUF.raw, 'KBUF FIRST SNAPSHOT');
+    const weather = await services.weather(second);
+    assert.equal(weather.KBUF.raw, 'KBUF SECOND SNAPSHOT');
+    assert.equal(weather.KBUF.observedAt, '2026-10-19T12:00:00Z');
+    assert.equal(weather.KBUF.stale, true);
+    assert.equal(calls, 1);
+  } finally { globalThis.fetch = original; }
+});
 test('gate requests are deduplicated, cached, and never call historical endpoints', async () => {
   const {services,store,plan}=setup();store.saveSettings({...DEFAULT_SETTINGS,aviationstackKey:'test-key'});let calls=0;
   const original=globalThis.fetch;

@@ -12,7 +12,7 @@ export default function FlightHistory({ flights, busy, now, open }: { flights: P
   return <section className="flight-history" aria-label="Saved flight history">
     <div className="history-tools">
       <label className="history-search"><Search size={17}/><input aria-label="Search recent flights" value={search} placeholder="Callsign, airport, aircraft or registration" onChange={e => setSearch(e.target.value)}/>{search && <button className="icon-button" aria-label="Clear flight search" onClick={() => setSearch('')}><X size={15}/></button>}</label>
-      <label>Show<select aria-label="Filter recent flights" value={filter} onChange={e => setFilter(e.target.value)}><option value="all">All flights</option><option value="upcoming">Upcoming</option><option value="complete">Completed</option><option value="attention">Filing needs attention</option></select></label>
+      <label>Show<select aria-label="Filter recent flights" value={filter} onChange={e => setFilter(e.target.value)}><option value="all">All flights</option><option value="upcoming">Upcoming</option><option value="in-progress">In progress</option><option value="complete">Completed</option><option value="attention">Filing needs attention</option></select></label>
       <label>Sort<select aria-label="Sort recent flights" value={sort} onChange={e => setSort(e.target.value)}><option value="saved">Recently saved</option><option value="departure">Departure · earliest first</option></select></label>
     </div>
     <p className="history-count">{visible.length} of {flights.length} flights · all times UTC{(search || filter !== 'all' || sort !== 'saved') && <button className="text-button" onClick={reset}>Reset filters</button>}</p>
