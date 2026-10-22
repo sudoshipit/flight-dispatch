@@ -2,7 +2,7 @@
 
 A Windows desktop flight planning companion for SimBrief and VATSIM. Built with Electron, React, and TypeScript. All settings and flight history stay on your computer.
 
-> **v1.0.0 rebuilt October 20, 2026.** The current downloads include automatic simulator detection, a centered landing-rate popup, live actual-versus-planned timings and an off-block countdown, along with the enhanced route explorer and earlier updates. If these controls are missing from your briefing, download again; the version number remains 1.0.0.
+> **v1.0.0 rebuilt October 22, 2026.** This build fixes new-flight tracking remaining attached to an older briefing while parked at the gate, and adds a visible recording mismatch with **Track this flight**. It includes automatic simulator detection, landing-rate popup, live timings and the route explorer. Download again to update; the version number remains 1.0.0.
 
 ## Install and set up
 
@@ -132,10 +132,12 @@ Keys are encrypted using Windows through Electron safeStorage. Provider coverage
 ## Landing recorder setup
 
 1. Generate or import the flight you are about to fly, or open its saved briefing. **Flight recorder** automatically searches for a supported simulator; no tracking button is required. Start/load the simulator flight and leave pause/replay before departure.
-2. Keep Flight Dispatch running; switching pages does not stop tracking. Only one briefing is tracked at a time. Browsing other saved flights does not steal an active recording. Generating/importing a new flight replaces a pending briefing only if it has never connected to a simulator.
+2. Keep Flight Dispatch running; switching pages does not stop tracking. Only one briefing is tracked at a time. Browsing other saved flights does not steal an active recording. Generating/importing a new flight automatically replaces a pending briefing if it has never connected, or if fresh telemetry shows the aircraft still stationary before any departure has been recorded. Once moving, the active recording is preserved.
 3. After at least three seconds of observed airborne telemetry and reaching 30 ft AGL, the recorder arms. Touchdown opens a centered **Your landing rate** popup, even while viewing Settings or another page, and creates **Your landing** at the top of the briefing. Dismiss the popup with its button or Escape; **View briefing** returns to the flight. Later measurement refinements and parking completion update the result without reopening a dismissed popup. New ground contacts can show a new popup.
 4. After landing, remain below 3 kt with the parking brake set for five seconds to complete automatically. If an add-on does not report its parking brake, select **Finish tracking**. Results and timing transitions are saved as observed. After restarting the app, open the unfinished briefing to reconnect; a briefing that already contains a landing result is never automatically recorded again.
 5. **Stop tracking** stops automatic detection for that briefing for the rest of this app session. **Resume tracking** lets you explicitly restart, select a simulator, or change the X-Plane UDP port under **Connection setup**. Open **Recent flights** to review saved rates and timings. Importing the same OFP and filing it on VATSIM preserve both. Use a new OFP for the next flight.
+
+If off-block/taxi times do not appear, check the callsign being recorded in the sidebar. When another briefing owns the recorder, the timeline shows **Not recording this flight** and names both flights. **Track this flight** saves and stops the other recording, then starts recording the displayed briefing. Times from the other flight are not copied; start tracking the correct briefing while still parked to observe off blocks. This applies to Fenix and all other supported aircraft. Switching while taxiing or airborne leaves earlier, unobserved timestamps blank.
 
 ### Live actual-versus-planned timings
 

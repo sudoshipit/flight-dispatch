@@ -52,6 +52,7 @@ declare global {
       companionStatus(): Promise<CompanionStatus>;
       companionSetup(): Promise<CompanionStatus>;
       startTracking(id: string, config: TelemetryConfig): Promise<TelemetryState>;
+      switchTracking(id: string, config: TelemetryConfig): Promise<TelemetryState>;
       followFlight(id: string): Promise<TelemetryState>;
       stopTracking(): Promise<TelemetryState>;
       onTelemetry(callback: (state: TelemetryState) => void): () => void;

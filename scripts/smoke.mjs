@@ -295,6 +295,51 @@ try {
   await expect(page.locator('.route-map')).toHaveCount(0);
   await page.getByRole('button',{name:'New flight',exact:true}).click();
   await expectNewFlight();
+  // Reproduce an older briefing owning a connected aircraft before importing
+  // the Fenix flight, then check the explicit correction for an active taxi.
+  const importTrackingFixture = async (id, callsign, aircraft) => {
+    await app.evaluate(({app}, fixture) => {
+      const require = process.getBuiltinModule('node:module').createRequire(app.getAppPath() + '/package.json');
+      require('./electron/services.mjs').Services.prototype.ofp = async () => fixture;
+    }, { ...parseOFP(ofp), id, callsign, aircraft });
+    await page.getByRole('button',{name:/^Recent flights \d+$/}).click();
+    await page.getByRole('button',{name:'Import latest',exact:true}).click();
+    await expect(page.locator('.progress')).toHaveCount(0,{timeout:60000});
+    await expect(page.locator('.callsign-link')).toHaveText(callsign);
+  };
+  await importTrackingFixture('tracking-previous', 'SWA456', 'B738');
+  await app.evaluate(() => globalThis.__sample({ at:Date.now(), simTime:100, simulator:'Local telemetry fixture',
+    onGround:true, agl:0, verticalSpeed:0, groundspeed:0, lat:42.94, lon:-78.73, parkingBrake:true }));
+  // Keep telemetry fresh while the import performs its read-only enrichment.
+  await app.evaluate(() => { globalThis.__parkedTimer = setInterval(() => globalThis.__sample({at:Date.now(), simTime:Date.now()/1000,
+    simulator:'Local telemetry fixture',onGround:true,agl:0,verticalSpeed:0,groundspeed:0,lat:42.94,lon:-78.73,parkingBrake:true}),100); });
+  await importTrackingFixture('tracking-fenix', 'DAL321', 'A321');
+  await app.evaluate(() => clearInterval(globalThis.__parkedTimer));
+  expect((await page.evaluate(() => window.dispatch.bootstrap())).telemetry.planId).toBe('tracking-fenix');
+  await expect(page.getByRole('region',{name:'Flight recording mismatch'})).toHaveCount(0);
+  await app.evaluate(() => {
+    const base = Date.now();
+    for (let ms = 0; ms <= 3000; ms += 100) globalThis.__sample({at:base+ms,simTime:base/1000+ms/1000,
+      simulator:'Local telemetry fixture',onGround:true,agl:0,verticalSpeed:0,groundspeed:ms===0?0:6,
+      lat:42.94,lon:-78.73,parkingBrake:ms===0});
+  });
+  await expect(timings).toContainText('Taxiing out');
+  const fenixBeforeSwitch = (await page.evaluate(() => window.dispatch.bootstrap())).history.find(p=>p.id==='tracking-fenix');
+  expect(fenixBeforeSwitch.actual.out).toBeTruthy();
+  await importTrackingFixture('tracking-correction', 'DAL322', 'A321');
+  const mismatch = page.getByRole('region',{name:'Flight recording mismatch'});
+  await expect(timings).toContainText('Not recording this flight');
+  await expect(mismatch).toContainText('DAL321');
+  await expect(mismatch).toContainText('DAL322');
+  await mismatch.scrollIntoViewIfNeeded();
+  await page.screenshot({path:'artifacts/tracking-mismatch.png'});
+  await mismatch.getByRole('button',{name:'Track this flight',exact:true}).click();
+  await expect(mismatch).toHaveCount(0);
+  const switched = await page.evaluate(() => window.dispatch.bootstrap());
+  expect(switched.telemetry.planId).toBe('tracking-correction');
+  expect(switched.history.find(p=>p.id==='tracking-fenix').actual.out).toBe(fenixBeforeSwitch.actual.out);
+  expect(switched.history.find(p=>p.id==='tracking-correction').actual).toBeUndefined();
+  console.log('Tracking handoff passed: parked import switches briefing, taxi remains attached, explicit correction saves the previous flight without copying its times.');
   expect(errors).toEqual([]);
   console.log('Desktop smoke passed: new flight UTC + 30 minute defaults with midnight/year rollover and fresh resets, manual and edit/regenerate times preserved, saved variant defaults on aircraft selection, map only in briefing, CI rules, custom route, passenger modes, map waypoint inspector, keyboard/scroll zoom, expanded dialog, procedure order, landing summary and history persistence, OFP details, SID/STAR, navlog, settings, history, sample import, compact layout, automatic VATSIM submission against a local form, and no renderer errors.');
 } finally { await companion?.close(); await app.close(); }

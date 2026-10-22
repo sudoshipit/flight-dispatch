@@ -80,6 +80,82 @@ test('tracking locks to one simulator, saves contacts on the correct plan and pr
   assert.ok(events.some(event => event.phase === 'complete' && event.plan?.landing.completedAt));
   assert.throws(() => tracker.start(plan.id, { simulator: 'auto', xplanePort: 49000 }), /already has landing/);
 });
+
+test('a new dispatch takes over a connected aircraft at the gate and records departure on that briefing', t => {
+  const plans = new Map(['previous', 'fenix-a321'].map(id => [id, { id, callsign: id, destination: {} }]));
+  const store = { read: (_, fallback) => fallback, write() {}, getPlan: id => plans.get(id), savePlan: p => { plans.set(p.id, p); return p; } };
+  let callback;
+  const tracker = new Telemetry(store, () => {}, { simconnect: cb => { callback = cb; return { close() {} }; }, xplane: () => ({ close() {} }) });
+  t.after(() => tracker.stop(false));
+  tracker.follow('previous');
+  callback(sample(0, { onGround: true, agl: 0, groundspeed: 0, parkingBrake: true }));
+  assert.equal(tracker.selected, 'simconnect');
+  tracker.follow('fenix-a321'); // Browsing history must not change the active flight.
+  assert.equal(tracker.status().planId, 'previous');
+  const oldCallback = callback;
+  tracker.follow('fenix-a321', { replaceWaiting: true });
+  assert.equal(tracker.status().planId, 'fenix-a321');
+  callback(sample(100, { onGround: true, agl: 0, groundspeed: 0, parkingBrake: true }));
+  for (let ms = 200; ms <= 3000; ms += 100) callback(sample(ms, { onGround: true, agl: 0, groundspeed: 6, parkingBrake: false }));
+  oldCallback(sample(3100, { onGround: true, groundspeed: 100 }));
+  assert.equal(plans.get('fenix-a321').actual.out, new Date(sample(200).at).toISOString());
+  assert.equal(plans.get('fenix-a321').actual.phase, 'taxi-out');
+  assert.equal(plans.get('previous').actual, undefined);
+});
+
+test('new imports cannot steal moving, paused, stale or already departed recordings', t => {
+  for (const situation of ['moving', 'taxi-out', 'airborne', 'paused', 'stale']) {
+    const plans = new Map(['current', 'next'].map(id => [id, { id, callsign: id, destination: {} }]));
+    const store = { read: (_, fallback) => fallback, write() {}, getPlan: id => plans.get(id), savePlan: p => { plans.set(p.id, p); return p; } };
+    let callback;
+    const tracker = new Telemetry(store, () => {}, { simconnect: cb => { callback = cb; return { close() {} }; }, xplane: () => ({ close() {} }) });
+    t.after(() => tracker.stop(false));
+    tracker.follow('current');
+    const ground = { onGround: true, agl: 0, groundspeed: 0, parkingBrake: true };
+    callback(sample(0, ground));
+    if (situation === 'moving') callback(sample(100, { ...ground, groundspeed: 2, parkingBrake: false }));
+    if (situation === 'taxi-out') {
+      for (let ms = 100; ms <= 2500; ms += 100) callback(sample(ms, { ...ground, groundspeed: 6, parkingBrake: false }));
+      callback(sample(2600, ground)); // A taxiway stop is not a new departure.
+    }
+    if (situation === 'airborne') callback(sample(100));
+    if (situation === 'paused') callback(sample(100, { ...ground, paused: true }));
+    if (situation === 'stale') tracker.lastReceived = Date.now() - 3000;
+    tracker.follow('next', { replaceWaiting: true });
+    assert.equal(tracker.status().planId, 'current', situation);
+  }
+});
+
+test('explicit tracking switch saves the previous flight and validates the target before stopping', t => {
+  const plans = new Map(['current', 'next', 'landed'].map(id => [id, { id, callsign: id, destination: {}, ...(id === 'landed' ? { landing: { contacts: [{}] } } : {}) }]));
+  let callback, failSave = false;
+  const store = { read: (_, fallback) => fallback, write() {}, getPlan: id => {
+    if (!plans.has(id)) throw Error('Missing plan'); return plans.get(id);
+  }, savePlan: p => { if (failSave) throw Error('Disk unavailable'); plans.set(p.id, p); return p; } };
+  const tracker = new Telemetry(store, () => {}, { simconnect: cb => { callback = cb; return { close() {} }; } });
+  const config = { simulator: 'simconnect', xplanePort: 49000 };
+  t.after(() => tracker.stop(false));
+  tracker.start('current', config);
+  callback(sample(0, { onGround: true, groundspeed: 0 }));
+  for (let ms = 100; ms <= 2500; ms += 100) callback(sample(ms, { onGround: true, groundspeed: 10, parkingBrake: false }));
+  assert.throws(() => tracker.switchTo('missing', config), /Missing plan/);
+  assert.throws(() => tracker.switchTo('landed', config), /landing results/);
+  assert.throws(() => tracker.switchTo('next', { simulator: 'invalid' }), /Choose a simulator/);
+  failSave = true;
+  assert.throws(() => tracker.switchTo('next', config), /Disk unavailable/);
+  assert.equal(tracker.status().planId, 'current');
+  failSave = false;
+  const oldCallback = callback;
+  tracker.switchTo('next', config);
+  assert.equal(tracker.status().planId, 'next');
+  assert.ok(plans.get('current').actual.out);
+  assert.equal(plans.get('current').actual.lastObservedAt, new Date(sample(2500).at).toISOString());
+  oldCallback(sample(2600, { onGround: true }));
+  for (let ms = 2600; ms <= 6000; ms += 100) callback(sample(ms));
+  assert.equal(plans.get('next').actual.phase, 'airborne');
+  assert.equal(plans.get('next').actual.out, null);
+  assert.equal(plans.get('next').actual.off, null);
+});
 test('stopped connections cannot record late samples and a failed save remains retryable', t => {
   let plan = { id: 'fixture', callsign: 'SWA123', destination: {} }, fail = false, callback;
   const store = { read: (_, fallback) => fallback, write() {}, getPlan: () => plan, savePlan: p => { if (fail) throw Error('disk'); return plan = p; } };

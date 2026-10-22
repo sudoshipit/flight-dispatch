@@ -5,16 +5,18 @@ import './timing.css';
 
 const utc = (value: string | null) => value ? new Date(value).toLocaleTimeString('en-GB', { timeZone: 'UTC' }) + 'Z' : '—';
 const date = (value: string | null) => value ? new Date(value).toLocaleDateString('en-GB', { timeZone: 'UTC', day: '2-digit', month: 'short' }) : 'Awaiting observation';
-export default function LiveTimings({ plan, telemetry, now }: { plan: Plan; telemetry: TelemetryState | null; now: number }) {
+export default function LiveTimings({ plan, telemetry, now, switchTracking, busy }: { plan: Plan; telemetry: TelemetryState | null; now: number; switchTracking: () => Promise<void>; busy: boolean }) {
   const tracking = telemetry?.planId === plan.id;
+  const otherFlight = telemetry?.planId && !tracking && !plan.landing?.contacts.length;
   const { events, windows } = timingComparison(plan, now, tracking);
   const departure = offBlockCountdown(plan, now);
   const phase = plan.actual?.phase || 'waiting';
-  const label = phase === 'complete' ? 'Flight complete' : !tracking && plan.actual ? 'Tracking stopped' :
+  const label = phase === 'complete' ? 'Flight complete' : otherFlight ? 'Not recording this flight' : !tracking && plan.actual ? 'Tracking stopped' :
     telemetry?.status === 'paused' && tracking ? 'Simulator paused' :
     phase === 'taxi-out' ? 'Taxiing out' : phase === 'airborne' ? 'Airborne' : phase === 'taxi-in' ? 'Taxiing in' : 'Waiting for departure';
   return <section className="card live-timings" aria-label="Live flight timings">
     <div className="card-title"><div><h2><Clock3 size={18}/> Live flight timeline</h2><p>Actual UTC times against your SimBrief plan</p></div><span className={`tag ${tracking ? 'success-tag' : ''}`}><Radio size={12}/>{label}</span></div>
+    {otherFlight && <div className="tracking-mismatch" role="region" aria-label="Flight recording mismatch"><p>Recording <strong>{telemetry.callsign}</strong>. This briefing is <strong>{plan.callsign}</strong>; its off-block and taxi times are not being recorded.</p><button className="secondary-button" disabled={busy} onClick={() => void switchTracking()}>Track this flight</button><small>Stops the other recording and saves its results. Earlier times are not copied.</small></div>}
     {['countdown', 'soon', 'overdue'].includes(departure.state) && <div className={`offblock-countdown ${departure.state}`} role="region" aria-label="Off-block countdown">
       <div><span className="eyebrow">{departure.state === 'overdue' ? 'OFF BLOCKS OVERDUE' : departure.state === 'soon' ? 'OFF BLOCKS SOON' : 'UNTIL OFF BLOCKS'}</span><p>Planned {utc(departure.target)} · {date(departure.target)}</p></div>
       <strong>{departure.state === 'overdue' ? '+' : ''}{elapsedTime(departure.seconds)}</strong>

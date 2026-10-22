@@ -201,6 +201,7 @@ function handle(channel, fn) {
 }
 handle('bootstrap', () => ({ settings: store.publicSettings(), history: store.read('history', []), version: app.getVersion(), telemetry: telemetry.status() }));
 handle('telemetry-start', (id, config) => telemetry.start(id, config));
+handle('telemetry-switch', (id, config) => telemetry.switchTo(id, config));
 handle('telemetry-follow', id => telemetry.follow(id));
 handle('telemetry-stop', () => telemetry.stop());
 handle('catalog', refresh => services.aircraft(refresh === true));

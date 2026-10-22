@@ -12,9 +12,14 @@ export class Telemetry {
     const plan = this.store.getPlan(String(id));
     if (this.stoppedPlans.has(plan.id) || plan.landing?.contacts.length || this.state.planId === plan.id) return this.status();
     if (this.state.planId) {
-      // A new dispatch may replace a briefing that never connected. Browsing
-      // history must never take a recording away from the flight being flown.
-      if (!replaceWaiting || this.selected || this.recorder?.contacts.length) return this.status();
+      // A connected aircraft at the gate is still awaiting departure. A new
+      // dispatch must not leave its recording attached to an older briefing.
+      // History browsing and flights already in motion never switch implicitly.
+      const last = this.recorder?.previous;
+      const parked = last?.onGround && last.groundspeed < 1 &&
+        Date.now() - this.lastReceived < 2000 && this.recorder.actual.phase === 'waiting' &&
+        !this.recorder.movingSince && !['out', 'off', 'on', 'in'].some(key => this.recorder.actual[key]);
+      if (!replaceWaiting || this.recorder?.contacts.length || this.selected && !parked) return this.status();
       this.stop(false);
     }
     const saved = this.store.read('telemetry-settings', {});
@@ -23,11 +28,22 @@ export class Telemetry {
       xplanePort: Number.isInteger(saved.xplanePort) && saved.xplanePort >= 1024 && saved.xplanePort <= 65535 ? saved.xplanePort : 49000,
     });
   }
-  start(id, config = {}) {
-    if (this.state.planId) throw new Error(`Stop tracking ${this.state.callsign} before starting another flight.`);
+  validateStart(id, config) {
     if (!['auto', 'simconnect', 'xplane'].includes(config.simulator) || !Number.isInteger(config.xplanePort) || config.xplanePort < 1024 || config.xplanePort > 65535) throw new Error('Choose a simulator and a valid X-Plane UDP port (1024–65535).');
     const plan = this.store.getPlan(String(id));
     if (plan.landing?.contacts.length) throw new Error('This flight already has landing results. Generate or import a new flight to record another session.');
+    return plan;
+  }
+  switchTo(id, config = {}) {
+    // Validate before stopping so an invalid target never interrupts a flight.
+    this.validateStart(id, config);
+    if (this.state.planId === String(id)) return this.status();
+    if (this.state.planId) this.stop();
+    return this.start(id, config);
+  }
+  start(id, config = {}) {
+    if (this.state.planId) throw new Error(`Stop tracking ${this.state.callsign} before starting another flight.`);
+    const plan = this.validateStart(id, config);
     this.store.write('telemetry-settings', config);
     this.stoppedPlans.delete(plan.id);
     this.recorder = new LandingRecorder(plan.actual); this.startedAt = new Date().toISOString(); this.plan = plan;
