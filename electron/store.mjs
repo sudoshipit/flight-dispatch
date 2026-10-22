@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { DEFAULT_SETTINGS, validateSettings } from '../shared/domain.mjs';
+import { validateTimingOverride } from '../shared/flight-timing.mjs';
 
 export class Store {
   constructor(directory, secure) {
@@ -49,16 +50,22 @@ export class Store {
     try { return this.secure.decryptString(Buffer.from(encoded, 'base64')); }
     catch { throw new Error('This API key could not be decrypted. Re-enter it in Settings.'); }
   }
-  savePlan(plan, { updateLanding = false, updateActual = false } = {}) {
+  savePlan(plan, { updateLanding = false, updateActual = false, updateTiming = false } = {}) {
     const previous = this.read('history', []);
     // Filing/import operations may have started before a touchdown was recorded.
     const saved = previous.find(p => p.id === plan.id);
     const landing = saved?.landing;
     if (!updateLanding && landing) plan = { ...plan, landing };
     if (!updateActual && saved?.actual) plan = { ...plan, actual: saved.actual };
+    // Include null so stale filing/recorder saves cannot undo a user's reset.
+    if (!updateTiming && saved) plan = { ...plan, timingOverride: saved.timingOverride ?? null };
     const history = previous.filter(p => p.id !== plan.id);
     this.write('history', [plan, ...history].slice(0, 30));
     return plan;
+  }
+  saveTimings(id, input) {
+    const timingOverride = validateTimingOverride(input);
+    return this.savePlan({ ...this.getPlan(id), timingOverride }, { updateTiming: true });
   }
   getPlan(id) {
     const plan = this.read('history', []).find(p => p.id === id);

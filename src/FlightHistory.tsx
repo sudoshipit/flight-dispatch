@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowRight, ChevronRight, Plane, Search, X } from 'lucide-react';
 import { flightHistoryView } from '../shared/briefing-tools.mjs';
+import { plannedDeparture } from '../shared/flight-timing.mjs';
 import type { Plan } from './types';
 import './workflow.css';
 
@@ -18,7 +19,7 @@ export default function FlightHistory({ flights, busy, now, open }: { flights: P
     <p className="history-count">{visible.length} of {flights.length} flights · all times UTC{(search || filter !== 'all' || sort !== 'saved') && <button className="text-button" onClick={reset}>Reset filters</button>}</p>
     <div className="history-list">{visible.map(p => <button className="history-row" key={p.id} disabled={busy} onClick={() => open(p)}>
       <span className="history-icon"><Plane size={21}/></span>
-      <div><strong>{p.callsign}</strong><small>{p.aircraft} · {date(p.offBlock)}</small>{p.actual?.phase === 'complete' || p.landing?.completedAt ? <small className="history-complete">Flight complete</small> : null}</div>
+      <div><strong>{p.callsign}</strong><small>{p.aircraft} · {date(plannedDeparture(p))}{p.timingOverride ? ' · Local timings' : ''}</small>{p.actual?.phase === 'complete' || p.landing?.completedAt ? <small className="history-complete">Flight complete</small> : null}</div>
       <span className="history-route">{p.origin.icao}<ArrowRight size={17}/>{p.destination.icao}</span>
       {p.landing?.contacts.length ? <span className="history-landing">{p.landing.contacts.at(-1)?.rateFpm ?? '—'} ft/min</span> : null}
       <span className={`tag ${['failed','unconfirmed'].includes(p.filing.status) ? 'history-attention' : ''}`}>{({ filed: 'Filed', pending: 'Filing pending', failed: 'Filing failed', unconfirmed: 'Filing unconfirmed', 'not-filed': 'Not filed' })[p.filing.status]}</span><ChevronRight size={17}/>

@@ -204,6 +204,7 @@ handle('telemetry-start', (id, config) => telemetry.start(id, config));
 handle('telemetry-switch', (id, config) => telemetry.switchTo(id, config));
 handle('telemetry-follow', id => telemetry.follow(id));
 handle('telemetry-stop', () => telemetry.stop());
+handle('timings', (id, input) => store.saveTimings(id, input));
 handle('catalog', refresh => services.aircraft(refresh === true));
 handle('airport-positions', ids => services.airportPositions(ids));
 handle('settings', async input => { if (active) throw new Error('Wait until the current dispatch finishes before changing settings.'); const old = store.settings().browser; if (input.browser !== old && browser.interactive && !browser.interactive.closed) throw new Error('Close the Flight Dispatch browser windows before switching browsers.'); const saved = store.saveSettings(input); if (old !== saved.browser) await browser.close(); return saved; });

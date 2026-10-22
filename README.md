@@ -149,6 +149,10 @@ Recording milestones save immediately. Progress also checkpoints every 30 second
 
 The **Live flight timeline** compares observed UTC timestamps with SimBrief's estimated times, falling back to scheduled times when estimates are absent. It also shows planned and actual taxi-out, air time, taxi-in and total block durations. Active windows count up every second; their difference shows time remaining or time over plan. Completed windows show signed differences (`+` means later or longer).
 
+**Edit timings** in the live timeline lets you change the departure date, off-block UTC time, taxi-out minutes, air time and taxi-in minutes directly in Flight Dispatch. Preview the calculated takeoff, touchdown, on-block time and total block duration, then choose **Save timings**. Dates roll over automatically across midnight. Leave unknown durations blank; zero taxi time is allowed. The countdown, comparisons, briefing header, planned timeline, recent-flight dates and copied reports use your local edits and label them **Local timings**. Edits persist across restarts, reimporting the same OFP, and simulator recording updates. Open **Edit timings → Reset to SimBrief** to restore the original plan. **Cancel** discards unsaved edits.
+
+These are local planning adjustments: they do not change the SimBrief OFP, file or revise a VATSIM plan, recalculate fuel/winds/waypoint times, or alter simulator-recorded actual times. The original OFP remains available via the callsign link. Use **Edit & regenerate** when you need SimBrief to recalculate the operational plan.
+
 Before departure, **Until off blocks** counts down to the planned UTC departure every second, including across midnight. The countdown is green above 10 minutes, orange **Off blocks soon** in the final 10 minutes, and red **Off blocks overdue** after planned departure, counting upward. The slim flight banner spans the briefing width, with live timings directly below beside the map (stacked in smaller windows). It stops when off-block movement is observed, and is not shown as a departure countdown when tracking begins midair.
 
 - **Off blocks** is the first movement at or above 1 kt, with the parking brake released, sustained for two seconds after observing the aircraft stationary. The recorded time is the beginning of that movement, including pushback. When tracking begins during taxi, the phase still changes to Taxiing out and the departure countdown stops, but the missed off-block timestamp and taxi-out duration stay blank. A later taxiway stop/reconnect does not manufacture that timestamp.
@@ -229,6 +233,7 @@ npm run build        # TypeScript check and renderer build
 npx playwright install chromium # Browser for isolated extension tests
 npm run test:smoke
 npm run test:recorder # App-close/restart recovery, taxi-in completion, telemetry and report UI
+npm run test:timings # Local schedule edits, UTC rollover, restart/reimport persistence and reset
 node scripts/import-smoke.mjs   # Electron UI smoke test; uses a temporary user profile
 npm run test:dispatch # Complete automatic generation + filing with local service mocks
 npm run test:browser  # Dedicated browser session and personal-airframe fixture checks

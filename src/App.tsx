@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowDown, ArrowLeftRight, ArrowRight, ArrowUpRight, Check, CheckCheck, ChevronRight, CircleAlert, Clipboard, Clock3, CloudSun, ExternalLink, FileText, Gauge, History, Link2, LoaderCircle, MapPin, Plane, PlaneLanding, PlaneTakeoff, Plus, Radio, RefreshCw, Settings2, ShieldCheck, SlidersHorizontal, Trash2, Users, X } from 'lucide-react';
 import { DEFAULT_SETTINGS, DEFAULT_RULES, resolveCostIndex, flightInputFromPlan } from '../shared/domain.mjs';
-import type { Aircraft, Catalog, CompanionStatus, Details, FlightInput, Gate, Plan, Progress, Result, Settings, TelemetryState, Weather } from './types';
+import type { Aircraft, Catalog, CompanionStatus, Details, FlightInput, Gate, Plan, Progress, Result, Settings, TelemetryState, TimingOverride, Weather } from './types';
 import OfpDetails, { ProcedureDetails } from './OfpDetails';
 import RouteMap from './RouteMap';
 import LandingCard from './LandingCard';
@@ -11,6 +11,7 @@ import FlightBanner from './FlightBanner';
 import SimbriefPicker from './SimbriefPicker';
 import FlightHistory from './FlightHistory';
 import { briefingText, flightReportText, userMessage } from '../shared/briefing-tools.mjs';
+import { plannedDeparture } from '../shared/flight-timing.mjs';
 import './briefing.css';
 
 const fmt = (value: number | null | undefined) => value == null ? '—' : value.toLocaleString();
@@ -88,6 +89,12 @@ export default function App() {
   const copyText = (text: string, label: string) => navigator.clipboard.writeText(text).then(() => notify(`${label} copied.`)).catch(() => notify(`Could not copy ${label.toLowerCase()}.`, true));
   const importLatest = () => action('import', async () => { accept(await window.dispatch.importLatest()); notify('Latest SimBrief flight imported.'); });
   const generate = () => action('generate', async () => { setDetails(null); accept(await window.dispatch.generate(input)); });
+  const saveTimings = async (id: string, input: TimingOverride | null) => {
+    const updated = await window.dispatch.saveTimings(id, input);
+    setPlan(old => old?.id === id ? updated : old);
+    setHistory(old => [updated, ...old.filter(item => item.id !== id)].slice(0, 30));
+    notify(input ? 'Local timings saved. Countdown and comparisons updated.' : 'Original SimBrief timings restored.');
+  };
   const editPlan = () => { if (!plan) return; setInput(flightInputFromPlan(plan) as FlightInput); setPage('dispatch'); window.scrollTo(0,0); notify('Adjust your options, then generate and file the updated plan.'); };
   const refresh = (kind: 'weather' | 'gates' | 'all') => action(kind, async () => { if (!plan) return; const data = await window.dispatch.refresh(plan.id, kind); setDetails(old => kind === 'all' || !old ? data as Details : { ...old, [kind]: data }); notify(kind === 'weather' ? 'Weather checked. Observation times are shown on each card.' : 'Briefing information updated.'); });
   const selectedAircraft = catalog?.aircraft.find(a => a.id === input.aircraft);
@@ -148,10 +155,10 @@ export default function App() {
       </>}
       {page === 'briefing' && (plan ? <>
         <FlightBanner plan={plan} open={open}/>
-        <section className="page-heading briefing-heading"><div><h1>Flight briefing</h1><p>{shortDate(plan.offBlock)} · {utc(plan.offBlock)} departure · Generated {shortDate(plan.generatedAt)}, {utc(plan.generatedAt)}</p></div><div className="briefing-actions"><button className="text-button" onClick={() => copyText(plan.route, 'Route')}><Clipboard size={14}/> Copy route</button><button className="text-button" onClick={() => copyText(briefingText(plan, details), 'Briefing')}><FileText size={14}/> Copy briefing</button><button className="secondary-button" disabled={!!busy} onClick={editPlan}><SlidersHorizontal size={15}/> Edit & regenerate</button><button className="secondary-button" disabled={!!busy} onClick={() => refresh('all')}><RefreshCw size={15}/> Refresh briefing</button></div></section>
+        <section className="page-heading briefing-heading"><div><h1>Flight briefing</h1><p>{shortDate(plannedDeparture(plan))} · {utc(plannedDeparture(plan))} departure{plan.timingOverride ? ' · Local timings' : ''} · Generated {shortDate(plan.generatedAt)}, {utc(plan.generatedAt)}</p></div><div className="briefing-actions"><button className="text-button" onClick={() => copyText(plan.route, 'Route')}><Clipboard size={14}/> Copy route</button><button className="text-button" onClick={() => copyText(briefingText(plan, details), 'Briefing')}><FileText size={14}/> Copy briefing</button><button className="secondary-button" disabled={!!busy} onClick={editPlan}><SlidersHorizontal size={15}/> Edit & regenerate</button><button className="secondary-button" disabled={!!busy} onClick={() => refresh('all')}><RefreshCw size={15}/> Refresh briefing</button></div></section>
         {!['generate','file'].includes(busy) && ['failed','unconfirmed'].includes(plan.filing.status) && <div className="filing-alert" role="alert"><CircleAlert size={22}/><div><strong>{plan.filing.status === 'unconfirmed' ? 'VATSIM submission could not be confirmed' : 'VATSIM flight plan filing failed'}</strong><p>{plan.filing.message}</p>{plan.filing.status === 'unconfirmed' && <small>Review VATSIM before trying again. The app will not automatically resubmit this plan.</small>}</div><button className="secondary-button" disabled={!!busy} onClick={() => action('file', async () => accept(await window.dispatch.file(plan.id)))}>{plan.filing.status === 'unconfirmed' ? 'Review on VATSIM' : 'Retry automatic filing'}</button></div>}
         {!!plan.landing?.contacts.length && <LandingCard key={plan.id} plan={plan} telemetry={telemetry} start={config => action('tracking', async () => { setTelemetry(await window.dispatch.startTracking(plan.id, config)); })} stop={() => action('tracking', async () => { setTelemetry(await window.dispatch.stopTracking()); })}/>}
-        <div className="briefing-overview"><LiveTimings plan={plan} telemetry={telemetry} now={now.getTime()} switchTracking={switchTracking} copyReport={() => copyText(flightReportText(plan, now.getTime(), telemetry?.planId === plan.id), 'Flight report')} busy={!!busy}/><RouteMap plan={plan}/></div>
+        <div className="briefing-overview"><LiveTimings saveTimings={saveTimings} plan={plan} telemetry={telemetry} now={now.getTime()} switchTracking={switchTracking} copyReport={() => copyText(flightReportText(plan, now.getTime(), telemetry?.planId === plan.id), 'Flight report')} busy={!!busy}/><RouteMap plan={plan}/></div>
 
         <div className="section-heading"><h2><CloudSun size={18}/> Airport weather & frequencies</h2><button className="text-button" disabled={!!busy} onClick={() => refresh('weather')}><RefreshCw size={13}/> Refresh METARs</button></div>
         <div className="airport-grid">{[plan.origin, plan.destination].map((airport, index) => <section className="card airport-card" key={airport.icao}><div className="airport-heading"><span className="mini-icon">{index ? <PlaneLanding size={20}/> : <PlaneTakeoff size={20}/>}</span><div><h2>{airport.icao} <span>{index ? 'Arrival' : 'Departure'}</span></h2><small>{airport.name}</small></div><span className={`weather-category ${details?.weather[airport.icao]?.category === 'VFR' ? 'vfr' : ''}`}>{details?.weather[airport.icao]?.category || '—'}</span></div><Metar weather={details?.weather[airport.icao]} fallback={airport.metar}/><div className="airport-bottom"><div><span className="eyebrow"><Radio size={12}/> VATSIM CTAF</span><strong>{details?.airports[airport.icao]?.frequencies.map(f => f.frequency).join(' / ') || 'Unavailable'}</strong><small>{details?.airports[airport.icao]?.error || (details?.airports[airport.icao]?.frequencies.length === 0 ? 'No designated CTAF in AIP' : 'VATSIM AIP · MHz')}</small></div><div><span className="eyebrow">PLANNED RUNWAY</span><strong>{airport.runway || '—'}</strong><small>From SimBrief</small></div></div></section>)}</div>

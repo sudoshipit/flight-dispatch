@@ -1,5 +1,6 @@
 import { ChevronDown, Clock3, Fuel, Gauge, Route, Scale, Wind } from 'lucide-react';
 import { formatSeconds, formatWind, formatWindComponent } from '../shared/ofp.mjs';
+import { plannedTiming } from '../shared/flight-timing.mjs';
 import type { Plan, TimeEvent } from './types';
 
 const fmt = (n: number | null | undefined) => n == null ? '—' : n.toLocaleString('en-US');
@@ -24,7 +25,8 @@ export function ProcedureDetails({ plan }: { plan: Plan }) {
 export default function OfpDetails({ plan }: { plan: Plan }) {
   const data = plan.ofp;
   if (!data) return <p className="ofp-legacy">This saved briefing predates the detailed OFP view. Import the flight again while it is your latest SimBrief plan to load these details.</p>;
-  const { timing: t, fuel: f, cruise: c, weights: w } = data;
+  const { fuel: f, cruise: c, weights: w } = data;
+  const t = plannedTiming(plan);
   const units = ['LBS', 'KGS'].includes(plan.units) ? plan.units : 'units unspecified';
   const fuelRows: [string, number | null, string?][] = [
     ['Taxi', f.taxi], ['Trip', f.trip], ['Contingency', f.contingency, f.contingencyRule],
@@ -34,7 +36,7 @@ export default function OfpDetails({ plan }: { plan: Plan }) {
   return <section className="ofp-details" aria-label="SimBrief OFP details">
     <div className="section-heading"><h2><Clock3 size={18}/> Planned flight</h2><span className="ofp-source">OFP snapshot · AIRAC {data.airac || 'not supplied'}</span></div>
     <section className="card timing-card" aria-label="Planned timings">
-      <div className="timing-heading"><h3>Estimated timeline</h3><span>All times UTC</span></div>
+      <div className="timing-heading"><h3>{plan.timingOverride ? 'Locally adjusted timeline' : 'Estimated timeline'}</h3><span>All times UTC</span></div>
       <div className="flight-timeline"><TimeStop label="OFF BLOCK" event={t.out}/><TimeStop label="TAKEOFF" event={t.off}/><TimeStop label="LANDING" event={t.on}/><TimeStop label="ON BLOCK" event={t.in}/></div>
       <div className="timing-durations"><span>Taxi out <b>{formatSeconds(t.taxiOutSeconds)}</b></span><span>Airborne <b>{formatSeconds(t.airborneSeconds)}</b></span><span>Taxi in <b>{formatSeconds(t.taxiInSeconds)}</b></span><span>Block time <b>{formatSeconds(t.blockSeconds)}</b></span></div>
     </section>
@@ -59,9 +61,9 @@ export default function OfpDetails({ plan }: { plan: Plan }) {
     </div>
     <details className="card ofp-disclosure"><summary><span><Scale size={17}/> Weights & payload</span><small>{units}</small><ChevronDown size={16}/></summary><div className="weights-grid">{[['Zero fuel', w.zeroFuel, w.maxZeroFuel], ['Takeoff', w.takeoff, w.maxTakeoff], ['Landing', w.landing, w.maxLanding]].map(([label, value, limit]) => <div key={String(label)}><span>{label}</span><strong>{fmt(value as number | null)}</strong><small>OFP limit {fmt(limit as number | null)}</small></div>)}</div><div className="timing-durations"><span>Payload <b>{fmt(w.payload)} {units}</b></span><span>Cargo <b>{fmt(w.cargo)} {units}</b></span></div></details>
     <details className="card ofp-disclosure navlog-disclosure"><summary><span><Gauge size={17}/> Waypoint winds & fuel</span><small>{data.navlog.length} fixes</small><ChevronDown size={16}/></summary>
-      <p className="navlog-note">OFP winds at planned altitudes. ETO = estimated takeoff + cumulative flight time. Fuel is planned remaining in {units}.</p>
+      <p className="navlog-note">Original OFP winds and times. ETO = SimBrief takeoff + cumulative flight time; local timing edits do not recalculate this log. Fuel is planned remaining in {units}.</p>
       {data.navlog.length ? <div className="navlog-scroll" tabIndex={0} role="region" aria-label="Scrollable waypoint log"><table className="navlog-table"><thead><tr>{['Waypoint', 'Altitude ft', 'ETO UTC', 'Wind ° / kt', 'OAT °C', 'GS kt', `Fuel ${units}`].map(label => <th scope="col" key={label}>{label}</th>)}</tr></thead><tbody>{data.navlog.map((fix, index) => <tr key={`${index}-${fix.ident}`} className={['TOC', 'TOD'].includes(fix.ident) ? 'milestone' : ''}><th scope="row">{fix.ident}<small>{fix.airway} · {fix.stage}</small></th><td>{fmt(fix.altitude)}</td><td>{time(fix.eta)}<small>{fix.eta && day(fix.eta)}</small></td><td>{formatWind(fix.windDirection, fix.windSpeed)}</td><td>{fmt(fix.temperature)}</td><td>{fmt(fix.groundspeed)}</td><td>{fmt(fix.fuelRemaining)}</td></tr>)}</tbody></table></div> : <p className="navlog-note">This OFP has no detailed navigation log.</p>}
     </details>
-    <p className="ofp-footnote">These values belong to this generated plan. Refreshing weather does not recalculate its winds, fuel, route or timings.</p>
+    <p className="ofp-footnote">Fuel, winds, weights and waypoint times belong to the original SimBrief plan. Local timing edits update the timeline only; refreshing weather does not recalculate the plan.</p>
   </section>;
 }

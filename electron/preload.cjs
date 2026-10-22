@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('dispatch', {
   simbriefFlights: invoke('dispatch:simbrief-flights'), importSelected: invoke('dispatch:import-selected'),
   generate: invoke('dispatch:generate'), cancel: invoke('dispatch:cancel'),
   refresh: invoke('dispatch:refresh'), file: invoke('dispatch:file'),
+  saveTimings: invoke('dispatch:timings'),
   open: invoke('dispatch:open'), login: invoke('dispatch:login'),
   companionStatus: invoke('dispatch:companion-status'), companionSetup: invoke('dispatch:companion-setup'),
   startTracking: invoke('dispatch:telemetry-start'), followFlight: invoke('dispatch:telemetry-follow'), stopTracking: invoke('dispatch:telemetry-stop'),

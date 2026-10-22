@@ -6,6 +6,7 @@ export type Aircraft = { id: string; icao: string; name: string; maxPassengers: 
 export type Catalog = { aircraft: Aircraft[]; updatedAt: string; mode: string; warning?: string };
 export type Airport = { icao: string; iata: string; name: string; elevation: number | null; lat: number | null; lon: number | null; runway: string; metar: string; metarTime: string; category: string };
 export type TimeEvent = { estimated: string | null; scheduled: string | null };
+export type TimingOverride = { offBlock: string; taxiOutSeconds: number | null; airborneSeconds: number | null; taxiInSeconds: number | null };
 export type LandingContact = { time: string; rateFpm: number | null; method: 'simulator-touchdown' | 'sampled-estimate'; bounce: boolean; groundspeed: number; pitch: number | null; bank: number | null; lat: number; lon: number; sampleAgeMs: number; destinationDistanceNm: number | null };
 export type LandingSummary = { startedAt: string; completedAt: string | null; simulator: string; contacts: LandingContact[] };
 export type ActualTimings = { out: string | null; off: string | null; on: string | null; in: string | null; phase: 'waiting' | 'taxi-out' | 'airborne' | 'taxi-in' | 'complete'; lastObservedAt: string | null };
@@ -22,7 +23,7 @@ export type OfpSummary = {
   weights: { zeroFuel: number | null; maxZeroFuel: number | null; takeoff: number | null; maxTakeoff: number | null; landing: number | null; maxLanding: number | null; payload: number | null; cargo: number | null };
   navlog: NavFix[];
 };
-export type Plan = { id: string; staticId: string; generatedAt: string; callsign: string; airline: string; flightNumber: string; aircraft: string; aircraftName: string; aircraftBase: string; registration: string; origin: Airport; destination: Airport; alternate: string; altitude: number; speed: number; costIndex: number | null; passengers: number | null; distance: number | null; route: string; requestedRoute?: string; planningInput?: FlightInput; variantId?: string; variantName?: string; raw: string; wake: string; enroute: string; endurance: string; offBlock: string; blockFuel: number | null; units: string; ofpUrl: string; ofp?: OfpSummary; landing?: LandingSummary; actual?: ActualTimings; filing: { status: 'not-filed' | 'pending' | 'unconfirmed' | 'filed' | 'failed'; message: string; confirmedAt?: string } };
+export type Plan = { timingOverride?: TimingOverride | null; id: string; staticId: string; generatedAt: string; callsign: string; airline: string; flightNumber: string; aircraft: string; aircraftName: string; aircraftBase: string; registration: string; origin: Airport; destination: Airport; alternate: string; altitude: number; speed: number; costIndex: number | null; passengers: number | null; distance: number | null; route: string; requestedRoute?: string; planningInput?: FlightInput; variantId?: string; variantName?: string; raw: string; wake: string; enroute: string; endurance: string; offBlock: string; blockFuel: number | null; units: string; ofpUrl: string; ofp?: OfpSummary; landing?: LandingSummary; actual?: ActualTimings; filing: { status: 'not-filed' | 'pending' | 'unconfirmed' | 'filed' | 'failed'; message: string; confirmedAt?: string } };
 export type Weather = { raw: string; observedAt: string; fetchedAt: string | null; category: string; source: string; stale: boolean; error?: string };
 export type Aip = { icao: string; name?: string; elevation?: number | null; frequencies: { frequency: string; name: string; callsign: string }[]; source: string; fetchedAt?: string; error?: string };
 export type Gate = { value: string; terminal: string; date: string; historical: boolean; source: string; fetchedAt: string };
@@ -47,6 +48,7 @@ declare global {
       cancel(): Promise<boolean>;
       refresh(id: string, kind?: string): Promise<Details | Record<string, Weather> | Gates>;
       file(id: string): Promise<Result>;
+      saveTimings(id: string, input: TimingOverride | null): Promise<Plan>;
       open(url: string): Promise<void>;
       login(service: string): Promise<void>;
       companionStatus(): Promise<CompanionStatus>;

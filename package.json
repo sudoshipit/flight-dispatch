@@ -13,6 +13,7 @@
     "test": "node --test tests/*.test.mjs",
     "test:smoke": "node scripts/smoke.mjs",
     "test:recorder": "node scripts/recorder-smoke.mjs",
+    "test:timings": "node scripts/timings-smoke.mjs",
     "check:live": "node scripts/check-live.mjs",
     "package": "npm run build && electron-builder --win portable nsis",
     "test:dispatch": "node scripts/dispatch-smoke.mjs",
