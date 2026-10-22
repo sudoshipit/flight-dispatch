@@ -12,13 +12,21 @@ export class Telemetry {
     this.state = { status: 'idle', message: 'Open a briefing to detect your simulator and record landing rate automatically.', planId: null, callsign: '', simulator: '', phase: 'waiting' };
   }
   status() { return { ...this.state, config: this.store.read('telemetry-settings', { simulator: 'auto', xplanePort: 49000 }) }; }
-  follow(id, { replaceWaiting = false } = {}) {
+  follow(id, { replaceWaiting = false, replaceActive = false } = {}) {
     const plan = this.store.getPlan(String(id));
+    const saved = this.store.read('telemetry-settings', {});
+    const config = {
+      simulator: ['auto', 'simconnect', 'xplane'].includes(saved.simulator) ? saved.simulator : 'auto',
+      xplanePort: Number.isInteger(saved.xplanePort) && saved.xplanePort >= 1024 && saved.xplanePort <= 65535 ? saved.xplanePort : 49000,
+    };
+    // A successfully generated flight is the user's new active flight, even
+    // while the old recording is airborne, paused or awaiting parking.
+    if (replaceActive) return this.switchTo(plan.id, config);
     if (this.stoppedPlans.has(plan.id) || finished(plan) || this.state.planId === plan.id) return this.status();
     if (this.state.planId) {
       // A connected aircraft at the gate is still awaiting departure. A new
-      // dispatch must not leave its recording attached to an older briefing.
-      // History browsing and flights already in motion never switch implicitly.
+      // import must not leave its recording attached to an older briefing.
+      // Browsing history and importing during flight preserve active recording.
       const last = this.recorder?.previous;
       const parked = last?.onGround && last.groundspeed < 1 &&
         this.now() - this.lastReceived < 2000 && this.recorder.actual.phase === 'waiting' &&
@@ -26,11 +34,7 @@ export class Telemetry {
       if (!replaceWaiting || this.recorder?.contacts.length || this.selected && !parked) return this.status();
       this.stop(false);
     }
-    const saved = this.store.read('telemetry-settings', {});
-    return this.start(plan.id, {
-      simulator: ['auto', 'simconnect', 'xplane'].includes(saved.simulator) ? saved.simulator : 'auto',
-      xplanePort: Number.isInteger(saved.xplanePort) && saved.xplanePort >= 1024 && saved.xplanePort <= 65535 ? saved.xplanePort : 49000,
-    });
+    return this.start(plan.id, config);
   }
   validateStart(id, config) {
     if (!['auto', 'simconnect', 'xplane'].includes(config.simulator) || !Number.isInteger(config.xplanePort) || config.xplanePort < 1024 || config.xplanePort > 65535) throw new Error('Choose a simulator and a valid X-Plane UDP port (1024–65535).');

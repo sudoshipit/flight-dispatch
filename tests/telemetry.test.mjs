@@ -156,6 +156,56 @@ test('explicit tracking switch saves the previous flight and validates the targe
   assert.equal(plans.get('next').actual.out, null);
   assert.equal(plans.get('next').actual.off, null);
 });
+
+test('newly generated flights always replace the previous recording and isolate late simulator callbacks', async t => {
+  for (const phase of ['waiting', 'taxi-out', 'airborne', 'paused', 'disconnected', 'taxi-in']) await t.test(phase, t => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'flight-dispatch-generation-'));
+    const store = new Store(directory), callbacks = [], connections = [];
+    for (const id of ['current', 'generated']) store.savePlan({ id, callsign: id, destination: {} });
+    store.write('telemetry-settings', { simulator: 'simconnect', xplanePort: 49001 });
+    const tracker = new Telemetry(store, () => {}, { simconnect: callback => {
+      callbacks.push(callback); const connection = { closed: false, close() { this.closed = true; } }; connections.push(connection); return connection;
+    } });
+    t.after(() => { tracker.stop(false); fs.rmSync(directory, { recursive: true, force: true }); });
+    tracker.follow('current');
+    const ground = { onGround: true, agl: 0, groundspeed: 0, parkingBrake: true };
+    callbacks[0](sample(0, ground));
+    if (phase !== 'waiting') {
+      for (let ms = 100; ms <= 2500; ms += 100) callbacks[0](sample(ms, { ...ground, groundspeed: 6, parkingBrake: false }));
+    }
+    if (['airborne', 'taxi-in'].includes(phase)) {
+      for (let ms = 2600; ms <= 6000; ms += 100) callbacks[0](sample(ms));
+    }
+    if (phase === 'taxi-in') callbacks[0](sample(6100, { ...ground, groundspeed: 20, parkingBrake: false }));
+    if (phase === 'paused') callbacks[0](sample(2600, { ...ground, paused: true }));
+    if (phase === 'disconnected') tracker.recorder.resetContinuity();
+    const actual = structuredClone(tracker.recorder.actual), contacts = structuredClone(tracker.recorder.contacts);
+    tracker.follow('generated', { replaceActive: true });
+    assert.equal(tracker.status().planId, 'generated');
+    assert.equal(connections[0].closed, true);
+    assert.equal(tracker.status().config.simulator, 'simconnect');
+    assert.equal(tracker.status().config.xplanePort, 49001);
+    assert.deepEqual(store.getPlan('current').actual, actual);
+    if (contacts.length) {
+      assert.deepEqual(store.getPlan('current').landing.contacts.map(({ destinationDistanceNm, ...contact }) => contact), contacts);
+      assert.ok(store.getPlan('current').landing.completedAt);
+      assert.equal(store.getPlan('current').actual.in, null);
+    }
+    const previous = structuredClone(store.getPlan('current'));
+    callbacks[0](sample(6200, ground)); // Delayed data from the closed connection.
+    for (let ms = 6300; ms <= 9600; ms += 100) callbacks[1](sample(ms));
+    assert.deepEqual(store.getPlan('current'), previous);
+    const generated = store.getPlan('generated');
+    assert.equal(generated.actual.phase, 'airborne');
+    assert.equal(generated.actual.out, null);
+    assert.equal(generated.actual.off, null);
+    assert.equal(generated.landing, undefined);
+    tracker.follow('current'); // Browsing history cannot take recording back.
+    tracker.follow('generated', { replaceActive: true });
+    assert.equal(tracker.status().planId, 'generated');
+    assert.equal(callbacks.length, 2); // Repeated completion is idempotent.
+  });
+});
 test('stopped connections cannot record late samples and a failed save remains retryable', t => {
   let plan = { id: 'fixture', callsign: 'SWA123', destination: {} }, fail = false, callback;
   const store = { read: (_, fallback) => fallback, write() {}, getPlan: () => plan, savePlan: p => { if (fail) throw Error('disk'); return plan = p; } };

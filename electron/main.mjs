@@ -135,7 +135,7 @@ async function generate(input) {
     }
     if (!plan) throw new Error(operation.cancelled ? 'Dispatch cancelled. Any plan generated on SimBrief is still available there.' : 'Timed out waiting for a matching plan. Check SimBrief, then use Import latest.');
     if (!win.isDestroyed()) await win.close();
-    telemetry.follow(plan.id, { replaceWaiting: true });
+    if (!operation.cancelled) telemetry.follow(plan.id, { replaceActive: true });
     emit('generated', 'Flight plan generated. Preparing your briefing.', { plan });
     const enrichment = services.enrich(plan);
     if (store.settings().autoFile && !operation.cancelled) plan = await filePlan(plan, operation, true);

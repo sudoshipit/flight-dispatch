@@ -12,6 +12,8 @@ fs.mkdirSync(path.join(userData, 'data'), { recursive: true });
 fs.writeFileSync(path.join(userData, 'data/settings.json'), JSON.stringify({ ...DEFAULT_SETTINGS, simbriefId: 'test-pilot' }));
 fs.copyFileSync('data/aircraft.json', path.join(userData, 'data/aircraft.json'));
 const plan = { ...parseOFP(ofp), id: 'automated-dispatch' };
+const previousPlan = { ...plan, id: 'previous-recording', callsign: 'DAL759' };
+fs.writeFileSync(path.join(userData, 'data/history.json'), JSON.stringify([previousPlan]));
 const route = 'CAMJO Q99 HEPAR';
 const variant = { id:'746599_1776105415884', name:'PMDG Dual Class', maxPassengers:124, icao:'B737', registration:'N123FD', source:'SimBrief' };
 const aircraft = baseAircraft.map(a => a.id === 'B737' ? {...a,variants:[variant]} : a);
@@ -32,7 +34,7 @@ try {
     const { Telemetry } = localRequire('./electron/telemetry.mjs');
     const startTracking = Telemetry.prototype.start;
     Telemetry.prototype.start = function(...args) {
-      this.adapters = { simconnect: () => ({ close() {} }), xplane: () => ({ close() {} }) };
+      this.adapters = { simconnect: () => ({ close() {} }), xplane: sample => { globalThis.__sample = sample; return { close() {} }; } };
       return startTracking.apply(this, args);
     };
     const { Services } = localRequire('./electron/services.mjs');
@@ -99,6 +101,19 @@ try {
   await expect.poll(() => page.evaluate(() => window.dispatch.companionStatus().then(s=>s.connected))).toBe(true);
   await page.evaluate(() => { window.__stages=[]; window.dispatch.onProgress(p=>window.__stages.push(p.stage)); });
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.evaluate(id => window.dispatch.startTracking(id, { simulator: 'auto', xplanePort: 49000 }), previousPlan.id);
+  const lastSampleAt = await app.evaluate(() => {
+    const at = Date.now();
+    for (let ms = 0; ms <= 3500; ms += 100) globalThis.__sample({ at: at + ms, simTime: ms / 1000,
+      simulator: 'Dispatch fixture', onGround: ms === 0, agl: ms === 0 ? 0 : 100,
+      groundspeed: ms === 0 ? 0 : 150, verticalSpeed: 1000, parkingBrake: false, lat: 27.98, lon: -82.53 });
+    return new Date(at + 3500).toISOString();
+  });
+  const previousActual = (await page.evaluate(() => window.dispatch.bootstrap())).history.find(p => p.id === previousPlan.id).actual;
+  expect(previousActual.phase).toBe('airborne');
+  expect(previousActual.off).toBeTruthy();
+  // Stopping must checkpoint the samples received after the takeoff save.
+  previousActual.lastObservedAt = lastSampleAt;
   await expect(page.getByLabel('Aircraft type')).toBeEnabled({timeout:45000});
   for(const [label,value] of [['Callsign',input.airline],['Flight number',input.flightNumber],['Departure',input.origin],['Destination',input.destination]]) await page.getByLabel(label,{exact:true}).fill(value);
   await page.getByLabel('Aircraft type').selectOption(input.aircraft);
@@ -113,10 +128,16 @@ try {
   await expect(page.getByRole('dialog',{name:'Dispatch progress'})).toBeVisible();
   await expect(page.getByRole('dialog',{name:'Dispatch progress'}).getByRole('status')).toContainText('Sign in to SimBrief in the browser',{timeout:30000});
   await expect(page.getByRole('dialog',{name:'Dispatch progress'}).getByRole('status')).toContainText('close all Flight Dispatch browser windows');
+  expect((await page.evaluate(() => window.dispatch.bootstrap())).telemetry.planId).toBe(previousPlan.id);
   await page.screenshot({path:'artifacts/progress.png',fullPage:true});
   await expect(page.getByText('Filed on VATSIM',{exact:true})).toBeVisible({timeout:90000});
   await expect(page.locator('.progress')).toHaveCount(0,{timeout:10000});
   expect(await app.evaluate(()=>globalThis.__dispatchTest.generations)).toBe(1);
+  const tracked = await page.evaluate(() => window.dispatch.bootstrap());
+  expect(tracked.telemetry.planId).toBe(plan.id);
+  expect(tracked.history.find(p => p.id === previousPlan.id).actual).toEqual(previousActual);
+  expect(tracked.history.find(p => p.id === plan.id).actual).toBeUndefined();
+  await expect(page.getByRole('region', { name: 'Flight recording mismatch' })).toHaveCount(0);
   const saved=JSON.parse(fs.readFileSync(path.join(userData,'data/history.json'),'utf8'))[0];
   expect(saved.filing.status).toBe('filed');expect(saved.requestedRoute).toBe(route);expect(saved.variantId).toBe(variant.id);expect(saved.planningInput.taxiOut).toBe('20');
   const signIns = await app.evaluate(()=>globalThis.__dispatchTest.signIns);
@@ -132,7 +153,7 @@ try {
 
   }, {plan});
   scenario.reject = true;
-  await page.getByRole('button',{name:'Recent flights 1'}).click();
+  await page.getByRole('button',{name:'Recent flights 2'}).click();
   await page.getByRole('button',{name:'Import latest',exact:true}).click();
   await expect(page.locator('.progress')).toHaveCount(0,{timeout:10000});
   await page.getByRole('button',{name:'File automatically on VATSIM'}).click();
@@ -182,5 +203,5 @@ try {
   expect(scenario.filingPages).toBe(beforeChallenge);
   expect(JSON.parse(fs.readFileSync(path.join(userData,'data/history.json'),'utf8')).find(p=>p.id==='challenge-test').filing.status).toBe('failed');
   expect(errors).toEqual([]);
-  console.log('Automatic dispatch passed through the real companion extension: signed-in session without auth prompt, one automatic submission, same-tab login recovery, separate verification prompt, cancellation, failure alert, and no retry after uncertain submission. All service pages were local mocks; no real flight was generated or filed.');
+  console.log('Automatic dispatch passed: generating a new flight saves/stops the airborne previous recording and tracks the new flight, while waiting for generation leaves the previous recorder active. Companion checks passed: signed-in session, single submission, login recovery, verification, cancellation and filing failures. All service pages were local mocks; no real flight was generated or filed.');
 } catch(error) { console.error('Flow diagnostics',await app.evaluate(()=>globalThis.__dispatchTest)); throw error; } finally { await companion?.close(); await app.close(); }
